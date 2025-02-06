@@ -1,0 +1,36 @@
+
+
+.custom-input {
+  display: block;
+  border-color: 1px solid #20527E;
+  height: 45px;
+  width: 85%;
+  margin: 2% auto;
+}
+
+.custom-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #20527E; /* Fondo azul */
+  color: #FFB500; /* Texto amarillo */
+}
+
+.custom-btn:hover {
+  background-color: #0056b3;
+}
+
+.forgot-password {
+  font-size: 14px;
+  color: #20527E;
+  margin-top: 10px;
+  text-decoration: none; 
+}
+
+.forgot-password:hover {
+  text-decoration: underline; 
+}
+
+
+
