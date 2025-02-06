@@ -1,0 +1,74 @@
+.footer {
+    padding: 20px;
+    background-color: #20527E;
+    color: #fff;
+    width: 100%; /* Asegurar que el fondo cubra todo el ancho de la pantalla */
+    margin: 0; /* Eliminar cualquier margen */
+    box-sizing: border-box; /* Incluir el padding y el border dentro del tamaño total */
+  }
+  
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .footer-column {
+    flex: 1;
+    min-width: 200px; /* Asegurar un ancho mínimo */
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .footer-column p, .footer-column span {
+    margin: 5px 0;
+  }
+  
+  .footer-logo {
+    height: 100px; /* Tamaño más grande para los logos */
+    margin: 30px;
+  }
+  
+  .center-text {
+    text-align: center;
+    flex-basis: 100%; /* Asegurar que ocupe toda la línea */
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .social-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+  }
+  
+  .contact-button {
+    background-color: #FFB500;
+    color: #20527E;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .contact-button:hover {
+    background-color: #E0A600;
+  }
+  
+  .highlight {
+    color: #FFB500; /* Color dorado */
+  }
+  

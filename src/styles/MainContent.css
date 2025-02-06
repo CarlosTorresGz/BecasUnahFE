@@ -1,0 +1,46 @@
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Altura total menos la altura del encabezado */
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+  
+  .section-container {
+    position: relative;
+    width: 100%; /* Asegurar que el fondo abarque todo el ancho de la pantalla */
+    height: 50%;
+    background-color: #20527E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    box-sizing: border-box; /* Asegurar que el padding se incluya en el tamaño total */
+  }
+  
+  .section-content {
+    font-size: 1.5rem;
+    color: #fff;
+    opacity: 0; /* Inicialmente invisible */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .section-container:hover .section-content {
+    opacity: 1; /* Aparecer al pasar el mouse */
+  }
+  
+  .animated-content {
+    font-size: 1.2rem;
+    color: #fff;
+    opacity: 0; /* Inicialmente invisible */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .section-container:hover .animated-content {
+    opacity: 1; /* Aparecer al pasar el mouse */
+  }
+  

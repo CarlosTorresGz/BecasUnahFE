@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Header.css';
+import VOAE from '../img/VOAE.png' ;
+import UNAH from '../img/UNAH.png' ;
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,8 +13,8 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <img src="logo1.png" alt="Logo 1" />
-        <img src="logo2.png" alt="Logo 2" />
+        <img src= {VOAE} alt="Logo 1" />
+        <img src= {UNAH} alt="Logo 2" />
       </div>
       <nav className="nav">
         <ul className="nav-list">
