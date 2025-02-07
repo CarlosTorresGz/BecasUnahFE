@@ -3,17 +3,17 @@ import { LoginForm } from "./auth/LoginForm"
 import universityLogo from "../img/logo-unah-4.png"
 import "../styles/LoginApp.css"
 
-export const LoginApp = () => {
+export const LoginApp = ({number}) => {
   return (
     <AuthProvider>
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="d-flex bg-white border border-primary w-50">
+      <div className="d-flex align-items-center justify-content-center login-background">
+        <div className="d-flex bg-white w-50 login-container">
           <div className="d-flex align-items-center justify-content-center p-4">
-            <img src={universityLogo} alt="Logo Universidad" className="img-fluid" />
+            <img src={universityLogo} alt="Logo Universidad"/>
           </div>
 
           <div className="d-flex align-items-center">
-            <div style={{ height: "80%", borderRight: "1px solid #20527E" }}></div>
+            <div className="vertical-line"></div>
           </div>
 
           <div className="text-center p-4">
@@ -21,8 +21,8 @@ export const LoginApp = () => {
               PROGRAMA DE ATENCIÓN SOCIOECONÓMICA Y ESTÍMULOS EDUCATIVOS (PASEE)
             </h3>
             <p>Iniciar Sesión</p>
-            <div className="mt-3">
-              <LoginForm />
+            <div>
+              <LoginForm ph={number}/>
             </div>
             <a href="#" className="forgot-password">Olvidé mi contraseña</a>
           </div>

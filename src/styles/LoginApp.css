@@ -1,20 +1,71 @@
+.login-background {
+  position: relative;
+  background: linear-gradient(to bottom, #20527E, #021424, #043158);
+  overflow: hidden;
+}
 
+.login-container {
+  margin-top: 12%;
+  margin-bottom: 3%;
+  border-radius: 2%;
+}
+
+.vertical-line {
+  height: 85%;
+  border-right: 1px solid #20527E;
+}
+
+.login-background::before,
+.login-background::after {
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.login-background::before {
+  background-image: url("../img/LUCEM-ASPICIO-IZQ.png");
+  bottom: 0;
+  left: 0;
+}
+
+.login-background::after {
+  background-image: url("../img/LUCEM-ASPICIO-DER.png");
+  bottom: 0;
+  right: 0;
+}
 
 .custom-input {
   display: block;
+  outline: none;
   border-color: 1px solid #20527E;
   height: 45px;
   width: 85%;
   margin: 2% auto;
+  margin-bottom: 6%;
+}
+
+.custom-input::-webkit-inner-spin-button,
+.custom-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-input:focus {
+  border-color: #BBADFF; 
 }
 
 .custom-btn {
-  padding: 10px 15px;
+  padding: 10px 25px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #20527E; /* Fondo azul */
-  color: #FFB500; /* Texto amarillo */
+  background-color: #20527E;
+  /* Fondo azul */
+  color: #FFB500;
+  /* Texto amarillo */
 }
 
 .custom-btn:hover {
@@ -24,13 +75,9 @@
 .forgot-password {
   font-size: 14px;
   color: #20527E;
-  margin-top: 10px;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .forgot-password:hover {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
-
-
-

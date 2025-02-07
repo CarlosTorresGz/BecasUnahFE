@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import '../../styles/Header.css';
-import VOAE from '../../img/VOAE.png' ;
-import UNAH from '../../img/UNAH.png' ;
-import { useNavigate } from 'react-router-dom';
+import VOAE from '../../img/VOAE.png';
+import UNAH from '../../img/UNAH.png';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -15,8 +15,10 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <img src= {VOAE} alt="Logo 1" />
-        <img src= {UNAH} alt="Logo 2" />
+        <Link to="/">
+          <img src={VOAE} alt="Logo 1" />
+        </Link>
+        <img src={UNAH} alt="Logo 2" />
       </div>
       <nav className="nav">
         <ul className="nav-list">
@@ -26,7 +28,7 @@ const Header = () => {
             Login
             <ul className={`dropdown ${isDropdownOpen ? 'open' : ''}`}>
               <li onClick={() => navigate("/login")}>Estudiantes</li>
-              <li>Administradores</li>
+              <li onClick={() => navigate("/login/employee")}>Administradores</li>
             </ul>
           </li>
         </ul>

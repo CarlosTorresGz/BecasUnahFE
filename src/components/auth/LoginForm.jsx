@@ -4,7 +4,7 @@ import { AlertMessage } from "./AlertMessage"
 import { Button } from "./Button"
 import { InputField } from "./InputField"
 
-export const LoginForm = () => {
+export const LoginForm = ({ph = "No. Cuenta"}) => {
 
     const { login } = useAuth();
     const [email, setEmail] = useState("")
@@ -28,7 +28,7 @@ export const LoginForm = () => {
             <InputField
                 type="number"
                 value={email}
-                placeholder="No. Cuenta"
+                placeholder={ph}
                 onChange={(e) => setEmail(e.target.value)}
                 className="custom-input"
             />
@@ -41,7 +41,7 @@ export const LoginForm = () => {
             />
             <Button
                 type="submit"
-                text="Iniciar Sesión"
+                text="Ingresar"
                 className="custom-btn"
             />
         </form>
