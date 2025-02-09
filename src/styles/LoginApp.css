@@ -1,6 +1,7 @@
 .login-background {
   position: relative;
-  background: linear-gradient(to bottom, #20527E, #021424, #043158);
+  background-color: #FBFCF8;
+  /* background: linear-gradient(to bottom, #20527E, #021424, #043158); */
   overflow: hidden;
 }
 
@@ -8,6 +9,7 @@
   margin-top: 12%;
   margin-bottom: 3%;
   border-radius: 2%;
+  border: 1px solid #20527E;
 }
 
 .vertical-line {
@@ -15,6 +17,7 @@
   border-right: 1px solid #20527E;
 }
 
+/*
 .login-background::before,
 .login-background::after {
   content: "";
@@ -35,12 +38,11 @@
   background-image: url("../img/LUCEM-ASPICIO-DER.png");
   bottom: 0;
   right: 0;
-}
+} */
 
 .custom-input {
   display: block;
   outline: none;
-  border-color: 1px solid #20527E;
   height: 45px;
   width: 85%;
   margin: 2% auto;
