@@ -49,7 +49,7 @@ const ChangePassword = () => {
     <div className="change-password-container">
       <div className="d-flex flex-column align-items-center bg-white change-password-content">
         <img src={EMAIL} alt="Email Logo" className="email-logo" />
-        <div className="text-center p-4">
+        <div className="change-password-form text-center p-4">
           <h3 className="text-dark fs-6">Cambio de Contraseña</h3>
           {message && <AlertMessage message={message} />}
           {error && <AlertMessage message={error} />}

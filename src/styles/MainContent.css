@@ -5,7 +5,7 @@
   padding: 0; /* Eliminar margen */
   background-color: #f0f0f0;
   position: relative;
-  margin-top: 120px; /* Margen superior para separar del encabezado */
+  /*margin-top: 120px;  Margen superior para separar del encabezado */
 }
 
 .section-container {
@@ -110,4 +110,27 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 576px) {
+  .section-blue .section-content,
+.section-red .section-content {
+  font-size: 1rem!important;
+  
+}
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .section-blue .section-content,
+  .section-red .section-content {
+    font-size: 1.5rem!important;
+    
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 1400px) {
+  
 }

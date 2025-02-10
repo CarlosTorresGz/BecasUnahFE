@@ -1,4 +1,7 @@
 .login-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   background-color: #FBFCF8;
   /* background: linear-gradient(to bottom, #20527E, #021424, #043158); */
@@ -6,15 +9,27 @@
 }
 
 .login-container {
-  margin-top: 12%;
-  margin-bottom: 3%;
-  border-radius: 2%;
+  display: flex;  
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-radius: 15px;
   border: 1px solid #20527E;
 }
 
 .vertical-line {
   height: 85%;
   border-right: 1px solid #20527E;
+}
+
+.login-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-img img{
+  width: 300px;
+  height: auto;
 }
 
 /*
@@ -82,4 +97,41 @@
 
 .forgot-password:hover {
   text-decoration: underline;
+}
+
+/* Estilos responsivos */
+@media (max-width: 576px) {
+  .login-container {
+    width: 70%!important;
+    margin: 5% auto!important;
+  }
+
+  .login-img {
+    display: none!important;
+  }
+
+  .vertical-line {
+    display: none!important;
+  }
+  
+
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .login-container {
+    width: 80%!important;
+    margin: 5% auto!important;
+  }
+  
+  .login-img img{
+    width: 150px;
+    height: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1400px) {
+  .login-container {
+    width: 70%!important;
+    margin: 5% auto!important;
+  }
 }

@@ -6,9 +6,9 @@ import "../styles/LoginApp.css"
 export const LoginApp = ({number}) => {
   return (
     <AuthProvider>
-      <div className="d-flex align-items-center justify-content-center login-background">
-        <div className="d-flex bg-white w-50 login-container">
-          <div className="d-flex align-items-center justify-content-center p-4">
+      <div className="login-background">
+        <div className="bg-white w-50 login-container">
+          <div className="login-img p-4">
             <img src={universityLogo} alt="Logo Universidad"/>
           </div>
 

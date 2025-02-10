@@ -5,11 +5,11 @@
   padding: 10px 20px;
   background-color: #fff;
   border-bottom: 1px solid #ccc;
-  position: fixed; /* Hacer que el encabezado sea estático */
+  position: static;  /*Hacer que el encabezado sea estático */
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Asegurar que el encabezado esté por encima de otros elementos */
+  /*z-index: 1000;  Asegurar que el encabezado esté por encima de otros elementos */
 }
 
 .logo img {
@@ -29,17 +29,16 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-left: auto; /* Desplazar hacia la izquierda */
+  gap: 10px;
 }
 
 .nav-item {
-  margin: 0 15px;
   cursor: pointer;
   position: relative;
   background-color: #20527E; /* Fondo azul */
   color: #FFB500; /* Texto amarillo */
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 5px;  
 }
 
 .nav-item:hover {
@@ -56,6 +55,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  z-index: 1;
 }
 
 .dropdown.open {
@@ -67,9 +67,44 @@
   cursor: pointer;
   background-color: #20527E; /* Fondo azul */
   color: #FFB500; /* Texto amarillo */
+  
 }
 
 .dropdown li:hover {
   background-color: #0056b3; /* Fondo azul más oscuro al pasar el mouse */
 }
 
+/* Estilos responsivos */
+@media (max-width: 576px) {
+  .header {
+    padding: 10px 10px;
+  }
+
+  .logo img {
+    display: none;
+  }  
+
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .header {
+    padding: 10px 10px;
+  }
+
+  .logo img {
+    height: 40px;
+    margin-right: 0px;
+  }
+
+  .nav-list {
+    gap: 5px;
+  }
+  
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .logo img {
+    height: 50px;
+    margin-right: 0px;
+  }
+}
