@@ -1,29 +1,29 @@
-
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/FrequentlyAskedQuestions.css';
 
 const fetchData = async () => {
     try {
-        const response = await fetch('https://d7eq6mz1gj.execute-api.us-east-1.amazonaws.com/dev/question');
-        
+        const response = await fetch("https://d7eq6mz1gj.execute-api.us-east-1.amazonaws.com/dev/question");
         const data = await response.json();
+        console.log("Datos recibidos:", data); // Depuración
         return data;
     } catch (err) {
         console.error('Fetch error', err);
-        throw err;
+        return { body: "[]" }; // Devuelve un JSON válido para evitar errores
     }
 };
 
 const FAQComponent = () => {
     const [data, setData] = useState([]);
-    const [originalData, setOriginalData] = useState([]);
+    const [originalData, setOriginalData] = useState([]); // <-- Agregado
 
     const getData = async () => {
         try {
             const result = await fetchData();
-            setData(result);
-            setOriginalData(result);
+            const parsedData = JSON.parse(result.body); // Convertir el string JSON a array
+            setData(parsedData);
+            setOriginalData(parsedData); // <-- Se usa correctamente
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -37,13 +37,12 @@ const FAQComponent = () => {
         const searchTerm = document.querySelector('input[aria-label="Buscar"]').value.toLowerCase();
         
         if (searchTerm === '') {
-            setData(originalData);
+            setData(originalData); // <-- Ahora funciona correctamente
         } else {
-            const filteredData = originalData.filter(item =>
+            setData(originalData.filter(item =>
                 item.pregunta.toLowerCase().includes(searchTerm) ||
                 item.respuesta.toLowerCase().includes(searchTerm)
-            );
-            setData(filteredData);
+            ));
         }
     };
 
@@ -60,16 +59,20 @@ const FAQComponent = () => {
                 </Button>
             </InputGroup>
             <Accordion defaultActiveKey="0">
-                {data.map((item, index) => (
-                    <Accordion.Item eventKey={index.toString()} key={index}>
-                        <Accordion.Header>
-                            {item.pregunta}
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            {item.respuesta}
-                        </Accordion.Body>
-                    </Accordion.Item>
-                ))}
+                {Array.isArray(data) && data.length > 0 ? (
+                    data.map((item, index) => (
+                        <Accordion.Item eventKey={index.toString()} key={index}>
+                            <Accordion.Header>
+                                {item.pregunta}
+                            </Accordion.Header>
+                            <Accordion.Body>
+                                {item.respuesta}
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    ))
+                ) : (
+                    <p>No hay preguntas frecuentes disponibles.</p>
+                )}
             </Accordion>
         </div>
     );
