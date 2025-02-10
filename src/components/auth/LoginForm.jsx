@@ -18,7 +18,7 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
             const response = await fetch("https://sl0vr31lxk.execute-api.us-east-1.amazonaws.com/dev/login", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ no_cuenta: noCuenta, contrasena: password }),  // Enviar no_cuenta en lugar de email
+                body: JSON.stringify({ no_cuenta: noCuenta, contrasena: password }),
             });
 
             const data = await response.json();
@@ -27,11 +27,11 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
                 throw new Error(data.message || "Error en la autenticación");
             }
 
-            login({ name: data.nombre, noCuenta }); // Guardar usuario con noCuenta
+            login({ name: data.nombre, noCuenta });
             console.log("Autenticación exitosa:", data);
-            
+
             // Redirigir a Google después de una autenticación exitosa
-            window.location.href = "https://www.google.com"; 
+            window.location.href = "https://www.google.com";
         } catch (err) {
             setError(err.message);
         }
@@ -42,9 +42,9 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
             {error && <AlertMessage message={error} />}
             <InputField
                 type="number"
-                value={noCuenta}  // Cambiado de email a noCuenta
+                value={noCuenta}
                 placeholder={ph}
-                onChange={(e) => setNoCuenta(e.target.value)}  // Cambiado setEmail → setNoCuenta
+                onChange={(e) => setNoCuenta(e.target.value)}
                 className="custom-input"
             />
             <InputField
