@@ -7,7 +7,6 @@ import "../styles/ChangePassword.css";
 import EMAIL from "../img/EMAIL.svg";
 
 const ChangePassword = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -37,13 +36,6 @@ const ChangePassword = () => {
             <InputField
               type="email"
               placeholder="Correo Institucional"
-              className="custom-input"
-            />
-            <InputField
-              type="password"
-              value={currentPassword}
-              placeholder="Contraseña Actual"
-              onChange={(e) => setCurrentPassword(e.target.value)}
               className="custom-input"
             />
             <InputField
