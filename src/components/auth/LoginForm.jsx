@@ -4,12 +4,16 @@ import { useAuth } from "../../context/AuthContext";
 import { AlertMessage } from "./AlertMessage";
 import { Button } from "./Button";
 import { InputField } from "./InputField";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = ({ ph = "No. Cuenta" }) => {
     const { login } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");  
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();  // Hook para la navegación
+
+    
 
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
@@ -43,7 +47,8 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
     
-            window.location.href = "https://www.google.com";
+            navigate("/");
+
         } catch (err) {
             setError(err.message);
             incrementAttempts(); // Aumenta intentos si hay error

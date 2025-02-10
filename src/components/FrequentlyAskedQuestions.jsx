@@ -5,7 +5,8 @@ import '../styles/FrequentlyAskedQuestions.css';
 
 const fetchData = async () => {
     try {
-        const response = await fetch('http://localhost:3001/api/preguntas_frecuentes'); /* Cambiar por la URL de la API */
+        const response = await fetch('https://d7eq6mz1gj.execute-api.us-east-1.amazonaws.com/dev/question');
+        
         const data = await response.json();
         return data;
     } catch (err) {
