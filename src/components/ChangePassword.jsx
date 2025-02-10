@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./auth/Button";
 import { InputField } from "./auth/InputField";
 import { AlertMessage } from "./auth/AlertMessage";
@@ -11,6 +11,12 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Obtener el origen ("/login" o "/login/employee") desde la URL
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from") || "/login"; // Si no hay parámetro, ir a "/login"
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +28,7 @@ const ChangePassword = () => {
   };
 
   const handleBack = () => {
-    navigate("/login");
+    navigate(from);
   };
 
   return (
