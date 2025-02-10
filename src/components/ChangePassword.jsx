@@ -5,6 +5,7 @@ import { InputField } from "./auth/InputField";
 import { AlertMessage } from "./auth/AlertMessage";
 import "../styles/ChangePassword.css";
 import EMAIL from "../img/EMAIL.svg";
+import usePasswordValidator from "../hooks/usePasswordValidator";
 
 const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -17,14 +18,27 @@ const ChangePassword = () => {
   const searchParams = new URLSearchParams(location.search);
   const from = searchParams.get("from") || "/login"; // Si no hay parámetro, ir a "/login"
 
+  const { validatePassword, error } = usePasswordValidator();
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setNewPassword(password);
+    validatePassword(password);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newPassword === confirmPassword) {
-      setMessage("Cambio de contraseña correcto");
-    } else {
+
+    if (!validatePassword(newPassword)) return;
+
+    if (newPassword !== confirmPassword) {
       setMessage("Las contraseñas no coinciden");
+      return;
     }
+    
+    setMessage("Cambio de contraseña correcto");
+    // Aquí iría la lógica para enviar la nueva contraseña al backend
+    
   };
 
   const handleBack = () => {
@@ -38,6 +52,7 @@ const ChangePassword = () => {
         <div className="text-center p-4">
           <h3 className="text-dark fs-6">Cambio de Contraseña</h3>
           {message && <AlertMessage message={message} />}
+          {error && <AlertMessage message={error} />}
           <form onSubmit={handleSubmit} className="change-password-form">
             <InputField
               type="email"
@@ -48,7 +63,7 @@ const ChangePassword = () => {
               type="password"
               value={newPassword}
               placeholder="Contraseña Nueva"
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={handlePasswordChange}
               className="custom-input"
             />
             <InputField
