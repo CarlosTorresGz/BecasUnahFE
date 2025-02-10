@@ -1,35 +1,50 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { AlertMessage } from "./AlertMessage"
-import { Button } from "./Button"
-import { InputField } from "./InputField"
+import { AlertMessage } from "./AlertMessage";
+import { Button } from "./Button";
+import { InputField } from "./InputField";
 
-export const LoginForm = ({ph = "No. Cuenta"}) => {
-
+export const LoginForm = ({ ph = "No. Cuenta" }) => {
     const { login } = useAuth();
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
+    const [noCuenta, setNoCuenta] = useState("");  // Cambiado de email a noCuenta
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (email == "estudiante@correo.com" && password == "1234") {
-            login({ name: "Estudiante Ejemplo", email });
-            console.log('Autenticación exitosa')
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(""); // Limpiar errores previos
+
+        try {
+            const response = await fetch("https://sl0vr31lxk.execute-api.us-east-1.amazonaws.com/dev/login", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ no_cuenta: noCuenta, contrasena: password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Error en la autenticación");
+            }
+
+            login({ name: data.nombre, noCuenta });
+            console.log("Autenticación exitosa:", data);
+
+            // Redirigir a Google después de una autenticación exitosa
+            window.location.href = "https://www.google.com";
+        } catch (err) {
+            setError(err.message);
         }
-        else {
-            setError("Credenciales incorrectas")
-        }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit}>
             {error && <AlertMessage message={error} />}
             <InputField
                 type="number"
-                value={email}
+                value={noCuenta}
                 placeholder={ph}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setNoCuenta(e.target.value)}
                 className="custom-input"
             />
             <InputField
@@ -39,11 +54,7 @@ export const LoginForm = ({ph = "No. Cuenta"}) => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="custom-input"
             />
-            <Button
-                type="submit"
-                text="Ingresar"
-                className="custom-btn"
-            />
+            <Button type="submit" text="Ingresar" className="custom-btn" />
         </form>
-    )
-}
+    );
+};
