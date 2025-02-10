@@ -24,7 +24,7 @@ export const LoginApp = ({number}) => {
             <div>
               <LoginForm ph={number}/>
             </div>
-            <a href="#" className="forgot-password">Olvidé mi contraseña</a>
+            <a href="/change-password" className="forgot-password">Olvidé mi contraseña</a> {/* Cambia la ruta aquí */}
           </div>
         </div>
       </div>
