@@ -72,3 +72,6 @@
     color: #FFB500; /* Color dorado */
   }
   
+  .highlight:hover {
+    cursor: pointer;
+  }
