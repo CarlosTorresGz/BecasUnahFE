@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useLoginAttempts from "../../hooks/useLoginAttempts";
 import { useAuth } from "../../context/AuthContext";
 import { AlertMessage } from "./AlertMessage";
 import { Button } from "./Button";
 import { InputField } from "./InputField";
+import { Navigate } from "react-router-dom";
 
-export const LoginForm = ({ ph = "No. Cuenta" }) => {
+export const LoginForm = ({ placeHolderInput = "No. Cuenta" }) => {
     const { login } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");  
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = Navigate();
 
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
@@ -42,8 +44,8 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
             // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
-    
-            window.location.href = "https://www.google.com";
+            
+            placeHolderInput === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
         } catch (err) {
             setError(err.message);
             incrementAttempts(); // Aumenta intentos si hay error
@@ -57,7 +59,7 @@ export const LoginForm = ({ ph = "No. Cuenta" }) => {
             <InputField
                 type="number"
                 value={noCuenta}
-                placeholder={ph}
+                placeholder={placeHolderInput}
                 onChange={(e) => setNoCuenta(e.target.value)}
                 className="custom-input"
             />

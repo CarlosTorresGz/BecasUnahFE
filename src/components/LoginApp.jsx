@@ -22,7 +22,7 @@ export const LoginApp = ({number}) => {
             </h3>
             <p>Iniciar Sesión</p>
             <div>
-              <LoginForm ph={number}/>
+              <LoginForm placeHolder={number}/>
             </div>
             <a href={`/change-password?from=${window.location.pathname}`} className="forgot-password">Cambio de contraseña</a> {/* Cambia la ruta aquí */}
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./auth/Button";
 import { InputField } from "./auth/InputField";
@@ -10,9 +10,9 @@ import usePasswordValidator from "../hooks/usePasswordValidator";
 const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");  
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Obtener el origen ("/login" o "/login/employee") desde la URL
   const searchParams = new URLSearchParams(location.search);

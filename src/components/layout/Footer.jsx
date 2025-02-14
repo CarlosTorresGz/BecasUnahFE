@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Footer.css';
 import VOAE from '../../img/voae2.jpg';
@@ -23,7 +22,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-column">
           <p><strong>¿Dudas?</strong></p>
-          <span className="highlight" onClick={() => {navigate('/FAQ')}}><strong>Preguntas Frecuentes</strong></span>
+          <span className="highlight" onClick={() => { navigate('/FAQ') }}><strong>Preguntas Frecuentes</strong></span>
         </div>
         <div className="footer-column">
           <p><strong>¿Problemas?</strong></p>
