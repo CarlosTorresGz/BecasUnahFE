@@ -6,7 +6,7 @@ import { Button } from "./Button";
 import { InputField } from "./InputField";
 import { Navigate } from "react-router-dom";
 
-export const LoginForm = ({ placeHolderInput = "No. Cuenta" }) => {
+export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const { login } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");  
     const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ export const LoginForm = ({ placeHolderInput = "No. Cuenta" }) => {
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
             
-            placeHolderInput === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
+            placeHolder === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
         } catch (err) {
             setError(err.message);
             incrementAttempts(); // Aumenta intentos si hay error
@@ -59,7 +59,7 @@ export const LoginForm = ({ placeHolderInput = "No. Cuenta" }) => {
             <InputField
                 type="number"
                 value={noCuenta}
-                placeholder={placeHolderInput}
+                placeholder={placeHolder}
                 onChange={(e) => setNoCuenta(e.target.value)}
                 className="custom-input"
             />
