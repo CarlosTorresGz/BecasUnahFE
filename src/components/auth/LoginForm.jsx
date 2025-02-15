@@ -4,19 +4,20 @@ import { useAuth } from "../../context/AuthContext";
 import { AlertMessage } from "./AlertMessage";
 import { Button } from "./Button";
 import { InputField } from "./InputField";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { iniciarSesion } from "../../services/userAPI";
 
-export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
+export const LoginForm = ( {placeHolder = "No. Cuenta"} ) => {
     const { login } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");  
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const navigate = Navigate();
+    const navigate = useNavigate();
 
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {        
         e.preventDefault();
         setError("");
     
@@ -24,32 +25,23 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             setError(`Demasiados intentos fallidos. Espere ${timeLeft} segundos.`);
             return;
         }
-    
-        try {
-            const response = await fetch("https://sl0vr31lxk.execute-api.us-east-1.amazonaws.com/dev/login", {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ no_cuenta: noCuenta, contrasena: password }),
-            });
-    
-            const data = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(data.message || "Error en la autenticación");
-            }
-    
-            login({ name: data.nombre, noCuenta });
-            console.log("Autenticación exitosa:", data);
-    
+
+        const statusLogin = await iniciarSesion({ cuenta: noCuenta, pass: password });
+
+        if (statusLogin.state) {
+            login({ name: statusLogin.nombre, noCuenta: statusLogin.noCuenta });
+            console.log("Autenticación exitosa:", statusLogin);
+
             // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
-            
+
             placeHolder === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
-        } catch (err) {
-            setError(err.message);
+            
+        }else{
             incrementAttempts(); // Aumenta intentos si hay error
         }
+        
     };
     
 

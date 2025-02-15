@@ -3,7 +3,7 @@ import { LoginForm } from "./auth/LoginForm"
 import universityLogo from "../img/logo-unah-4.png"
 import "../styles/LoginApp.css"
 
-export const LoginApp = ({number}) => {
+export const LoginApp = ( {number} ) => {
   return (
     <AuthProvider>
       <div className="login-background">
