@@ -1,4 +1,4 @@
-import '../styles/Dashboard.css';
+import '../styles/DropdownMenuDashboard.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function DropdownMenu() {

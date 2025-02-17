@@ -3,7 +3,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #222;
 }
 
 .menu {
@@ -62,7 +61,6 @@ body {
 }
 
 .panel-der-content {
-    background-color: aliceblue;
     flex: 1;
     margin: 10px;
 }

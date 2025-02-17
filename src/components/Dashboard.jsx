@@ -1,80 +1,78 @@
-import '../css/dashboard.css';
+import '../styles/Dashboard.css';
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
-import ActividadesDisponibles from './ActividadesDisponibles';
-import MisActividades from './MisActividades';
-import PerfilBecario from './PerfilBecario';
-import DropdownMenu from './DropdownMenu';
+import { ProfileBecario } from './ProfileBecario';
+import DropdownMenu from './DropdownMenuDashboard';
 import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdPersonAdd, MdEdit } from "react-icons/md";
 
-export const Dashboard = ({ userType }) => {
+export const Dashboard = ( { userType } ) => {
     const [activeComponent, setActiveComponent] = useState(null);
     const optionBecario = [
         {
             label: 'Actividades Disponibles',
-            onclick: () => setActiveComponent('actividades'),
+            onClick: () => setActiveComponent('Actividades Disponibles'),
             icon: <MdEventAvailable className="panel-izq-button-icono"/>
         },
         {
             label: 'Actividades Realizadas',
-            onclick: () => setActiveComponent('misActividades'),
+            onClick: () => setActiveComponent('Actividades Realizadas'),
             icon: <MdCheckCircle className="panel-izq-button-icono"/>
         },
         {
-            label: 'Reportes',
-            onclick: () => setActiveComponent('reportes'),
+            label: 'Reportes Recibidos',
+            onClick: () => setActiveComponent('Reportes Recibidos'),
             icon: <MdDescription className="panel-izq-button-icono"/>
         },
         {
             label: 'Mi Beca',
-            onclick: () => setActiveComponent('beca'),
+            onClick: () => setActiveComponent('Mi Beca'),
             icon: <MdSchool className="panel-izq-button-icono"/>
         },
         {
             label: 'Mi Perfil',
-            onclick: () => setActiveComponent('perfil'),
+            onClick: () => setActiveComponent('Bienvenido '),
             icon: <MdPerson className="panel-izq-button-icono"/>
         }
     ];
     const optionAdmin = [
         {
             label: 'Actividades Disponibles',
-            onclick: () => setActiveComponent('actividades'),
+            onClick: () => setActiveComponent('Actividades Disponibles'),
             icon: <MdEventNote className="panel-izq-button-icono"/>
         },
         {
             label: 'Nueva Actividad',
-            onclick: () => setActiveComponent('nuevaActividad'),
+            onClick: () => setActiveComponent('Ingreso de Nueva Actividad'),
             icon: <MdAddTask className="panel-izq-button-icono"/>
         },
         {
             label: 'Revisión de Becas',
-            onclick: () => setActiveComponent('reportes'),
+            onClick: () => setActiveComponent('Revisión de Becas'),
             icon: <MdChecklist className="panel-izq-button-icono"/>
         },
         {
             label: 'Historial de Reportes',
-            onclick: () => setActiveComponent('beca'),
+            onClick: () => setActiveComponent('Historial de Reportes'),
             icon: <MdHistory className="panel-izq-button-icono" />
         },
         {
             label: 'Nuevo Becario',
-            onclick: () => setActiveComponent('nuevoBecario'),
+            onClick: () => setActiveComponent('Nuevo Becario'),
             icon: <MdPersonAdd className="panel-izq-button-icono"/>
         },
         {
             label: 'Modificar Becario',
-            onclick: () => setActiveComponent('modificarBecario'),
+            onClick: () => setActiveComponent('Modificar Becario'),
             icon: <MdEdit className="panel-izq-button-icono"/>
         }
     ];
-    const optionSidebar = userType === 'becario' ? optionBecario : optionAdmin;
+    const optionSidebar = userType === 'becario' ? optionBecario : userType === 'admin' ? optionAdmin : [];
 
     return (
         <>
             <div className='panel-superior'>
                 <DropdownMenu />
-                <h1>Preguntas Frecuentes</h1>
+                <h1>{activeComponent ? activeComponent : "Plataforma Avanzada de Control de Horas PASEE"}</h1>
             </div>
             <div className="principal">
                 <Sidebar optionSidebar={optionSidebar} />
@@ -83,18 +81,23 @@ export const Dashboard = ({ userType }) => {
                         <div id='aquiContenido'>
                             {(() => {
                                 /* Aqui se renderiza el componente activo */
-                                /*
                                 switch (activeComponent) {
-                                    case 'actividades': return <ActividadesDisponibles />;
-                                    case 'misActividades': return <MisActividades />;
-                                    case 'perfil': return <PerfilBecario />;
-                                    case 'reportes': return <Reportes />;
-                                    case 'beca': return <MiBeca />;
-                                    case 'nuevaActividad': return <NuevaActividad />;
-                                    case 'nuevoBecario': return <NuevoBecario />;
-                                    case 'modificarBecario': return <ModificarBecario />;
+                                    /*
+                                    case 'Actividades Disponibles': return <ActividadesDisponibles />;
+                                    case 'Actividades Realizadas': return <MisActividades />;
+                                    */
+                                    case 'Bienvenido ': return <ProfileBecario />;
+                                    /*
+                                    case 'Reportes Recibidos': return <ReportesRecibidos />;
+                                    case 'Mi Beca': return <MiBeca />;
+                                    case 'Ingreso de Nueva Actividad': return <NuevaActividad />;
+                                    case 'Revisión de Becas': return <RevisionBeca />
+                                    case 'Historial de Reportes': return <Reportes />
+                                    case 'Nuevo Becario': return <NuevoBecario />;
+                                    case 'Modificar Becario': return <ModificarBecario />;
+                                    */
                                     default: return <p>Selecciona una opción</p>;
-                                }*/
+                                }
                             })()}
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { MdMenu, MdOutlineChecklist, MdDashboard } from "react-icons/md";
-import '../css/Sidebar.css';
+import { MdMenu } from "react-icons/md";
+import '../styles/Sidebar.css';
 
-export const Sidebar = ({optionSidebar}) => {
+export const Sidebar = ( { optionSidebar } ) => {
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -11,7 +11,7 @@ export const Sidebar = ({optionSidebar}) => {
                 <MdMenu />
             </button>
             {optionSidebar.map((option, index) => (
-                <button className="panel-izq-button" key={index} onClick={option.onclick}>
+                <button className="panel-izq-button" key={index} onClick={option.onClick}>
                     {option.icon}
                     {expanded && <span className="panel-izq-button-text">{option.label}</span>}
                 </button>

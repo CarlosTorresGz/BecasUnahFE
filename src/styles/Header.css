@@ -45,7 +45,7 @@
   background-color: #0056b3; /* Fondo azul más oscuro al pasar el mouse */
 }
 
-.dropdown {
+.dropdown-login {
   display: none;
   position: absolute;
   top: 100%; /* Desplegar hacia abajo */
