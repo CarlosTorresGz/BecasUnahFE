@@ -32,9 +32,10 @@ const becario = {
     fecha_inicio_beca: '2023-01-01', //date
     contrasena: '1234',
     ultimo_acceso: '2024-01-01 00:00:00.000', //datetime - usado
+    primer_ingreso: 1
 }
 
-const InfoItem = ({ label, value }) => {
+export const InfoItem = ({ label, value }) => {
     return (
         <div className="profile-becario-info-item">
             <span className="profile-becario-info-item-label">{label} </span>

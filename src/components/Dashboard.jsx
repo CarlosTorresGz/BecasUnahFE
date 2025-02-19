@@ -1,9 +1,10 @@
 import '../styles/Dashboard.css';
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
-import { ProfileBecario } from './ProfileBecario';
-import DropdownMenu from './DropdownMenuDashboard';
+import { DropdownMenu } from './DropdownMenuDashboard';
 import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdPersonAdd, MdEdit } from "react-icons/md";
+import { ProfileBecario } from './ProfileBecario';
+import { MiBeca } from './MiBeca';
 
 export const Dashboard = ( { userType } ) => {
     const [activeComponent, setActiveComponent] = useState(null);
@@ -71,7 +72,7 @@ export const Dashboard = ( { userType } ) => {
     return (
         <>
             <div className='panel-superior'>
-                <DropdownMenu />
+                <DropdownMenu optionDropdownMenu={optionSidebar} />
                 <h1>{activeComponent ? activeComponent : "Plataforma Avanzada de Control de Horas PASEE"}</h1>
             </div>
             <div className="principal">
@@ -89,7 +90,9 @@ export const Dashboard = ( { userType } ) => {
                                     case 'Bienvenido ': return <ProfileBecario />;
                                     /*
                                     case 'Reportes Recibidos': return <ReportesRecibidos />;
+                                    */
                                     case 'Mi Beca': return <MiBeca />;
+                                    /*
                                     case 'Ingreso de Nueva Actividad': return <NuevaActividad />;
                                     case 'Revisión de Becas': return <RevisionBeca />
                                     case 'Historial de Reportes': return <Reportes />
