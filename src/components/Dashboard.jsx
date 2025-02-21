@@ -8,8 +8,10 @@ import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
 
 // Importacion de datos de prueba para probar 
-import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
+//import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
+import {fetchData} from '../services/ActAPI'
 
+const { dataFetch } = await fetchData();
 export const Dashboard = ({ userType }) => {
   const [activeComponent, setActiveComponent] = useState(null);
 
@@ -90,7 +92,7 @@ export const Dashboard = ({ userType }) => {
               {(() => {
                 switch (activeComponent) {
                   case 'Actividades Disponibles'://solo es de pruebas de momento
-                    return <ActividadesDisponibles data={datosDePrueba.actividades} />;
+                    return <ActividadesDisponibles data={dataFetch.actividades} />;
                   case 'Bienvenido ':
                     return <ProfileBecario />;
                   case 'Mi Beca':
