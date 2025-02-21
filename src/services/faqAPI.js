@@ -2,7 +2,7 @@ import apiUrl from "../config";
 
 export const fetchData = async () => {
     try {        
-        const response = await fetch(`${apiUrl}/api/preguntas_frecuentes`, {
+        const response = await fetch(`${apiUrl}/api/faq?`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'

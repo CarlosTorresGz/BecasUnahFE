@@ -1,3 +1,3 @@
-const apiUrl = 'https://databaseunahproject.database.windows.net';
+const apiUrl = 'https://apis-function.azurewebsites.net';
 
 export default apiUrl;
