@@ -9,7 +9,7 @@ import ActividadesDisponibles from './ActividadesDisponibles';
 
 // Importacion de datos de prueba para probar 
 //import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
-import {fetchData} from '../services/ActAPI'
+import fetchData from '../services/ActAPI'
 
 const { dataFetch } = await fetchData();
 export const Dashboard = ({ userType }) => {
