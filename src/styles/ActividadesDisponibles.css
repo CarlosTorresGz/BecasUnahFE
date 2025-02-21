@@ -111,6 +111,10 @@ p {
   overflow-y: auto;
 }
 
+.actividad-derecha p{
+  text-align: justify;
+}
+
 .actividad-derecha h3 {
   margin-bottom: 10px;
 }
