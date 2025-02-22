@@ -7,9 +7,11 @@ import { InputField } from "./InputField";
 import { useNavigate } from "react-router-dom";
 import { iniciarSesion } from "../../services/userAPI";
 
-export const LoginForm = ( {placeHolder = "No. Cuenta"} ) => {
+import Styles from "../../styles/LoginForm.css";
+
+export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const { login } = useAuth();
-    const [noCuenta, setNoCuenta] = useState("");  
+    const [noCuenta, setNoCuenta] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -17,14 +19,9 @@ export const LoginForm = ( {placeHolder = "No. Cuenta"} ) => {
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
 
-    const handleSubmit = async (e) => {        
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-    
-        if (locked) {
-            setError(`Demasiados intentos fallidos. Espere ${timeLeft} segundos.`);
-            return;
-        }
 
         const statusLogin = await iniciarSesion({ cuenta: noCuenta, pass: password });
 
@@ -37,13 +34,11 @@ export const LoginForm = ( {placeHolder = "No. Cuenta"} ) => {
             localStorage.removeItem("locked_until");
 
             placeHolder === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
-            
-        }else{
+
+        } else {
             incrementAttempts(); // Aumenta intentos si hay error
         }
-        
     };
-    
 
     return (
         <form onSubmit={handleSubmit}>
@@ -62,11 +57,11 @@ export const LoginForm = ( {placeHolder = "No. Cuenta"} ) => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="custom-input"
             />
-            <Button 
-                type="submit" 
-                text={locked ? `Espere ${timeLeft} segundos` : "Ingresar"} 
-                className="custom-btn"
-                disabled={locked} 
+            <Button
+                type="submit"
+                text={locked ? `Espere ${timeLeft} segundos` : "Ingresar"}
+                className={`custom-btn ${locked ? "btn-locked" : ""}`} // Agrega clase condicional
+                disabled={locked}
             />
         </form>
     );
