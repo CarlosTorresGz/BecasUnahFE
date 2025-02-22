@@ -4,7 +4,6 @@ import '../styles/ActividadesDisponibles.css'; // Asegúrate de tener este archi
 
 
 const ActividadesDisponibles = ({ data }) => {
-    console.log('Datos de prueba:', data);
     const [actividades] = useState(data || []);
 
     return (
