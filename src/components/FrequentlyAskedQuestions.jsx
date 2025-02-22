@@ -51,13 +51,16 @@ const FAQComponent = () => {
 
     return (
         <div className='faq-section'>
-            <InputGroup className="mb-3">
+                <InputGroup className="mb-3">
                 <Form.Control
                     placeholder="Buscar"
                     aria-label="Buscar"
                     aria-describedby="basic-addon2"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        handleSearch(e.target.value); // Llamar handleSearch automáticamente
+                    }}
                 />
                 <Button variant="outline-secondary" id="button-addon2" onClick={handleSearch}>
                     Buscar
