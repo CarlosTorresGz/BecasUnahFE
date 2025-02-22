@@ -12,7 +12,7 @@ const fetchData = async () => {
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const dataFetch = await response.json();
 
-        console.log("API Response:", dataFetch);
+        //console.log("API Response:", dataFetch);
 
         return dataFetch;
     } catch (err) {
