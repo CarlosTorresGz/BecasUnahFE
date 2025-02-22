@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
-import { fetchData } from '../services/faqAPI';
+import fetchData from '../services/faqAPI';
 
 import '../styles/FrequentlyAskedQuestions.css';
 
@@ -14,17 +14,24 @@ const FAQComponent = () => {
     const getData = async () => {
         try {
             const result = await fetchData();
-            console.log("Resultado de fetchData:", result);
-
-            const parsedData = Array.isArray(result.dataFetch) ? result.dataFetch : [];
-            console.log('parsedData: ', parsedData);
-
-            setData(parsedData);
-            setOriginalData(parsedData);
+            console.log("API Response:", result);
+    
+            // Acceder directamente a result.preguntas
+            const preguntas = result.preguntas;
+    
+            if (Array.isArray(preguntas)) {
+                console.log("Preguntas recibidas:", preguntas);
+                setData(preguntas);
+                setOriginalData(preguntas);
+            } else {
+                console.error("Error: La API no devolvió preguntas en el formato esperado.");
+            }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
         }
     };
+    
+    
 
     useEffect(() => {
         getData();
