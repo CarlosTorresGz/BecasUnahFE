@@ -36,7 +36,7 @@ export const Dashboard = ({ userType }) => {
     },
     {
       label: 'Mi Perfil',
-      onClick: () => setActiveComponent('Bienvenido'),
+      onClick: () => setActiveComponent('Bienvenido '),
       icon: <MdPerson className="panel-izq-button-icono" />
     }
   ];
