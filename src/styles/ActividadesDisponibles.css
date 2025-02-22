@@ -29,7 +29,7 @@
 }
 
 .actividad-box:hover {
-  transform: scale(1.01);
+  background-color: #0056b3;
   transition-duration: 100ms;
 }
 
@@ -99,7 +99,7 @@ p {
 
 .boton-volver::before {
   content: '⇦';
-  font-size: 30px;
+  font-size: 36px;
   color: #FFB500;
   font-weight: bold;
 }
