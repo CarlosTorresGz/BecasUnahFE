@@ -1,6 +1,6 @@
 import apiUrl from "../config";
 
-export const fetchData = async () => {
+const fetchData = async () => {
     try {        
         const response = await fetch(`${apiUrl}/api/faq?`, {
             method: "GET",
@@ -14,10 +14,11 @@ export const fetchData = async () => {
 
         console.log("API Response:", dataFetch);
 
-        return { dataFetch };
+        return dataFetch;
     } catch (err) {
         console.error('Fetch error', err);
         throw err;
     }
 
 }
+export default fetchData;

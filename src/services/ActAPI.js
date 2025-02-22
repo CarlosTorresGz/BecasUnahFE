@@ -2,7 +2,7 @@ import apiUrl from "../config";
 
 const fetchData = async () => {
     try {        
-        const response = await fetch(`${apiUrl}/api/actividades?`, {
+        const response = await fetch(`${apiUrl}/api/activities?`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -12,7 +12,7 @@ const fetchData = async () => {
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const dataFetch = await response.json();
 
-        console.log("API Response:", dataFetch);
+        //console.log("API Response:", dataFetch);
 
         return { dataFetch };
     } catch (err) {
