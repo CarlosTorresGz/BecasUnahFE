@@ -11,7 +11,7 @@ export const Sidebar = ( { optionSidebar } ) => {
                 <MdMenu />
             </button>
             {optionSidebar.map((option, index) => (
-                <button className="panel-izq-button" key={index} onClick={option.onClick}>
+                <button className="panel-izq-button" key={index} onClick={option.onClick} title={option.label}>
                     {option.icon}
                     {expanded && <span className="panel-izq-button-text">{option.label}</span>}
                 </button>
