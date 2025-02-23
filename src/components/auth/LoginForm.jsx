@@ -58,7 +58,6 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
 
     };
 
-
     return (
         <form onSubmit={handleSubmit}>
             {error && <AlertMessage message={error} />}

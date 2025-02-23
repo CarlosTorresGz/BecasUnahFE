@@ -1,0 +1,55 @@
+.actividades-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.actividades-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.actividad-box {
+  width: 300px;
+  height: 400px; /* Fija una altura para que todas las tarjetas sean iguales */
+  background-color: #003b74;
+  border-radius: 8px;
+  border-style: groove;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.actividad-imagen {
+  width: 100%;
+  height: 200px; /* Fija una altura para todas las imágenes */
+  object-fit: cover; /* Mantiene la proporción y ajusta la imagen sin deformarla */
+  border-radius: 8px;
+}
+
+.actividad-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra el contenido verticalmente */
+  padding: 10px 0;
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: white;
+}

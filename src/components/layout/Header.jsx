@@ -26,7 +26,7 @@ const Header = () => {
           <li className="nav-item">Becas</li>
           <li className="nav-item login" onClick={toggleDropdown}>
             Login
-            <ul className={`dropdown ${isDropdownOpen ? 'open' : ''}`}>
+            <ul className={`dropdown-login ${isDropdownOpen ? 'open' : ''}`}>
               <li onClick={() => navigate("/login")}>Estudiantes</li>
               <li onClick={() => navigate("/login/employee")}>Administradores</li>
             </ul>
