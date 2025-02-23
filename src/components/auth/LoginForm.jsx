@@ -7,7 +7,7 @@ import { InputField } from "./InputField";
 import { useNavigate } from "react-router-dom";
 import { iniciarSesion } from "../../services/userAPI";
 
-import Styles from "../../styles/LoginForm.css";
+import '../../styles/LoginForm.css';
 
 export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const { login } = useAuth();
