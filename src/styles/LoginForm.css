@@ -1,0 +1,16 @@
+/* Estilos para el botón bloqueado */
+.btn-locked {
+    background-color: red; /* Fondo rojo */
+    border-color: red; /* Borde rojo */
+    color: white; /* Texto blanco */
+    cursor: not-allowed; /* Cambia el cursor a "no permitido" */
+}
+
+/* Estilos base para el botón */
+.custom-btn {
+    /* Tus estilos base aquí */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}

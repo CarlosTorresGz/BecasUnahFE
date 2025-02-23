@@ -1,30 +1,37 @@
 
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
-import { fetchData } from '../services/faqAPI';
+import fetchData from '../services/faqAPI';
 
 import '../styles/FrequentlyAskedQuestions.css';
 
 const FAQComponent = () => {
     const [data, setData] = useState([]);
-    console.log('data: ', data);
+    //console.log('data: ', data);
     const [originalData, setOriginalData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     const getData = async () => {
         try {
             const result = await fetchData();
-            console.log("Resultado de fetchData:", result);
-
-            const parsedData = Array.isArray(result.dataFetch) ? result.dataFetch : [];
-            console.log('parsedData: ', parsedData);
-
-            setData(parsedData);
-            setOriginalData(parsedData);
+            //console.log("API Response:", result);
+    
+            // Acceder directamente a result.preguntas
+            const preguntas = result.preguntas;
+    
+            if (Array.isArray(preguntas)) {
+                console.log("Preguntas recibidas:", preguntas);
+                setData(preguntas);
+                setOriginalData(preguntas);
+            } else {
+                console.error("Error: La API no devolvió preguntas en el formato esperado.");
+            }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
         }
     };
+    
+    
 
     useEffect(() => {
         getData();
@@ -52,28 +59,32 @@ const FAQComponent = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outline-secondary" id="button-addon2" onClick={handleSearch}>
+                <Button variant="outline-secondary" id="button-addon2" disabled>
                     Buscar
                 </Button>
             </InputGroup>
-            <Accordion defaultActiveKey="0">
-                {data.length > 0 ? (
-                    data.map((item, index) => (
-                        <Accordion.Item eventKey={index.toString()} key={index}>
-                            <Accordion.Header>
-                                {item.pregunta}
-                            </Accordion.Header>
-                            <Accordion.Body>
-                                {item.respuesta}
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    ))
-                ) : (
-                    <p>No se encontraron resultados</p>
-                )}
-            </Accordion>
+    
+            {data.filter(item =>
+                item.pregunta.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            ).length > 0 ? (
+                <Accordion defaultActiveKey="0">
+                    {data
+                        .filter(item =>
+                            item.pregunta.toLowerCase().includes(searchTerm.trim().toLowerCase())
+                        )
+                        .map((item, index) => (
+                            <Accordion.Item eventKey={index.toString()} key={index}>
+                                <Accordion.Header>{item.pregunta}</Accordion.Header>
+                                <Accordion.Body>{item.respuesta}</Accordion.Body>
+                            </Accordion.Item>
+                        ))}
+                </Accordion>
+            ) : (
+                <p className="no-results">No se encontraron resultados</p>
+            )}
         </div>
     );
+    
 };
 
 export default FAQComponent;

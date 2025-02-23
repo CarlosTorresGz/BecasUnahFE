@@ -1,0 +1,129 @@
+
+.profile-becario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-becario-header {
+    display: flex;
+    /*background-color: #FBFCF8;*/
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-becario-photo {
+    border-radius: 25px;
+    border: 5px solid #FBFCF8;
+
+}
+
+.profile-becario-name {
+    color: #20527E;
+
+}
+
+
+.profile-becario-content {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.profile-becario-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-becario-info-item {
+    background-color: #20527e2a;
+    width: 500px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.profile-becario-info-item-label {
+    color: #28272C;
+    font-weight: bold;
+}
+
+.profile-becario-info-item-value {
+    color: #20527E;
+    font-style: italic;
+}
+
+.profile-becario-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.profile-becario-buttom-blue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #20527E;
+    border: 0;
+    color: #FBFCF8;
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.profile-becario-buttom-blue:hover {
+    color: #20527E;
+    font-weight: bold;
+    background-color: #FBFCF8;
+    border: 2px solid #20527E;
+    transition: width 0.5s ease-in-out;
+}
+
+.profile-becario-buttom-red {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #C50000;
+    border: 0;
+    color: #FBFCF8;
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.profile-becario-buttom-red:hover {
+    color: #C50000;
+    font-weight: bold;
+    background-color: #FBFCF8;
+    border: 2px solid #C50000;
+    transition: width 0.5s ease-in-out;
+}
+
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+ }
+
+ /* Desktop Devices */
+ @media only screen and (min-width: 1440px) {
+    
+ }

@@ -45,7 +45,7 @@
   background-color: #0056b3; /* Fondo azul más oscuro al pasar el mouse */
 }
 
-.dropdown {
+.dropdown-login {
   display: none;
   position: absolute;
   top: 100%; /* Desplegar hacia abajo */
@@ -58,11 +58,11 @@
   z-index: 1;
 }
 
-.dropdown.open {
+.dropdown-login.open {
   display: block;
 }
 
-.dropdown li {
+.dropdown-login li {
   padding: 10px 15px;
   cursor: pointer;
   background-color: #20527E; /* Fondo azul */
@@ -70,7 +70,7 @@
   
 }
 
-.dropdown li:hover {
+.dropdown-login li:hover {
   background-color: #0056b3; /* Fondo azul más oscuro al pasar el mouse */
 }
 
