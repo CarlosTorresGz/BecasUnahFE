@@ -29,3 +29,11 @@
     margin-bottom: 5px!important;
     border: none!important;
 }
+
+.no-results{
+    font-size: 22px; /* Ajusta el tamaño según necesites */
+    font-weight: bold; /* Opcional: hace el texto más grueso */
+    color: #666; /* Opcional: cambia el color */
+    text-align: center; /* Centrar el texto */
+    margin-top: 20px; /* Espaciado superior */
+}
