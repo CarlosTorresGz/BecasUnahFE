@@ -14,11 +14,11 @@ const ActividadesDisponibles = ({ data }) => {
                 ) : (
                     actividades.map((actividad) => (
                         <div key={actividad.id} className="actividad-box">
-                            <img src={actividad.imagen} alt={actividad.nombre} className="actividad-imagen" />
+                            <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
                             <div className="actividad-info">
-                                <h3>{actividad.nombre}</h3>
+                                <h3>{actividad.nombre_actividad}</h3>
                                 <p><strong>Organizador:</strong> {actividad.organizador}</p>
-                                <p><strong>Fecha:</strong> {actividad.fecha}</p>
+                                <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
                             </div>
                         </div>
                     ))
