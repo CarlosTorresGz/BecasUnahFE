@@ -4,7 +4,7 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
     console.log('noCuenta: ', noCuenta)
     console.log('pass: ', password)
     try {        
-        const response = await fetch(`${apiUrl}/auth/loginBecario`, {
+        const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
     console.log('noEmpleado: ', noEmpleado)
     console.log('pass: ', password)
     try {        
-        const response = await fetch(`${apiUrl}/auth/loginEmployee`, {
+        const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export const changePassword = async ({email, newPass}) => {
     console.log('email: ', email)
     console.log('newPass: ', newPass)
     try {        
-        const response = await fetch(`${apiUrl}/auth/changePassword`, {
+        const response = await fetch(`${apiUrl}/api/auth/changePassword`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
