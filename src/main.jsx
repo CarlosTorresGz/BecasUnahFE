@@ -7,9 +7,11 @@ import MainContent from './components/MainContent';
 import { LoginApp } from './components/LoginApp';
 import ChangePassword from './components/ChangePassword';  // Importa el nuevo componente
 import FAQComponent from './components/FrequentlyAskedQuestions';
+import { Toaster, toast } from 'sonner'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <Toaster richColors />
     <Router>
       <Header />
       <Routes>

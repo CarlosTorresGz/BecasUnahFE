@@ -96,7 +96,12 @@
 }
 
 .forgot-password:hover {
-  text-decoration: underline;
+  font-weight: bold;
+}
+
+.text-danger {
+  font-size: 0.8rem;
+  color: #9b0404;
 }
 
 /* Estilos responsivos */
