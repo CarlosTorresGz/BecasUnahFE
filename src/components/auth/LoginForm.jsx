@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useLoginAttempts from "../../hooks/useLoginAttempts";
 import { useAuth } from "../../context/AuthContext";
 import { AlertMessage } from "./AlertMessage";
@@ -13,11 +13,24 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const [noCuenta, setNoCuenta] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [datosIncorrectos, setDatosIncorrectos] = useState(false);
     const navigate = useNavigate();
 
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
+
+    // Verificar si hay un usuario logueado
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userRole = localStorage.getItem('userRole');
+
+        if (isLoggedIn) {
+            if (userRole === 'becario') {
+                navigate('/dashboard/becario');
+            } else if (userRole === 'empleado') {
+                navigate('/dashboard/administrador');
+            }
+        }
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +42,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
         }
 
         let statusLogin = null;
+
         if (placeHolder === 'No. Cuenta') {
             statusLogin = await iniciarSesionBecario({ noCuenta: noCuenta, password: password });
         } else {
@@ -36,20 +50,22 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
         }
 
         if (statusLogin.state) { //exito
-            if (placeHolder === 'No. Cuenta') {
-                login(statusLogin.data.becario); //guardar becario
-            } else {
-                login(statusLogin.data.employee); //guardar empleado
-            }
-            console.log("Autenticación exitosa:", user);
+            const loggedUser = placeHolder === 'No. Cuenta' ? statusLogin.data.becario : statusLogin.data.employee;
+            const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'empleado';
+
+            login(loggedUser)
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userRole', userRole);
+
+            console.log("Autenticación exitosa:", loggedUser);
 
             // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
 
             toast.success('Autenticación exitosa');
-            
-            placeHolder === "No. Cuenta" ? navigate("/dashboard/becario") : navigate("/dashboard/administrador");
+
+            navigate(userRole === "becario" ? "/dashboard/becario" : "/dashboard/administrador");
 
         } else {
             incrementAttempts(); // Aumenta intentos si hay error
