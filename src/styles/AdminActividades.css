@@ -14,8 +14,10 @@
 
 .actividad-box {
     width: 300px;
-    height: 400px; /* Fija una altura para que todas las tarjetas sean iguales */
-    background-color: #003b74; /* Cambiado a azul para administradores */
+    height: 400px;
+    /* Fija una altura para que todas las tarjetas sean iguales */
+    background-color: #003b74;
+    /* Cambiado a azul para administradores */
     border-radius: 8px;
     border-style: groove;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -29,14 +31,17 @@
 }
 
 .actividad-box:hover {
-    background-color: #0056b3; /* Un tono más oscuro de azul para el hover */
+    background-color: #0056b3;
+    /* Un tono más oscuro de azul para el hover */
     transition-duration: 100ms;
 }
 
 .actividad-imagen {
     width: 100%;
-    height: 200px; /* Fija una altura para todas las imágenes */
-    object-fit: cover; /* Mantiene la proporción y ajusta la imagen sin deformarla */
+    height: 200px;
+    /* Fija una altura para todas las imágenes */
+    object-fit: cover;
+    /* Mantiene la proporción y ajusta la imagen sin deformarla */
     border-radius: 8px;
 }
 
@@ -44,7 +49,8 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra el contenido verticalmente */
+    justify-content: center;
+    /* Centra el contenido verticalmente */
     padding: 10px 0;
 }
 
@@ -85,26 +91,33 @@ p {
 }
 
 .boton-cancelar {
-    width: 120px; /* Ajuste el tamaño del botón para que la palabra se vea centrada */
-    height: 40px; /* Ajuste el tamaño del botón */
+    width: 120px;
+    /* Ajuste el tamaño del botón para que la palabra se vea centrada */
+    height: 40px;
+    /* Ajuste el tamaño del botón */
     margin-top: 20px;
-    background-color: #FFB500; /* Color del botón */
-    color: #003b74; /* Color del texto */
+    background-color: #FFB500;
+    /* Color del botón */
+    color: #003b74;
+    /* Color del texto */
     border: none;
     border-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Colocar a la izquierda */
+    justify-content: center;
+    /* Colocar a la izquierda */
     cursor: pointer;
 }
 
 .boton-cancelar:hover {
-    background-color: #FFA500; /* Color de hover */
+    background-color: #FFA500;
+    /* Color de hover */
 }
 
 .boton-guardar {
     padding: 10px 15px;
-    margin: 15px 0; /* Margin para separarlo de los campos anteriores */
+    margin: 15px 0;
+    /* Margin para separarlo de los campos anteriores */
     background-color: #FFB500;
     color: #003b74;
     border: none;
@@ -116,7 +129,8 @@ p {
     background-color: #FFA500;
 }
 
-.boton-editar, .boton-borrar {
+.boton-editar,
+.boton-borrar {
     background: none;
     border: none;
     cursor: pointer;
@@ -125,7 +139,8 @@ p {
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.boton-editar:hover, .boton-borrar:hover {
+.boton-editar:hover,
+.boton-borrar:hover {
     color: #FFB500;
     transform: scale(1.2);
 }
@@ -136,6 +151,65 @@ p {
     margin-bottom: 15px;
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
     padding: 10px;
-    border-radius: 1px }
+    border-radius: 1px
+}
+
+.mensaje-confirmacion {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+
+/* Modales */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    width: 40%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+    color: #003b74;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.boton-confirmar {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}

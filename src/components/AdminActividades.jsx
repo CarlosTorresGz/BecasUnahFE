@@ -5,10 +5,25 @@ import { MdEdit, MdDelete } from 'react-icons/md';
 const AdminActividades = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividades, setActividades] = useState(data);
+    const [actividadAEliminar, setActividadAEliminar] = useState(null);
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
 
     const handleDelete = (id) => {
-        setActividades(actividades.filter(actividad => actividad.id !== id));
+        setActividadAEliminar(actividades.find(actividad => actividad.id === id));
         // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
+    };
+
+    const confirmDelete = () => {
+        setActividades(actividades.filter(actividad => actividad.id !== actividadAEliminar.id));
+        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre}" ha sido eliminada correctamente.`);
+        setActividadAEliminar(null);
+
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => setMensajeConfirmacion(""), 3000);
+    };  
+
+    const cancelDelete = () => {
+        setActividadAEliminar(null);
     };
 
     const handleEdit = (actividad) => {
@@ -18,8 +33,10 @@ const AdminActividades = ({ data }) => {
 
     const handleSave = (actividadEditada) => {
         setActividades(actividades.map(actividad => actividad.id === actividadEditada.id ? actividadEditada : actividad));
+        setMensajeConfirmacion(`La actividad "${actividadEditada.nombre}" ha sido actualizada correctamente.`);
         setActividadSeleccionada(null);
-        // Aquí puedes implementar la lógica para hacer la llamada a la API para guardar los cambios de la actividad.
+    
+        setTimeout(() => setMensajeConfirmacion(""), 3000);
     };
 
     const handleChangeImage = (e) => {
@@ -33,13 +50,19 @@ const AdminActividades = ({ data }) => {
 
     return (
         <div className="actividades-container">
+            {mensajeConfirmacion && (
+                <div className="mensaje-confirmacion">
+                    {mensajeConfirmacion}
+                </div>
+            )}
+
             {actividadSeleccionada ? (
                 // Vista expandida para editar actividad
                 <div className="actividad-expandida">
                     <div className="actividad-izquierda">
                         <label className="form-label">
                             <strong>Cambiar imagen:</strong>
-                            <input type="file" onChange={handleChangeImage} className="form-input"/>
+                            <input type="file" onChange={handleChangeImage} className="form-input" />
                         </label>
                         <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre} className="actividad-imagen-exp" />
                         <button className="boton-cancelar" onClick={() => setActividadSeleccionada(null)}>Cancelar</button>
@@ -118,6 +141,18 @@ const AdminActividades = ({ data }) => {
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {actividadAEliminar && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>¿Estás seguro de que deseas eliminar la actividad "{actividadAEliminar.nombre}"?</h3>
+                        <div className="modal-buttons">
+                            <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
+                            <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
