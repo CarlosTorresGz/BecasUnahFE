@@ -1,6 +1,6 @@
 import apiUrl from "../config";
 
-const fetchData = async () => {
+const fetchAllData = async () => {
     try {        
         const response = await fetch(`${apiUrl}/api/activities?`, {
             method: "GET",
@@ -12,9 +12,9 @@ const fetchData = async () => {
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const dataFetch = await response.json();
 
-        //console.log("API Response:", dataFetch);
+        console.log("API Response:", dataFetch);
 
-        return { dataFetch };
+        return dataFetch;
     } catch (err) {
         console.error('Fetch error', err);
         throw err;
@@ -22,4 +22,4 @@ const fetchData = async () => {
 
 }
 
-export default fetchData;
+export default fetchAllData;
