@@ -45,12 +45,12 @@ const useLoginAttempts = () => {
     localStorage.setItem(ATTEMPTS_KEY, newAttempts);
 
     if (newAttempts >= 3) {
-      const lockTime = 60 * 1000; // 60 segundos
+      const lockTime = 20 * 1000; // 60 segundos
       const unlockTime = Date.now() + lockTime;
       localStorage.setItem(LOCKED_UNTIL_KEY, unlockTime);
 
       setLocked(true);
-      setTimeLeft(60);
+      setTimeLeft(20);
     }
   };
 
