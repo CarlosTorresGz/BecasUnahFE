@@ -107,7 +107,9 @@ export const Dashboard = ({ userType }) => {
                   case 'Mi Beca':
                     return <MiBeca />;
                   default:
-                    return <p>Selecciona una opción</p>;
+                    return userType === 'becario' 
+                      ? <ActividadesDisponibles data={dataFetchBecarios.actividades} /> 
+                      : <AdminActividades data={dataFetch.actividades} />;
                 }
               })()}
             </div>
