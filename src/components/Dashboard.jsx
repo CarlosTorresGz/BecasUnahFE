@@ -9,10 +9,16 @@ import ActividadesDisponibles from './ActividadesDisponibles';
 import AdminActividades from './AdminActividades'; // Importar el componente AdminActividades
 
 // Importacion de datos de prueba para probar 
-//import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
-import fetchData from '../services/ActAPI'
+import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
 
-const { dataFetch } = await fetchData();
+//Data de las actividades
+import fetchAllData from '../services/ActAPI'
+import fetchParcialData from '../services/ActAPIParcial'
+
+const dataFetch = await fetchAllData();
+const dataFetchBecarios = await fetchParcialData();
+
+
 export const Dashboard = ({ userType }) => {
   const [activeComponent, setActiveComponent] = useState(null);
 
@@ -92,15 +98,10 @@ export const Dashboard = ({ userType }) => {
             <div id='aquiContenido'>
               {(() => {
                 switch (activeComponent) {
-<<<<<<< HEAD
-                  case 'Actividades Disponibles'://solo es de pruebas de momento
-                    return <ActividadesDisponibles data={dataFetch.actividades} />;
-=======
                   case 'Actividades Disponibles':
                     return userType === 'becario' 
-                      ? <ActividadesDisponibles data={datosDePrueba.actividades} /> 
-                      : <AdminActividades data={datosDePrueba.actividades} />;
->>>>>>> feature/dashboard
+                      ? <ActividadesDisponibles data={dataFetchBecarios.actividades} /> 
+                      : <AdminActividades data={dataFetch.actividades} />;
                   case 'Bienvenido ':
                     return <ProfileBecario />;
                   case 'Mi Beca':

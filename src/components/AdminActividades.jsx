@@ -41,7 +41,7 @@ const AdminActividades = ({ data }) => {
                             <strong>Cambiar imagen:</strong>
                             <input type="file" onChange={handleChangeImage} className="form-input"/>
                         </label>
-                        <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre} className="actividad-imagen-exp" />
+                        <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
                         <button className="boton-cancelar" onClick={() => setActividadSeleccionada(null)}>Cancelar</button>
                     </div>
                     <div className="actividad-derecha">
@@ -49,8 +49,8 @@ const AdminActividades = ({ data }) => {
                             <strong>Nombre:</strong>
                             <input
                                 type="text"
-                                value={actividadSeleccionada.nombre}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, nombre: e.target.value })}
+                                value={actividadSeleccionada.nombre_actividad}
+                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, nombre_actividad: e.target.value })}
                                 className="form-input"
                             />
                         </label>
@@ -58,38 +58,22 @@ const AdminActividades = ({ data }) => {
                             <strong>Fecha:</strong>
                             <input
                                 type="text"
-                                value={actividadSeleccionada.fecha}
+                                value={actividadSeleccionada.fecha_actividad}
                                 onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha: e.target.value })}
                                 className="form-input"
                             />
                         </label>
-                        <label className="form-label">
-                            <strong>Formato:</strong>
-                            <input
-                                type="text"
-                                value={actividadSeleccionada.formato}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, formato: e.target.value })}
-                                className="form-input"
-                            />
-                        </label>
+                       
                         <label className="form-label">
                             <strong>Duración:</strong>
                             <input
                                 type="text"
-                                value={actividadSeleccionada.duracion}
+                                value={actividadSeleccionada.numero_horas}
                                 onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, duracion: e.target.value })}
                                 className="form-input"
                             />
                         </label>
-                        <label className="form-label">
-                            <strong>Idioma:</strong>
-                            <input
-                                type="text"
-                                value={actividadSeleccionada.idioma}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, idioma: e.target.value })}
-                                className="form-input"
-                            />
-                        </label>
+                        
                         <label className="form-label">
                             <strong>Descripción:</strong>
                             <textarea
@@ -106,11 +90,11 @@ const AdminActividades = ({ data }) => {
                 <div className="actividades-list">
                     {actividades.map((actividad) => (
                         <div key={actividad.id} className="actividad-box">
-                            <img src={actividad.imagen} alt={actividad.nombre} className="actividad-imagen" />
+                            <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
                             <div className="actividad-info">
-                                <h3>{actividad.nombre}</h3>
+                                <h3>{actividad.nombre_actividad}</h3>
                                 <p><strong>Organizador:</strong> {actividad.organizador}</p>
-                                <p><strong>Fecha:</strong> {actividad.fecha}</p>
+                                <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
