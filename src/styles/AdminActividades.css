@@ -1,0 +1,142 @@
+.actividades-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.actividades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.actividad-box {
+    width: 300px;
+    height: 400px; /* Fija una altura para que todas las tarjetas sean iguales */
+    background-color: #003b74; /* Cambiado a azul para administradores */
+    border-radius: 8px;
+    border-style: groove;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+.actividad-box:hover {
+    background-color: #0056b3; /* Un tono más oscuro de azul para el hover */
+    transition-duration: 100ms;
+}
+
+.actividad-imagen {
+    width: 100%;
+    height: 200px; /* Fija una altura para todas las imágenes */
+    object-fit: cover; /* Mantiene la proporción y ajusta la imagen sin deformarla */
+    border-radius: 8px;
+}
+
+.actividad-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+    padding: 10px 0;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: white;
+}
+
+.actividad-expandida {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #003b74;
+    border-radius: 8px;
+    border-style: groove;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.actividad-expandida p {
+    font-size: 18px;
+}
+
+.actividad-expandida h3 {
+    font-size: 24px;
+}
+
+.actividad-izquierda {
+    width: 50%;
+    text-align: left;
+}
+
+.boton-cancelar {
+    width: 120px; /* Ajuste el tamaño del botón para que la palabra se vea centrada */
+    height: 40px; /* Ajuste el tamaño del botón */
+    margin-top: 20px;
+    background-color: #FFB500; /* Color del botón */
+    color: #003b74; /* Color del texto */
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Colocar a la izquierda */
+    cursor: pointer;
+}
+
+.boton-cancelar:hover {
+    background-color: #FFA500; /* Color de hover */
+}
+
+.boton-guardar {
+    padding: 10px 15px;
+    margin: 15px 0; /* Margin para separarlo de los campos anteriores */
+    background-color: #FFB500;
+    color: #003b74;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton-guardar:hover {
+    background-color: #FFA500;
+}
+
+.boton-editar, .boton-borrar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #fff;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.boton-editar:hover, .boton-borrar:hover {
+    color: #FFB500;
+    transform: scale(1.2);
+}
+
+.form-label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-input, .form-textarea {
+    padding: 10px;
+    border-radius: 1px
+}
