@@ -34,6 +34,8 @@ const AdminActividades = ({ data }) => {
     const handleSave = (actividadEditada) => {
         setActividades(actividades.map(actividad => actividad.id === actividadEditada.id ? actividadEditada : actividad));
         setMensajeConfirmacion(`La actividad "${actividadEditada.nombre}" ha sido actualizada correctamente.`);
+        
+        // Implementar la lógica para hacer la llamada a la API para editar la actividad.
         setActividadSeleccionada(null);
     
         setTimeout(() => setMensajeConfirmacion(""), 3000);
