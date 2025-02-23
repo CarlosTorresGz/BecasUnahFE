@@ -7,6 +7,7 @@ import { LoginApp } from './components/LoginApp';
 import ChangePassword from './components/ChangePassword';  // Importa el nuevo componente
 import FAQComponent from './components/FrequentlyAskedQuestions';
 import { Toaster, toast } from 'sonner'
+import Dashboard from './components/Dashboard';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
