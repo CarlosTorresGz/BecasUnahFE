@@ -6,6 +6,7 @@ import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdE
 import { ProfileBecario } from './ProfileBecario';
 import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
+import AdminActividades from './AdminActividades'; // Importar el componente AdminActividades
 
 // Importacion de datos de prueba para probar 
 import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
@@ -89,8 +90,10 @@ export const Dashboard = ({ userType }) => {
             <div id='aquiContenido'>
               {(() => {
                 switch (activeComponent) {
-                  case 'Actividades Disponibles'://solo es de pruebas de momento
-                    return <ActividadesDisponibles data={datosDePrueba.actividades} />;
+                  case 'Actividades Disponibles':
+                    return userType === 'becario' 
+                      ? <ActividadesDisponibles data={datosDePrueba.actividades} /> 
+                      : <AdminActividades data={datosDePrueba.actividades} />;
                   case 'Bienvenido ':
                     return <ProfileBecario />;
                   case 'Mi Beca':
