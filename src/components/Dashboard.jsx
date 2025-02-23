@@ -2,11 +2,13 @@ import '../styles/Dashboard.css';
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { DropdownMenu } from './DropdownMenuDashboard';
-import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdPersonAdd, MdEdit } from "react-icons/md";
+import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdPersonAdd, MdEdit, MdLogout } from "react-icons/md";
 import { ProfileBecario } from './ProfileBecario';
 import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
 import AdminActividades from './AdminActividades'; // Importar el componente AdminActividades
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 // Importacion de datos de prueba para probar 
 import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
@@ -18,9 +20,15 @@ import fetchParcialData from '../services/ActAPIParcial'
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();
 
-
 export const Dashboard = ({ userType }) => {
+  const navigate = useNavigate();
   const [activeComponent, setActiveComponent] = useState(null);
+  const { logout } = useAuth();
+
+  const cerrarSesion = () => {
+    logout();
+    navigate('/');
+};
 
   const optionBecario = [
     {
@@ -80,6 +88,11 @@ export const Dashboard = ({ userType }) => {
       label: 'Modificar Becario',
       onClick: () => setActiveComponent('Modificar Becario'),
       icon: <MdEdit className="panel-izq-button-icono" />
+    },
+    {
+      label: 'Cerrar Sesión',
+      onClick: cerrarSesion,
+      icon: <MdLogout className="panel-izq-button-icono" />
     }
   ];
 
@@ -103,7 +116,7 @@ export const Dashboard = ({ userType }) => {
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} /> 
                       : <AdminActividades data={dataFetch.actividades} />;
                   case 'Bienvenido ':
-                    return <ProfileBecario />;
+                    return <ProfileBecario setActiveComponent={setActiveComponent}/>;
                   case 'Mi Beca':
                     return <MiBeca />;
                   default:

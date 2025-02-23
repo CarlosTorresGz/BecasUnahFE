@@ -1,39 +1,10 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfileBecario.css';
-
-const carreras = {
-    carrera_id: 'CAR19',
-    nombre_carrera: 'Ingeniería en Sistemas', //usado
-    facultad_id: 'FAC04'
-}
-
-const persona = {
-    persona_id: 0,
-    primer_nombre: 'Rodrigo', //usado
-    segundo_nombre: 'Eliezer', //usado
-    primer_apellido: 'Fúnes', //usado
-    segundo_apellido: 'Enríquez', //usado
-    fecha_nacimiento: '2000-06-26',
-    dni: '0801-2000-86954',
-    sexo: 'M',
-    estado_civil_id: 0,
-    telefono: '3377-3942',
-    correo_institucional: 'rodrigo.funes@unah.hn', //usado
-}
-
-const becario = {
-    becario_id: 'B0',
-    persona_id: 0,
-    no_cuenta: '20171001103', //usado
-    carrera_id: 'CAR19',
-    beca_id: 0,
-    estado_beca_id: 0,
-    fecha_inicio_beca: '2023-01-01', //date
-    contrasena: '1234',
-    ultimo_acceso: '2024-01-01 00:00:00.000', //datetime - usado
-    primer_ingreso: 1
-}
+import { fetchPersonById } from '../services/personAPI';
+import { useState, useEffect } from 'react';
+import { fetchCareerById } from '../services/careerAPI';
+import Spinner from 'react-bootstrap/Spinner';
 
 export const InfoItem = ({ label, value }) => {
     return (
@@ -44,38 +15,87 @@ export const InfoItem = ({ label, value }) => {
     )
 }
 
-export const ProfileBecario = () => {
-    //const { login } = useAuth();
+export const ProfileBecario = ({ setActiveComponent }) => {
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [persona, setPersona] = useState(null);
+    const [carrera, setCarrera] = useState(null)
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const logout = () => {
-        //login({ name: null, noCuenta: null });
+    const cerrarSesion = () => {
+        logout();
         navigate('/')
     };
+
+    // Obtener datos de la persona al cargar el componente
+    useEffect(() => {
+        const fetchPersonData = async () => {
+            if (user?.persona_id) {
+                try {
+                    console.log('Fetching data for persona_id:', user.persona_id);
+                    const personData = await fetchPersonById({ person_id: user.persona_id });
+                    const userCareer = await fetchCareerById({ career_id: user.carrera_id });
+                    if (personData.state && userCareer.state) {
+                        setPersona(personData.body);
+                        setCarrera(userCareer.body)
+                    }
+                } catch (error) {
+                    console.error('Error al obtener los datos de la persona:', error);
+                    setError(error);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+        fetchPersonData();
+    }, [user?.persona_id]);
+
+    if (loading) {
+        return (
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Spinner animation="border" role="status" style={{color:"#20527E"}}>
+                <span className="visually-hidden" style={{color:"#20527E"}}>Loading...</span>
+            </Spinner>
+
+        </div>
+        );
+    }
+
+    if (error) {
+        return <div>Error al cargar los datos. Por favor, intenta de nuevo más tarde.</div>;
+    }
 
     return (
         <div className="profile-becario">
             <div className="profile-becario-header">
-                <img className="profile-becario-photo"
-                    src={`https://ui-avatars.com/api/?size=128&name=${persona ? `${persona.primer_nombre} ${persona.primer_apellido}` : "Usuario"
-                        }&background=20527E&color=FFF&length=2&bold=true`}
-                    alt={`${persona.primer_nombre}`}
+                <img
+                    className="profile-becario-photo"
+                    src={`https://ui-avatars.com/api/?size=128&name=${persona ? `${persona.primer_nombre} ${persona.primer_apellido}` : "Usuario"}&background=20527E&color=FFF&length=2&bold=true`}
+                    alt={`${persona?.primer_nombre || "Usuario"}`}
                 />
-                <h2 className="profile-becario-name">{`${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</h2>
+                <h2 className="profile-becario-name">
+                    {`${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</h2>
             </div>
             <div className="profile-becario-content">
                 <div className="profile-becario-info">
-                    <InfoItem label='No. Cuenta:' value={becario.no_cuenta} />
+                    <InfoItem label='No. Cuenta:' value={user.no_cuenta} />
                     <InfoItem label='Correo Institucional:' value={persona.correo_institucional} />
-                    <InfoItem label='Carrera:' value={carreras.nombre_carrera} />
-                    <InfoItem label='Último acceso al sistema:' value={becario.ultimo_acceso} />
+                    <InfoItem label='Carrera:' value={carrera} />
+                    <InfoItem label='Último acceso al sistema:' value={user.ultimo_acceso} />
                     <div className="profile-becario-action">
-                        <button className='profile-becario-buttom-blue' > Mi Beca</button>
-                        <button className='profile-becario-buttom-red' onClick={logout}> Cerrar Sesión</button>
+                        <button
+                            className='profile-becario-buttom-blue'
+                            onClick={() => {
+                                setActiveComponent('Mi Beca')
+                            }}
+                        > Mi Beca</button>
+                        <button className='profile-becario-buttom-red' onClick={cerrarSesion}> Cerrar Sesión</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
+
     );
 
 }

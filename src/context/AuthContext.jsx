@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = (studentData) => {
         setUser(studentData); // Guardar datos del usuario autenticado
+        console.log("Autenticación exitosa:", studentData);
         localStorage.setItem("user", JSON.stringify(studentData)); // Guardar usuario
         localStorage.setItem('isLoggedIn', 'true'); // Guarda un valor booleano como string
     };
