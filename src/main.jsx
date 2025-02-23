@@ -6,11 +6,7 @@ import MainContent from './components/MainContent';
 import { LoginApp } from './components/LoginApp';
 import ChangePassword from './components/ChangePassword';  // Importa el nuevo componente
 import FAQComponent from './components/FrequentlyAskedQuestions';
-<<<<<<< HEAD
 import { Toaster, toast } from 'sonner'
-=======
-import Dashboard from './components/Dashboard';
->>>>>>> feature/dashboard-activities
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
