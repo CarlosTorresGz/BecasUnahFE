@@ -9,7 +9,7 @@ import { iniciarSesionBecario, iniciarSesionEmployee } from "../../services/user
 import { toast } from 'sonner'
 
 export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
-    const { user, login } = useAuth();
+    const { login } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -51,7 +51,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
 
         if (statusLogin.state) { //exito
             const loggedUser = placeHolder === 'No. Cuenta' ? statusLogin.data.becario : statusLogin.data.employee;
-            const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'empleado';
+            const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'admin';
 
             login(loggedUser)
             localStorage.setItem('isLoggedIn', 'true');
