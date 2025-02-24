@@ -134,6 +134,7 @@ p {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    color:#fff;
 }
 
 .form-input, .form-textarea {
