@@ -12,32 +12,31 @@ const AdminActividades = ({ data }) => {
     const { user } = useAuth();
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividades, setActividades] = useState(data);
-    const [showModal, setShowModal] = useState(false); // Estado para el modal
-    const [actividadEliminar, setActividadEliminar] = useState(null)
-    const handleDeleteActivity = (actividad) => {
-        setActividadEliminar(actividad);
-        setShowModal(true);
+    const [actividadAEliminar, setActividadAEliminar] = useState(null);
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
+
+    const cancelDelete = () => {
+        setActividadAEliminar(null);
     };
 
-    const confirmDelete = async () => {
-        console.log('paso: ', actividadSeleccionada)
-        const actividadId = actividadEliminar.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
-        const empleadoId = user.empleado_id.trim();
+    const handleDelete = (id) => {
+        //setActividades(actividades.filter(actividad => actividad.id !== id));
+        //setActividadSeleccionada(actividad);
+        //const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
+        //console.log('Borrar actividad con ID:', actividadId);
+        // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
 
-        console.log('Borrar actividad con ID:', actividadId);
-        console.log('empleado_id: ', empleadoId);
-
-        const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
-        console.log('resultado eliminar: ', deleteActividad)
-
-        if (deleteActividad.state) {
-            setActividades(actividades.filter(a => a.actividad_id !== actividadId)); // Eliminar del estado     
-            toast.success('Actividad eliminada correctamente.');
-        } else {
-            toast.error('Error al eliminar la actividad.');
-        }
-        setShowModal(false); // Cerrar el modal
+        setActividadAEliminar(actividades.find(actividad => actividad.actividad_id === id));
     };
+
+    const confirmDelete = () => {
+        setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
+        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
+        setActividadAEliminar(null);
+
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => setMensajeConfirmacion(""), 3000);
+    }; 
 
     const handleEdit = (actividad) => {
         setActividadSeleccionada(actividad);
@@ -87,6 +86,11 @@ const AdminActividades = ({ data }) => {
 
     return (
         <div className="actividades-container">
+            {mensajeConfirmacion && (
+                <div className="mensaje-confirmacion">
+                    {mensajeConfirmacion}
+                </div>
+            )}
             {actividadSeleccionada ? (
                 // Vista expandida para editar actividad
                 <div className="actividad-expandida">
@@ -177,19 +181,24 @@ const AdminActividades = ({ data }) => {
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDeleteActivity(actividad)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDelete(actividad.actividad_id)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
-            {/* Modal de confirmación */}
-            <ModalConfirmacionDelete
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                onConfirm={confirmDelete}
-                actividadNombre={actividadEliminar?.nombre_actividad}
-            />
+
+            {actividadAEliminar && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>¿Estás seguro de que deseas eliminar la actividad "{actividadAEliminar.nombre_actividad}"?</h3>
+                        <div className="modal-buttons">
+                            <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
+                            <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
