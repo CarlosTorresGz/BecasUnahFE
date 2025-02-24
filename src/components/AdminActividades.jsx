@@ -72,9 +72,16 @@ const AdminActividades = ({ data }) => {
 
         const response = updateActividad(actividadEditada);
         if (response) {
-            alert('Actividad actualizada con éxito!');
+            toast.success('Actividad actualizada con éxito!');
+            setActividadSeleccionada(null)
+
+            const actividadesActualizadas = actividades.map((actividad) => 
+                actividad.actividad_id === actividadEditada.actividad_id ? actividadEditada : actividad
+            );
+            setActividades(actividadesActualizadas);
+            
         } else {
-            alert('Hubo un error al actualizar la actividad.');
+            toast.error('Hubo un error al actualizar la actividad.');
         }
 
     };
