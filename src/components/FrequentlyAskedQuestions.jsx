@@ -51,6 +51,7 @@ const FAQComponent = () => {
 
     return (
         <div className='faq-section'>
+            <h1>Preguntas Frecuentes</h1>
             <InputGroup className="mb-3">
                 <Form.Control
                     placeholder="Buscar"
