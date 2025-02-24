@@ -157,9 +157,9 @@ const AdminActividades = ({ data }) => {
                         <label className="form-label">
                             <strong>Estado de la actividad:</strong>
                         </label>
-                          <div className="d-flex justify-content-around">
+                        <div className="flex flex-col space-y-2">
                             {["Disponible", "Cancelada", "Terminada"].map((estado) => (
-                                <label key={estado} className="flex items-center space-x-2 ">
+                                <label key={estado} className="flex items-center space-x-2">
                                     <input
                                         type="radio"
                                         name="estado_actividad" // Mantén el mismo nombre para que formen un grupo
@@ -168,12 +168,11 @@ const AdminActividades = ({ data }) => {
                                         onChange={(e) =>
                                             setActividadSeleccionada({ ...actividadSeleccionada, estado_actividad: e.target.value })
                                         }
-                                        className="form-radio  d-flex  justify-content-center"
+                                        className="form-radio"
                                     />
                                     <span>{estado}</span>
                                 </label>
                             ))}
-                        </div>
                         </div>
 
                         <button className="boton-guardar" onClick={() => handleSave(actividadSeleccionada)}>Guardar</button>
