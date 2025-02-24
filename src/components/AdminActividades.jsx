@@ -151,7 +151,7 @@ const AdminActividades = ({ data }) => {
                                 <h3>{actividad.nombre_actividad}</h3>
                                 <p><strong>Organizador:</strong> {actividad.organizador}</p>
                                 <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
-                                <p><strong>estado de la Actividad: </strong> {actividad.estado_actividad}</p>
+                                <p><strong>Estado de la Actividad: </strong> {actividad.estado_actividad}</p>
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
