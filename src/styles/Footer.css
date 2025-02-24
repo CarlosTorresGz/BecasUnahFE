@@ -5,6 +5,7 @@
     width: 100%; /* Asegurar que el fondo cubra todo el ancho de la pantalla */
     margin: 0; /* Eliminar cualquier margen */
     box-sizing: border-box; /* Incluir el padding y el border dentro del tamaño total */
+    height: auto;
   }
   
   .footer-top {

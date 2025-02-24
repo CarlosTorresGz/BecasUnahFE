@@ -15,7 +15,7 @@ const ActividadesDisponibles = ({ data }) => {
                         <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
                         <p><strong>Fecha:</strong> {actividadSeleccionada.fecha_actividad}</p>
                         <p><strong>Organizador:</strong> {actividadSeleccionada.organizador}</p>
-                        <p><strong>numero_horas:</strong> {actividadSeleccionada.numero_horas}</p>
+                        <p><strong>Horas Beca:</strong> {actividadSeleccionada.numero_horas}</p>
                         {/* <p><strong>Idioma:</strong> {actividadSeleccionada.idioma}</p> */}
                         <button className="boton-volver" onClick={() => setActividadSeleccionada(null)}></button>
                     </div>
