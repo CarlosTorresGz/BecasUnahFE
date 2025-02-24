@@ -8,14 +8,31 @@ import { toast } from 'sonner';
 const AdminActividades = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividades, setActividades] = useState(data);
+    const [actividadAEliminar, setActividadAEliminar] = useState(null);
+    const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
 
-    const handleDelete = (actividad) => {
-        //setActividades(actividades.filter(actividad => actividad.id !== id));
-        setActividadSeleccionada(actividad);
-        const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
-        console.log('Borrar actividad con ID:', actividadId);
-        // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
+    const cancelDelete = () => {
+        setActividadAEliminar(null);
     };
+
+    const handleDelete = (id) => {
+        //setActividades(actividades.filter(actividad => actividad.id !== id));
+        //setActividadSeleccionada(actividad);
+        //const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
+        //console.log('Borrar actividad con ID:', actividadId);
+        // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
+
+        setActividadAEliminar(actividades.find(actividad => actividad.id === id));
+    };
+
+    const confirmDelete = () => {
+        setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
+        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre}" ha sido eliminada correctamente.`);
+        setActividadAEliminar(null);
+
+        // Oculta el mensaje después de 3 segundos
+        setTimeout(() => setMensajeConfirmacion(""), 3000);
+    }; 
 
     const handleEdit = (actividad) => {
         setActividadSeleccionada(actividad);
@@ -65,6 +82,11 @@ const AdminActividades = ({ data }) => {
 
     return (
         <div className="actividades-container">
+            {mensajeConfirmacion && (
+                <div className="mensaje-confirmacion">
+                    {mensajeConfirmacion}
+                </div>
+            )}
             {actividadSeleccionada ? (
                 // Vista expandida para editar actividad
                 <div className="actividad-expandida">
@@ -155,10 +177,22 @@ const AdminActividades = ({ data }) => {
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDelete(actividad)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDelete(actividad.id)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {actividadAEliminar && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>¿Estás seguro de que deseas eliminar la actividad "{actividadAEliminar.nombre_actividad}"?</h3>
+                        <div className="modal-buttons">
+                            <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
+                            <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
