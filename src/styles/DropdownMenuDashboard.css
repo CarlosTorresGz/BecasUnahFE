@@ -36,6 +36,9 @@
     font-size: 20px!important;
 }
 
+.dropdown-toggle::after {
+    content: none!important;
+}
 /*Responsive*/
 /*Mobile Devices*/
 @media only screen and (max-width: 767px) { 

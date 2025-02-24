@@ -5,22 +5,25 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
+        return storedUser ? JSON.parse(storedUser) : undefined;
     });
 
     // Revisar si hay un usuario guardado en el localStorage
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Cargar el usuario guardado
+        if (user === undefined) {
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+                setUser(JSON.parse(storedUser)); // Cargar el usuario guardado
+            }
         }
-    }, []);
+    }, [user]);
 
-    const login = (studentData) => {
+    const login = (studentData, callback) => {
         setUser(studentData); // Guardar datos del usuario autenticado
         console.log("Autenticación exitosa:", studentData);
-        localStorage.setItem("user", JSON.stringify(studentData)); // Guardar usuario
-        localStorage.setItem('isLoggedIn', 'true'); // Guarda un valor booleano como string
+        localStorage.setItem("user", JSON.stringify(studentData));
+        localStorage.setItem('isLoggedIn', 'true');
+        if (callback) callback();
     };
 
     const logout = () => {
@@ -29,14 +32,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("userRole");
     };
-
-    // Sincronizar el estado con localStorage al refrescar la página
-    useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-    }, []);
 
     return (
         <AuthContext.Provider value={{ user, login, logout }}>

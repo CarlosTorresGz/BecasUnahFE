@@ -31,11 +31,12 @@ export const ProfileBecario = ({ setActiveComponent }) => {
     // Obtener datos de la persona al cargar el componente
     useEffect(() => {
         const fetchPersonData = async () => {
-            if (user?.persona_id) {
+            if (user && user?.persona_id && user?.carrera_id) {
                 try {
                     console.log('Fetching data for persona_id:', user.persona_id);
                     const personData = await fetchPersonById({ person_id: user.persona_id });
                     const userCareer = await fetchCareerById({ career_id: user.carrera_id });
+                    
                     if (personData.state && userCareer.state) {
                         setPersona(personData.body);
                         setCarrera(userCareer.body)
@@ -48,10 +49,13 @@ export const ProfileBecario = ({ setActiveComponent }) => {
                 }
             }
         };
-        fetchPersonData();
-    }, [user?.persona_id]);
 
-    if (loading) {
+        if (user !== undefined) {
+            fetchPersonData();
+        }
+    }, [user]);
+
+    if (user === undefined || loading || !user) {
         return (
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Spinner animation="border" role="status" style={{color:"#20527E"}}>
