@@ -1,25 +1,57 @@
 import React, { useState } from 'react';
 import '../styles/AdminActividades.css';
 import { MdEdit, MdDelete } from 'react-icons/md';
+import updateActividad from '../services/updateActividad';
+import { toast } from 'sonner';
+
 
 const AdminActividades = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividades, setActividades] = useState(data);
 
-    const handleDelete = (id) => {
-        setActividades(actividades.filter(actividad => actividad.id !== id));
+    const handleDelete = (actividad) => {
+        //setActividades(actividades.filter(actividad => actividad.id !== id));
+        setActividadSeleccionada(actividad);
+        const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
+        console.log('Borrar actividad con ID:', actividadId);
         // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
     };
 
     const handleEdit = (actividad) => {
         setActividadSeleccionada(actividad);
+        const actividadId = actividad.actividad_id;
+
+
+        // O actividad.actividad_id, dependiendo de cómo lo llames
+        console.log('Editar actividad con ID:', actividadId);
         // Aquí puedes implementar la lógica para abrir el formulario de edición.
     };
 
-    const handleSave = (actividadEditada) => {
-        setActividades(actividades.map(actividad => actividad.id === actividadEditada.id ? actividadEditada : actividad));
-        setActividadSeleccionada(null);
-        // Aquí puedes implementar la lógica para hacer la llamada a la API para guardar los cambios de la actividad.
+    const handleSave = async (actividadEditada) => {
+
+        setActividadSeleccionada(actividadEditada)
+
+
+        // const entrante = {
+        //     actividad_id: 'A00003', // string
+        //     nombre_actividad: "Taller de React", // string
+        //     descripcion: "Aprende React desde cero", // string
+        //     fecha_actividad: "2023-10-15", // string (formato fecha)
+        //     numero_horas: 4, // number
+        //     ubicacion: "Sala 101", // string
+        //     imagen: "url_de_la_imagen", // string (URL o base64)
+        //     estado_actividad: "activo", // string
+        //     organizador: "Juan Pérez", // string
+        // };
+
+
+        const response = updateActividad(actividadEditada);
+        if (response) {
+            alert('Actividad actualizada con éxito!');
+        } else {
+            alert('Hubo un error al actualizar la actividad.');
+        }
+
     };
 
     const handleChangeImage = (e) => {
@@ -39,7 +71,7 @@ const AdminActividades = ({ data }) => {
                     <div className="actividad-izquierda">
                         <label className="form-label">
                             <strong>Cambiar imagen:</strong>
-                            <input type="file" onChange={handleChangeImage} className="form-input"/>
+                            <input type="file" onChange={handleChangeImage} className="form-input" />
                         </label>
                         <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
                         <button className="boton-cancelar" onClick={() => setActividadSeleccionada(null)}>Cancelar</button>
@@ -59,21 +91,24 @@ const AdminActividades = ({ data }) => {
                             <input
                                 type="text"
                                 value={actividadSeleccionada.fecha_actividad}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha: e.target.value })}
+                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha_actividad: e.target.value })}
                                 className="form-input"
                             />
                         </label>
-                       
+
                         <label className="form-label">
                             <strong>Duración:</strong>
                             <input
-                                type="text"
+                                type="number"
                                 value={actividadSeleccionada.numero_horas}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, duracion: e.target.value })}
+                                onChange={(e) => setActividadSeleccionada({
+                                    ...actividadSeleccionada,
+                                    numero_horas: Number(e.target.value) // Convertir a número
+                                })}
                                 className="form-input"
                             />
                         </label>
-                        
+
                         <label className="form-label">
                             <strong>Descripción:</strong>
                             <textarea
@@ -82,6 +117,27 @@ const AdminActividades = ({ data }) => {
                                 className="form-textarea"
                             />
                         </label>
+                        <label className="form-label">
+                            <strong>Estado de la actividad:</strong>
+                        </label>
+                        <div className="flex flex-col space-y-2">
+                            {["Disponible", "Cancelada", "Terminada"].map((estado) => (
+                                <label key={estado} className="flex items-center space-x-2">
+                                    <input
+                                        type="radio"
+                                        name="estado_actividad" // Mantén el mismo nombre para que formen un grupo
+                                        value={estado} // Aquí asignamos correctamente el valor del estado
+                                        checked={actividadSeleccionada.estado_actividad === estado}
+                                        onChange={(e) =>
+                                            setActividadSeleccionada({ ...actividadSeleccionada, estado_actividad: e.target.value })
+                                        }
+                                        className="form-radio"
+                                    />
+                                    <span>{estado}</span>
+                                </label>
+                            ))}
+                        </div>
+
                         <button className="boton-guardar" onClick={() => handleSave(actividadSeleccionada)}>Guardar</button>
                     </div>
                 </div>
@@ -95,10 +151,11 @@ const AdminActividades = ({ data }) => {
                                 <h3>{actividad.nombre_actividad}</h3>
                                 <p><strong>Organizador:</strong> {actividad.organizador}</p>
                                 <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
+                                <p><strong>Estado de la Actividad: </strong> {actividad.estado_actividad}</p>
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDelete(actividad.id)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDelete(actividad)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
