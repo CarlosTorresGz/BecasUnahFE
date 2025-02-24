@@ -22,12 +22,12 @@ const AdminActividades = ({ data }) => {
         //console.log('Borrar actividad con ID:', actividadId);
         // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
 
-        setActividadAEliminar(actividades.find(actividad => actividad.id === id));
+        setActividadAEliminar(actividades.find(actividad => actividad.actividad_id === id));
     };
 
     const confirmDelete = () => {
         setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
-        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre}" ha sido eliminada correctamente.`);
+        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
         setActividadAEliminar(null);
 
         // Oculta el mensaje después de 3 segundos
@@ -177,7 +177,7 @@ const AdminActividades = ({ data }) => {
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDelete(actividad.id)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDelete(actividad.actividad_id)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
