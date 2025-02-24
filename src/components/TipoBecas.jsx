@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
 import fetchData from '../services/faqAPI'; // Asegúrate de usar el servicio correcto para obtener las becas
 
-import '../styles/TipoBecas.css';
+import '../styles/FrequentlyAskedQuestions.css';    
 
 const TipoBecas = () => {
     const [data, setData] = useState([]);
