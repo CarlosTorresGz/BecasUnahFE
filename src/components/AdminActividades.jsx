@@ -5,12 +5,50 @@ import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { handleDelete } from '../services/deleteActividad';
+import { uploadImageToAzure } from '../services/uploadPictureAzure';
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
+    const day = String(date.getDate()).padStart(2, '0'); // Asegura que tenga dos dígitos
+    return `${year}-${month}-${day}`;
+};
+
+const convertirFecha = (fecha) => {
+    if (!fecha) return '';
+    const meses = {
+        Jan: '01',
+        Feb: '02',
+        Mar: '03',
+        Apr: '04',
+        May: '05',
+        Jun: '06',
+        Jul: '07',
+        Aug: '08',
+        Sep: '09',
+        Oct: '10',
+        Nov: '11',
+        Dec: '12',
+    };
+    const partes = fecha.split('-');
+    // Si ya está en formato numérico (yyyy-MM-dd)
+    if (partes[1]?.length === 2) {
+        return fecha;
+    }
+    const [anio, mesTexto, dia] = partes;
+    const mes = meses[mesTexto];
+    // Si el mes no existe en el objeto, devuelve la fecha original
+    if (!mes) return fecha;
+
+    return `${anio}-${mes}-${dia}`;
+};
 
 const AdminActividades = ({ data }) => {
     const { user } = useAuth();
-    const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
-    const [actividades, setActividades] = useState(data);
-    const [actividadAEliminar, setActividadAEliminar] = useState(null);
+    const [actividadSeleccionada, setActividadSeleccionada] = useState(null); //abrir o cerrar una actividad
+    const [actividades, setActividades] = useState(data); //todas las actividades
+    const [actividadAEliminar, setActividadAEliminar] = useState(null); //actividad a eliminar
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
 
     const cancelDelete = () => {
@@ -53,47 +91,44 @@ const AdminActividades = ({ data }) => {
     };
 
     const handleSave = async (actividadEditada) => {
-
-        setActividadSeleccionada(actividadEditada)
-
-
-        // const entrante = {
-        //     actividad_id: 'A00003', // string
-        //     nombre_actividad: "Taller de React", // string
-        //     descripcion: "Aprende React desde cero", // string
-        //     fecha_actividad: "2023-10-15", // string (formato fecha)
-        //     numero_horas: 4, // number
-        //     ubicacion: "Sala 101", // string
-        //     imagen: "url_de_la_imagen", // string (URL o base64)
-        //     estado_actividad: "activo", // string
-        //     organizador: "Juan Pérez", // string
-        // };
-
+        console.log('actividadEditada: ', actividadEditada)
+        //setActividadSeleccionada(actividadEditada)
+        // Formatear la fecha correctamente
+        actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
 
         const response = updateActividad(actividadEditada);
         if (response) {
             toast.success('Actividad actualizada con éxito!');
             setActividadSeleccionada(null)
 
-            const actividadesActualizadas = actividades.map((actividad) => 
+            const actividadesActualizadas = actividades.map((actividad) =>
                 actividad.actividad_id === actividadEditada.actividad_id ? actividadEditada : actividad
             );
             setActividades(actividadesActualizadas);
-            
+
         } else {
             toast.error('Hubo un error al actualizar la actividad.');
         }
 
     };
 
-    const handleChangeImage = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setActividadSeleccionada({ ...actividadSeleccionada, imagen: reader.result });
+    const handleChangeImage = async (e) => {
+        const file = e.target.files[0]; // Obtener el archivo seleccionado
+        console.log('file: ', file);
+
+        if (file) {
+            //subir a Azure Storage
+            try {
+                const imageUrl = await uploadImageToAzure(file);
+                console.log('imageUrl: ', imageUrl)
+                setActividadSeleccionada((prev) => ({ ...prev, imagen: imageUrl }));
+                console.log('Imagen subida con éxito.');
+                toast.success('Imagen subida con éxito.');
+            } catch (error) {
+                console.log('Error al subir la imagen. ', error);
+            }
         };
-        reader.readAsDataURL(file);
-    };
+    }
 
     return (
         <div className="actividades-container">
@@ -126,15 +161,15 @@ const AdminActividades = ({ data }) => {
                         <label className="form-label">
                             <strong>Fecha:</strong>
                             <input
-                                type="text"
-                                value={actividadSeleccionada.fecha_actividad}
+                                type="date"
+                                value={convertirFecha(actividadSeleccionada.fecha_actividad)}
                                 onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha_actividad: e.target.value })}
                                 className="form-input"
                             />
                         </label>
 
                         <label className="form-label">
-                            <strong>Duración:</strong>
+                            <strong>Horas Beca:</strong>
                             <input
                                 type="number"
                                 value={actividadSeleccionada.numero_horas}
