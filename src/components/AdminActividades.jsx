@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../styles/AdminActividades.css';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { handleDelete } from '../services/deleteActividad';
-import ModalConfirmacionDelete from './ModalConfirmacionDelete';
-
 
 const AdminActividades = ({ data }) => {
     const { user } = useAuth();
@@ -19,24 +17,30 @@ const AdminActividades = ({ data }) => {
         setActividadAEliminar(null);
     };
 
-    const handleDelete = (id) => {
-        //setActividades(actividades.filter(actividad => actividad.id !== id));
-        //setActividadSeleccionada(actividad);
-        //const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
-        //console.log('Borrar actividad con ID:', actividadId);
-        // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
-
+    const handleDeleteActivity = (id) => {
         setActividadAEliminar(actividades.find(actividad => actividad.actividad_id === id));
     };
 
-    const confirmDelete = () => {
-        setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
-        setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
-        setActividadAEliminar(null);
+    const confirmDelete = async () => {
+        const actividadId = actividadAEliminar.actividad_id;
+        const empleadoId = user.empleado_id.trim();
 
-        // Oculta el mensaje después de 3 segundos
-        setTimeout(() => setMensajeConfirmacion(""), 3000);
-    }; 
+        const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
+
+        if (deleteActividad.state) {
+            setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
+            setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
+            setActividadAEliminar(null);
+
+            // Oculta el mensaje después de 3 segundos
+            setTimeout(() => setMensajeConfirmacion(""), 3000);
+
+        } else {
+            toast.error('Error al eliminar la actividad.');
+        }
+
+
+    };
 
     const handleEdit = (actividad) => {
         setActividadSeleccionada(actividad);
@@ -181,7 +185,7 @@ const AdminActividades = ({ data }) => {
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDelete(actividad.actividad_id)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDeleteActivity(actividad.actividad_id)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
