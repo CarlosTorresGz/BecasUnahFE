@@ -53,7 +53,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             const loggedUser = placeHolder === 'No. Cuenta' ? statusLogin.data.becario : statusLogin.data.employee;
             const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'admin';
 
-            login(loggedUser)
+            login(loggedUser, () => {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userRole', userRole);
 
@@ -66,7 +66,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             toast.success('Autenticación exitosa');
 
             navigate(userRole === "becario" ? "/dashboard/becario" : "/dashboard/administrador");
-
+        });
         } else {
             incrementAttempts(); // Aumenta intentos si hay error
             toast.error('Los datos ingresados no son correctos.');
