@@ -112,6 +112,23 @@
   background-repeat: no-repeat;
 }
 
+/*Barra de Scroll*/
+/**Ancho de la barra */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/*Color y radio de la barra*/
+::-webkit-scrollbar-track {
+  background: #FBFCF8;
+  border-radius: 50px;
+}
+
+/*Color y radio de la barra interna*/
+::-webkit-scrollbar-thumb {
+  background: #20527E;
+  border-radius: 50px;
+}
 
 /* Estilos responsivos */
 @media (max-width: 576px) {
