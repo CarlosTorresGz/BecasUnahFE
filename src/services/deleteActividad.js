@@ -1,7 +1,10 @@
 import apiUrl from "../config";
 
-export const handleDelete = async (empleado_id, actividad_id) => {
-    try {
+export const handleDelete = async ({empleado_id, actividad_id}) => {
+  
+  console.log('actividad_id: ', actividad_id);
+  console.log('empleado_id: ', empleado_id);
+  try {
       const response = await fetch(`${apiUrl}/api/DeleteActivity?`, {
         method: 'DELETE',
         headers: {
@@ -13,16 +16,12 @@ export const handleDelete = async (empleado_id, actividad_id) => {
       if (!response.ok) {
         throw new Error('No se pudo eliminar la actividad');
       }
+      console.log('response: ', response);
   
-      const data = await response.json();
-      console.log('Actividad eliminada con éxito:', data);
-  
-      // Aquí actualizas el estado o haces algo para volver a renderizar las actividades
-      // Por ejemplo, actualizas el estado de actividades si lo tienes
-      // setActividades(prev => prev.filter(actividad => actividad.id !== actividad_id));
+      return { state: true}
     } catch (error) {
       console.error('Error al eliminar actividad:', error);
-      // Maneja el error y muestra un mensaje de error al usuario
+      return { state: false, body: error }
     }
   };
 

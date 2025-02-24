@@ -3,18 +3,40 @@ import '../styles/AdminActividades.css';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
+import { useAuth } from '../context/AuthContext';
+import { handleDelete } from '../services/deleteActividad';
+import ModalConfirmacionDelete from './ModalConfirmacionDelete';
 
 
 const AdminActividades = ({ data }) => {
+    const { user } = useAuth();
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividades, setActividades] = useState(data);
+    const [showModal, setShowModal] = useState(false); // Estado para el modal
+    const [actividadEliminar, setActividadEliminar] = useState(null)
+    const handleDeleteActivity = (actividad) => {
+        setActividadEliminar(actividad);
+        setShowModal(true);
+    };
 
-    const handleDelete = (actividad) => {
-        //setActividades(actividades.filter(actividad => actividad.id !== id));
-        setActividadSeleccionada(actividad);
-        const actividadId = actividad.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
+    const confirmDelete = async () => {
+        console.log('paso: ', actividadSeleccionada)
+        const actividadId = actividadEliminar.actividad_id;  // O actividad.actividad_id, dependiendo de cómo lo llames
+        const empleadoId = user.empleado_id.trim();
+
         console.log('Borrar actividad con ID:', actividadId);
-        // Aquí puedes implementar la lógica para hacer la llamada a la API para eliminar la actividad.
+        console.log('empleado_id: ', empleadoId);
+
+        const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
+        console.log('resultado eliminar: ', deleteActividad)
+
+        if (deleteActividad.state) {
+            setActividades(actividades.filter(a => a.actividad_id !== actividadId)); // Eliminar del estado     
+            toast.success('Actividad eliminada correctamente.');
+        } else {
+            toast.error('Error al eliminar la actividad.');
+        }
+        setShowModal(false); // Cerrar el modal
     };
 
     const handleEdit = (actividad) => {
@@ -155,12 +177,19 @@ const AdminActividades = ({ data }) => {
                             </div>
                             <div className="actividad-botones">
                                 <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDelete(actividad)}><MdDelete /></button>
+                                <button className="boton-borrar" onClick={() => handleDeleteActivity(actividad)}><MdDelete /></button>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
+            {/* Modal de confirmación */}
+            <ModalConfirmacionDelete
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={confirmDelete}
+                actividadNombre={actividadEliminar?.nombre_actividad}
+            />
         </div>
     );
 };
