@@ -1,43 +1,64 @@
+import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { fetchBecaById, fetchStateBecaById } from '../services/becaAPI';
 import { InfoItem } from './ProfileBecario';
 import { FaCircle } from "react-icons/fa";
 import '../styles/MiBeca.css'
-
-const becario = {
-    becario_id: 'B0',
-    persona_id: 0,
-    no_cuenta: '20171001103',
-    carrera_id: 'CAR19',
-    beca_id: 0,
-    estado_beca_id: 0, //usado
-    fecha_inicio_beca: '2023-01-01', //date usado
-    contrasena: '1234',
-    ultimo_acceso: '2024-01-01 00:00:00.000',
-    primer_ingreso: 1
-}
-
-const becas = {
-    beca_id: 0,
-    nombre_beca: 'Beca Excelencia Académica Categoría "A"', //usado
-    descripcion: 'Es una asignación mensual no reembolsable de L2,000.00 que se otorga durante el año académico a estudiantes de Primer Ingreso  cuyo promedio académico de Educación Secundaria sea igual o superior a 90%. \n Para los estudiantes de Reingreso  índice debe ser de 90% de un mínimo de 10 asignaturas aprobadas en el año académico anterior.',
-    monto: 2000.00 //usado
-}
-
-const estado_beca = {
-    estado_beca_id: 0,
-    estado_beca: 'Activa', //usado
-}
-
+import Spinner from 'react-bootstrap/Spinner';
+import { fetchPlanillas } from '../services/planillaAPI.JS';
 
 export const MiBeca = () => {
+    const { user } = useAuth();
+    const [beca, setBeca] = useState(null);
+    const [estadoBeca, setEstadoBeca] = useState(null);
+    const [planillas, setPlanillas] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    // Obtener datos
+    useEffect(() => {
+        const fetchBecaData = async () => {
+            try {
+                if (user?.beca_id) {
+                    const becaData = await fetchBecaById({ beca_id: user.beca_id });
+                    const becaEstadoData = await fetchStateBecaById({ estado_beca_id: user.estado_beca_id });
+                    if (becaData.state) {
+                        setBeca(becaData.body);
+                        setEstadoBeca(becaEstadoData.body)
+                    }
+                }
+
+                if (user?.becario_id) {
+                    const planillaData = await fetchPlanillas({ becario_id: user.becario_id });
+                    if (planillaData.state) {
+                        setPlanillas(planillaData.body);
+                    }
+                }
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBecaData();
+    }, [user?.beca_id, user?.becario_id, user?.estado_beca_id]);    
+
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Spinner animation="border" role="status" style={{ color: "#20527E" }}>
+                    <span className="visually-hidden" style={{ color: "#20527E" }}>Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
     return (
         <div className='mi-beca'>
             <div className='mi-beca-informacion'>
                 <h1>Información General</h1>
-                <InfoItem label='Tipo de Beca:' value={becas.nombre_beca} />
-                <InfoItem label='Monto:' value={becas.monto} />
-                <InfoItem label='Fecha de Inicio:' value={becario.fecha_inicio_beca} />
-                <InfoItem label='Estado:' value={estado_beca.estado_beca} />
+                <InfoItem label='Tipo de Beca:' value={beca.nombre_beca} />
+                <InfoItem label='Monto:' value={`L. ${beca.monto.toFixed(2)}`} />
+                <InfoItem label='Fecha de Inicio:' value={user.fecha_inicio_beca} />
+                <InfoItem label='Estado:' value={estadoBeca} />
             </div>
             <div className='mi-beca-calendario'>
                 <h1>Calendario de Cobro</h1>
@@ -50,38 +71,32 @@ export const MiBeca = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/*
-                    {pagos.map((pago, index) => (
-                        <tr key={index} style={{ backgroundColor: pago.estado_entrega === "Cobrado" ? '#c8e6c9' : pago.estado_entrega === "Disponible" ? '#ffecb3' : '#f8d7da' }}>
-                            <td>{pago.mes}</td>
-                            <td>L. {pago.monto.toFixed(2)}</td>
-                            <td>{pago.estado_entrega === "Cobrado" ? '✅' : '❌'}</td>
-                        </tr>
-                    ))}
-                    */}
-                        <tr style={{ backgroundColor: '#c8e6c9' }}>
-                            <td>Enero</td>
-                            <td>L. </td>
-                            <td>`❌`</td>
-                        </tr>
-                        <tr style={{ backgroundColor: '#c8e6c9' }}>
-                            <td>Febrero</td>
-                            <td>L. </td>
-                            <td>`✅`</td>
-                        </tr>
+                        {planillas.length > 0 ? (
+                            planillas.map((pago, index) => (
+                                <tr key={index}>
+                                    <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
+                                    <td>L. {beca.monto.toFixed(2)}</td>
+                                    <td>{pago.estado_entrega === "Entregado" ? '✅' : '❌'}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3">No hay registros de planillas disponibles.</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
                 <div className='table-description'>
                     <div>
-                        <FaCircle />
+                        <FaCircle style={{ color: 'gray' }} />
                         <span>Pendiente</span>
                     </div>
                     <div>
-                        <FaCircle />
+                        <FaCircle style={{ color: '#FFC107' }} />
                         <span>Disponible</span>
                     </div>
                     <div>
-                        <FaCircle />
+                        <FaCircle style={{ color: '#28A745' }} />
                         <span>Cobrado</span>
                     </div>
                 </div>
