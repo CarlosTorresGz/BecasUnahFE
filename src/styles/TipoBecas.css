@@ -1,0 +1,39 @@
+.faq-section {
+    width: 80%;
+    margin: 150px auto!important;
+}
+
+.accordion {
+    --bs-accordion-bg: #20527E!important;
+    --bs-accordion-border-color: #20527E!important;
+    --bs-accordion-active-color: #FBFCF8!important;
+    --bs-accordion-color: #FFB500!important;
+    --bs-accordion-btn-color: #FFB500!important;
+    
+}
+
+.accordion-header {
+    border: 1px solid #20527E!important;
+    border-radius: 5px!important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #FBFCF8!important;
+    color: #20527E!important;
+    font-weight: bold!important;
+}
+
+.accordion-item {
+    background-color: #fbfcf81e!important;
+    color: #20527E!important;
+    margin-bottom: 5px!important;
+    border: none!important;
+}
+
+.no-results{
+    font-size: 22px; /* Ajusta el tamaño según necesites */
+    font-weight: bold; /* Opcional: hace el texto más grueso */
+    color: #666; /* Opcional: cambia el color */
+    text-align: center; /* Centrar el texto */
+    margin-top: 20px; /* Espaciado superior */
+}

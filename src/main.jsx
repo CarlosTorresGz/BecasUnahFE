@@ -4,16 +4,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from './components/layout/MainLayout';
 import MainContent from './components/MainContent';
 import { LoginApp } from './components/LoginApp';
-import ChangePassword from './components/ChangePassword';  // Importa el nuevo componente
+import ChangePassword from './components/ChangePassword';
 import FAQComponent from './components/FrequentlyAskedQuestions';
-import { Toaster } from 'sonner'
+import { Toaster } from 'sonner';
 import Dashboard from './components/Dashboard';
 import { AuthProvider } from './context/AuthContext';
+import TipoBecas from './components/TipoBecas';  // Importa el nuevo componente
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
       <Toaster richColors />
       <Router>
         <Routes>
@@ -24,6 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/login/employee" element={<LoginApp number="No. Empleado" />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/FAQ" element={<FAQComponent />} />
+            <Route path="/tipo-becas" element={<TipoBecas />} />  {/* Nueva ruta */}
           </Route>
 
           {/* Rutas sin Navbar ni Footer */}
@@ -32,5 +33,5 @@ createRoot(document.getElementById('root')).render(
         </Routes>
       </Router>
     </AuthProvider>
-  </StrictMode >
+  </StrictMode>
 );
