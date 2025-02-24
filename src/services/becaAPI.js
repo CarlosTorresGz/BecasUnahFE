@@ -4,8 +4,7 @@ export const fetchBecaById = async ({ beca_id }) => {
     console.log('beca_id: ', beca_id)
 
     try {
-        //const response = await fetch(`${apiUrl}/api/becas/${beca_id}`, {
-        const response = await fetch(`http://localhost:7071/api/becas/${beca_id}`, {
+        const response = await fetch(`${apiUrl}/api/becas/${beca_id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
