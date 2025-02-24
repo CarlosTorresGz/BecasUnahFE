@@ -1,11 +1,12 @@
 import '../styles/DropdownMenuDashboard.css';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export const DropdownMenu = ({ optionDropdownMenu }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle className='dropdown-menu-dashboard' variant="success" id="dropdown-basic">
-        Menú
+        <RxHamburgerMenu />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
