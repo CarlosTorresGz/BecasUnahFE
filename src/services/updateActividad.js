@@ -3,7 +3,7 @@ import apiUrl from "../config";
 
 const updateActividad = async (actividad) => {
     try {
-        const response = await fetch(`${apiUrl}/api/putActivityAvailable?`, {
+        const response = await fetch(`${apiUrl}/api/putActivityAvailable`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
