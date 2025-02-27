@@ -39,9 +39,9 @@
 }
 
 .no-results{
-    font-size: 22px; /* Ajusta el tamaño según necesites */
-    font-weight: bold; /* Opcional: hace el texto más grueso */
-    color: #666; /* Opcional: cambia el color */
-    text-align: center; /* Centrar el texto */
-    margin-top: 20px; /* Espaciado superior */
+    font-size: 22px;
+    font-weight: bold;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
 }

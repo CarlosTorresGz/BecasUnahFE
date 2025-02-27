@@ -9,13 +9,9 @@ export const uploadImageToAzure = async (file) => {
         `https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net?${sasToken}`,
         new AnonymousCredential()
     );
-    console.log('blobServiceClient: ', blobServiceClient);
     const containerClient = blobServiceClient.getContainerClient(containerName);
-    console.log('containerClient: ', containerClient);
     const blobName = `${Date.now()}-${file.name}`;
-    console.log('blobName: ', blobName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    console.log('blockBlobClient: ', blockBlobClient);
 
     try {
         await blockBlobClient.uploadData(file, {

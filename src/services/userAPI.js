@@ -1,8 +1,6 @@
 import apiUrl from "../config";
 
 export const iniciarSesionBecario = async ({noCuenta, password}) => {
-    console.log('noCuenta: ', noCuenta)
-    console.log('pass: ', password)
     try {        
         const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
             method: "POST",
@@ -13,8 +11,6 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
         });
 
         const data = await response.json();
-        console.log('response: ', data);
-
         
         if (!data.status) {
             return { state: false, becario: {descripcion: "Error en la autenticación"} };
@@ -29,8 +25,6 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
 }
 
 export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
-    console.log('noEmpleado: ', noEmpleado)
-    console.log('pass: ', password)
     try {        
         const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
             method: "POST",
@@ -41,7 +35,6 @@ export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
         });
 
         const data = await response.json();
-        console.log('response: ', data);
         
         if (!data.status) {
             return { state: false, employee: {descripcion: "Error en la autenticación"} };
@@ -56,8 +49,6 @@ export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
 }
 
 export const changePassword = async ({email, newPass}) => {
-    console.log('email: ', email)
-    console.log('newPass: ', newPass)
     try {        
         const response = await fetch(`${apiUrl}/api/auth/changePassword`, {
             method: "POST",
@@ -68,7 +59,6 @@ export const changePassword = async ({email, newPass}) => {
         });
 
         const data = await response.json();
-        console.log('responseData: ', data);
         
         if (!data.status) {
             return { state: false, body: data.body };

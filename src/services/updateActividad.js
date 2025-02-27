@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import apiUrl from "../config";
 
 const updateActividad = async (actividad) => {

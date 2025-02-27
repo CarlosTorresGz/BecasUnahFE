@@ -7,6 +7,7 @@ import { InputField } from "./InputField";
 import { useNavigate } from "react-router-dom";
 import { iniciarSesionBecario, iniciarSesionEmployee } from "../../services/userAPI";
 import { toast } from 'sonner'
+import '../../styles/LoginForm.css';
 
 export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const { login } = useAuth();
@@ -57,8 +58,6 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userRole', userRole);
 
-            console.log("Autenticación exitosa:", loggedUser);
-
             // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
             localStorage.removeItem("login_attempts");
             localStorage.removeItem("locked_until");
@@ -94,7 +93,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             <Button
                 type="submit"
                 text={locked ? `Espere ${timeLeft} segundos` : "Ingresar"}
-                className="custom-btn"
+                className={!locked ? 'custom-btn' : 'btn-locked'}
                 disabled={locked}
             />
             {attempts > 0 && (

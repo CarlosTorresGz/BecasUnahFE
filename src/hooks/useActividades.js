@@ -1,6 +1,5 @@
 // hooks/useActividades.js
 import { useState, useEffect } from 'react';
-import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles'; // Datos de prueba
 import fetchAllData from '../services/ActAPI'; // Importamos la función de fetch de la API
 
 export const useActividades = () => {

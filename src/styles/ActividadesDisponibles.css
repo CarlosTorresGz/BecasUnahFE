@@ -14,7 +14,7 @@
 
 .actividad-box {
   width: 300px;
-  height: 400px; /* Fija una altura para que todas las tarjetas sean iguales */
+  height: 400px;
   background-color: #003b74;
   border-radius: 8px;
   border-style: groove;
@@ -24,19 +24,20 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: white;
+  color: #FBFCF8;
   cursor: pointer;
 }
 
 .actividad-box:hover {
   background-color: #0056b3;
   transition-duration: 100ms;
+  transform: scale(1.05);
 }
 
 .actividad-imagen {
   width: 100%;
-  height: 200px; /* Fija una altura para todas las imágenes */
-  object-fit: cover; /* Mantiene la proporción y ajusta la imagen sin deformarla */
+  height: 200px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
@@ -44,20 +45,26 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra el contenido verticalmente */
+  justify-content: center;
   padding: 10px 0;
 }
 
 h3 {
   font-size: 18px;
   margin-bottom: 10px;
-  color: white;
+  color: #FBFCF8;
+  /*
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+  */
 }
 
 p {
   font-size: 14px;
   margin: 5px 0;
-  color: white;
+  color: #FBFCF8;
 }
 
 .actividad-expandida {
@@ -67,7 +74,7 @@ p {
   background-color: #003b74;
   border-radius: 8px;
   border-style: groove;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 6px rgba(40, 39, 44, 0.1);
   padding: 15px;
 }
 
@@ -117,6 +124,8 @@ p {
 
 .actividad-derecha h3 {
   margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .actividad-imagen-exp {
@@ -128,18 +137,53 @@ p {
 
 .boton-inscribirse {
   width: 80%;
-  max-width: 600px; /* Para que no sea demasiado grande en pantallas grandes */
+  max-width: 600px;
   padding: 15px;
   margin-top: 4%;
   background-color:#003b74;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+  color: #FBFCF8;
+  font-size: 18px;  
   border: none;
   border-radius: 8px;
   cursor: pointer;
 }
 
 .boton-inscribirse:hover {
-  background-color: #0056b3;
+  background-color: #FBFCF8;
+  color: #003b74;
+  border: 2px solid #20527E;
+  font-weight: bold;
+  transition: width 0.5s ease-in-out; 
 }
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+  .actividad-izquierda p{
+    font-size: clamp(10px, 12px, 14px);
+  }
+
+  .actividad-derecha p{
+    font-size: clamp(10px, 12px, 14px);
+  }
+  
+  .actividad-derecha h3 {
+    font-size: clamp(10px, 12px, 14px);
+  }
+
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+ }
+
+ /* Desktop Devices */
+ @media only screen and (min-width: 1440px) {
+    
+ }
