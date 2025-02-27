@@ -7,20 +7,15 @@ import '../styles/FrequentlyAskedQuestions.css';
 
 const FAQComponent = () => {
     const [data, setData] = useState([]);
-    //console.log('data: ', data);
     const [originalData, setOriginalData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     const getData = async () => {
         try {
             const result = await fetchData();
-            //console.log("API Response:", result);
-    
-            // Acceder directamente a result.preguntas
             const preguntas = result.preguntas;
     
             if (Array.isArray(preguntas)) {
-                console.log("Preguntas recibidas:", preguntas);
                 setData(preguntas);
                 setOriginalData(preguntas);
             } else {

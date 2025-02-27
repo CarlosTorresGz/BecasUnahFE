@@ -66,7 +66,6 @@ const ChangePassword = () => {
 
     // Aquí iría la lógica para enviar la nueva contraseña al backend
     const estadoActualizacion = await changePassword({ email: correoInstitucional, newPass: newPassword });
-    console.log('estado: ', estadoActualizacion.state);
 
     if (estadoActualizacion.state) {
       //setMessage("Cambio de contraseña correcto");
@@ -76,12 +75,10 @@ const ChangePassword = () => {
       setNewPassword("");
       setConfirmPassword("");
       setMessage("")
-      //navigate(-1);
     } else {
       setMessage("Ocurrio un error al cambiar la contraseña.");
       toast.error(estadoActualizacion.body);
     }
-
   };
 
   const handleBack = () => {
@@ -132,7 +129,7 @@ const ChangePassword = () => {
               <Button
                 type="submit"
                 text="Guardar"
-                className="custom-btn"
+                className="custom-btn-save"
               />
               <Button
                 type="button"

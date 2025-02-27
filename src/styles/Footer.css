@@ -2,16 +2,27 @@
     padding: 20px;
     background-color: #20527E;
     color: #fff;
-    width: 100%; /* Asegurar que el fondo cubra todo el ancho de la pantalla */
-    margin: 0; /* Eliminar cualquier margen */
-    box-sizing: border-box; /* Incluir el padding y el border dentro del tamaño total */
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
     height: auto;
   }
   
+  .footer-content {
+    display: flex;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
   .footer-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 100px;
   }
   
   .footer-bottom {
@@ -19,12 +30,12 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 10px;
+    gap: 50px;
   }
   
   .footer-column {
     flex: 1;
-    min-width: 200px; /* Asegurar un ancho mínimo */
+    min-width: 200px;
     text-align: center;
   }
   
@@ -33,13 +44,13 @@
   }
   
   .footer-logo {
-    height: 100px; /* Tamaño más grande para los logos */
-    margin: 30px;
+    height: 100px;
+    margin: 0 30px;
   }
   
   .center-text {
     text-align: center;
-    flex-basis: 100%; /* Asegurar que ocupe toda la línea */
+    flex-basis: 100%;
   }
   
   .social-icons {
@@ -65,31 +76,69 @@
   }
   
   .contact-button:hover {
-    background-color: #E0A600;
+    background-color: #FFA500;
   }
   
   .highlight {
-    color: #FFB500; /* Color dorado */
+    color: #FFB500;
   }
   
   .highlight:hover {
     cursor: pointer;
   }
 
-  /* Estilos responsivos */
-@media (max-width: 576px) {
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+  .footer-top{
+    gap: 5px;
+  }  
+
   .footer-top img {
     height: 50px;
-  }  
+  } 
 
   .footer {
     padding: 10px;
     font-size: 0.9rem;
   }
 
+  .center-text p{
+    font-size: 10px;
+  }
+
+  .footer-bottom {
+    gap: 5px;
+  }
+
+  .footer-column {
+    min-width: 100px;
+  }
+  
+  .footer-column p, .footer-column span {
+    font-size: 10px;
+  }
+  
+  .footer-logo {
+    height: 50px;
+  }
+
+  .social-icon {
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+  }
+
+  .contact-button {
+    height: 30px;
+    width: auto;
+    font-size: 10px;
+  }
 }
 
-@media (min-width: 576px) and (max-width: 768px) {
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
   .footer-top img {
     height: 50px;
   }  
@@ -98,9 +147,14 @@
     padding: 10px;
     font-size: 0.9rem;
   }
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
   
 }
 
-@media (min-width: 768px) and (max-width: 1400px) {
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {
   
 }

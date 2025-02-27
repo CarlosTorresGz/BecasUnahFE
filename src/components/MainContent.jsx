@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '../styles/MainContent.css';
 import backgroundBlue from '../img/FONDOUNAH.jpg';
 import backgroundRed from '../img/FONDOSEÑOR.jpg';

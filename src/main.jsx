@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/login/employee" element={<LoginApp number="No. Empleado" />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/FAQ" element={<FAQComponent />} />
-            <Route path="/tipo-becas" element={<TipoBecas />} />  {/* Nueva ruta */}
+            <Route path="/tipo-becas" element={<TipoBecas />} />
           </Route>
 
           {/* Rutas sin Navbar ni Footer */}

@@ -5,15 +5,6 @@ body {
     height: 100vh;
 }
 
-.menu {
-    display: flex;
-    justify-content: space-between;
-    background-color: #28272C;
-    padding: 10px;
-    color: white;
-    text-align: center;
-}
-
 .principal{
     display: flex;
     flex: 1;
@@ -25,7 +16,7 @@ body {
 .panel-superior {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, #003260, #20527E);
+    background: linear-gradient(90deg, #003b74, #20527E);
     padding: 10px;
     color: #FBFCF8;
     text-align: center;
@@ -49,7 +40,7 @@ body {
     flex-wrap: wrap;
     align-content: flex-start;
     justify-content: center;
-    background: linear-gradient(90deg, #003260, #20527E);
+    background: linear-gradient(90deg, #003b74, #20527E);
     width: 75px;
     padding: 5px;
     gap: 10px;
@@ -89,6 +80,7 @@ body {
 
     .panel-der {
         height: 100%;
+        width: 40%;
     }
 }
 

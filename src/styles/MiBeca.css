@@ -1,4 +1,20 @@
+.table {
+    --bs-table-bg: 'none';
+    --bs-table-striped-color: #28272C;
 
+}
+
+.table>:not(caption)>*>* {
+    color: #FFB500;
+}
+
+th {
+    color: #FFB500!important;
+}
+
+td {
+    color: #28272C!important;
+}
 .mi-beca {
     display: flex;
     flex-direction: column;
@@ -16,10 +32,6 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-}
-
-.mi-beca-calendario {
-
 }
 
 .table-calendar {

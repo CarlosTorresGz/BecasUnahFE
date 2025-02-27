@@ -16,10 +16,18 @@ export const MiBeca = () => {
     const [error, setError] = useState(null);
     const [fechaInicioBeca, setFechaInicioBeca] = useState(null);
 
+    const assignColorToCobroStatus = estadoEntregaPago => {
+        if (estadoEntregaPago.estado_entrega === "No se Presento") {
+            return "p-3 mb-2 bg-warning text-dark";
+        } else if (estadoEntregaPago.estado_entrega === "Disponible") {            
+            return "p-3 mb-2 bg-success text-white";
+        } else {
+            return "p-3 mb-2 bg-light text-dark";
+        }
+    };
+
     const getData = async () => {
         const userLocal = JSON.parse(localStorage.getItem('user'));
-        console.log('userLocal: ', userLocal);
-
         const becaId = userLocal ? userLocal.beca_id : null;
         const estadoBecaId = userLocal ? userLocal.estado_beca_id : null;
         const becarioId = userLocal ? userLocal.becario_id : null;
@@ -33,17 +41,13 @@ export const MiBeca = () => {
 
         try {
             const becaData = await fetchBecaById({ beca_id: becaId });
-            console.log("API Response:", becaData);
-
             const planillaData = await fetchPlanillas({ becario_id: becarioId });
-            console.log("API Response:", planillaData);
 
             if (becaData.state) {
                 setBeca(becaData.body);
                 setFechaInicioBeca(userLocal ? userLocal.fecha_inicio_beca : null)
                 if (estadoBecaId) {
                     const becaEstadoData = await fetchStateBecaById({ estado_beca_id: estadoBecaId });
-                    console.log("API Response:", becaEstadoData);
                     if (becaEstadoData.state) {
                         setEstadoBeca(becaEstadoData.body)
                     }
@@ -88,34 +92,29 @@ export const MiBeca = () => {
             </div>
             <div className='mi-beca-calendario'>
                 <h1>Calendario de Cobro</h1>
-                <table className='table-calendar'>
+                <table className="table">
                     <thead className='table-calendar-head'>
                         <tr>
-                            <th>Mes</th>
-                            <th>Monto</th>
-                            <th>Cobrado</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Monto</th>
+                            <th scope="col">Cobrado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {planillas.length > 0 ? (
-                            planillas.map((pago, index) => (
-                                <tr key={index}>
-                                    <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
-                                    <td>{beca.monto ? `L. {beca.monto.toFixed(2)}` : 'ND'}</td>
-                                    <td>{pago.estado_entrega === "Entregado" ? '✅' : '❌'}</td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3">No hay registros de planillas disponibles.</td>
+                        {planillas.map(pago => (
+                            <tr key={pago.planilla_id}>
+                                <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
+                                <td>{beca.monto ? `L. {beca.monto.toFixed(2)}` : 'ND'}</td>
+                                <td className={assignColorToCobroStatus(pago)}>{pago.estado_entrega === "Entregado" ? '✅' : '❌'}</td>
                             </tr>
-                        )}
+
+                        ))}
                     </tbody>
-                </table>
+                </table>                
                 <div className='table-description'>
                     <div>
                         <FaCircle style={{ color: 'gray' }} />
-                        <span>Pendiente</span>
+                        <span>No se Presento</span>
                     </div>
                     <div>
                         <FaCircle style={{ color: '#FFC107' }} />
@@ -123,7 +122,7 @@ export const MiBeca = () => {
                     </div>
                     <div>
                         <FaCircle style={{ color: '#28A745' }} />
-                        <span>Cobrado</span>
+                        <span>Entregado</span>
                     </div>
                 </div>
             </div>

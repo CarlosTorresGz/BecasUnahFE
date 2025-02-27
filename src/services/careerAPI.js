@@ -1,8 +1,6 @@
 import apiUrl from "../config";
 
 export const fetchCareerById = async ({ career_id }) => {
-    console.log('career_id: ', career_id)
-
     try {
         const response = await fetch(`${apiUrl}/api/career/${career_id}`, {
             method: "GET",
@@ -12,7 +10,6 @@ export const fetchCareerById = async ({ career_id }) => {
         });
 
         const data = await response.text();
-        console.log('responseData: ', data);
 
         if (!response.ok) {
             return { state: false, body: data };

@@ -22,9 +22,7 @@
 
 .profile-becario-name {
     color: #20527E;
-
 }
-
 
 .profile-becario-content {
     display: flex;
@@ -46,6 +44,7 @@
     padding: 10px;
     border-radius: 5px;
 }
+
 .profile-becario-info-item-label {
     color: #28272C;
     font-weight: bold;
