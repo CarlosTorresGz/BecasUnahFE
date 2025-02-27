@@ -2,33 +2,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0; /* Eliminar margen */
+  padding: 0;
   background-color: #f0f0f0;
   position: relative;
-  /*margin-top: 120px;  Margen superior para separar del encabezado */
 }
 
 .section-container {
   position: relative;
-  width: 100%; /* Ancho completo */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0; /* Eliminar padding */
-  border-radius: 0; /* Eliminar borde redondeado */
+  padding: 0;
+  border-radius: 0;
   transition: background-color 0.3s ease-in-out;
-  box-sizing: border-box; /* Asegurar que el padding se incluya en el tamaño total */
-  background-size: cover; /* Asegurar que la imagen cubra toda la sección */
-  background-position: center; /* Centrar la imagen */
-  background-repeat: no-repeat; /* Evitar que la imagen se repita */
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .section-blue .section-content,
 .section-red .section-content {
-  font-size: 2.5rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
+  font-size: 2.5rem;
+  color: #FBFCF8;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   opacity: 0; /* Inicialmente invisible */
   transition: opacity 0.3s ease-in-out;
   z-index: 1; /* Asegurar que el texto esté encima de la imagen */
@@ -37,10 +36,10 @@
   justify-content: center;
   height: 100%;
   width: 80%; /* Ancho del cuadro imaginario */
-  margin: 0 auto; /* Centrar horizontalmente */
+  margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para mayor legibilidad */
-  padding: 20px; /* Espacio interno */
-  border-radius: 10px; /* Bordes redondeados */
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .section-blue:hover .section-content,
@@ -49,31 +48,31 @@
 }
 
 .section-green .section-content {
-  font-size: 2.5rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
-  opacity: 0; /* Inicialmente invisible */
+  font-size: 2.5rem;
+  color: #FBFCF8;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  z-index: 1; /* Asegurar que el texto esté encima de la imagen */
+  z-index: 1;
   position: absolute;
-  bottom: 10px; /* Ajustar la posición al fondo */
-  left: 50%; /* Centrar horizontalmente */
-  transform: translateX(-50%); /* Ajuste para centrar */
-  padding: 20px; /* Espacio interno */
-  border-radius: 10px; /* Bordes redondeados */
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .section-green:hover .section-content {
-  opacity: 1; /* Aparecer al pasar el mouse */
+  opacity: 1;
 }
 
 .animated-content {
-  font-size: 2rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
-  opacity: 0; /* Inicialmente invisible */
+  font-size: 2rem;
+  color: #FBFCF8;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  z-index: 1; /* Asegurar que el texto esté encima de la imagen */
+  z-index: 1;
 }
 
 .section-container:hover .animated-content {
@@ -115,7 +114,7 @@
 /*Barra de Scroll*/
 /**Ancho de la barra */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 10px;
 }
 
 /*Color y radio de la barra*/

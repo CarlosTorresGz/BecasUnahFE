@@ -2,16 +2,13 @@ import '../styles/Dashboard.css';
 import { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { DropdownMenu } from './DropdownMenuDashboard';
-import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdPersonAdd, MdEdit, MdLogout } from "react-icons/md";
+import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdEdit, MdLogout } from "react-icons/md";
 import { ProfileBecario } from './ProfileBecario';
 import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
-import AdminActividades from './AdminActividades'; // Importar el componente AdminActividades
+import AdminActividades from './AdminActividades';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
-// Importacion de datos de prueba para probar 
-import { datosDePrueba } from '../testeos/MockDataActividadesDisponibles';
 
 //Data de las actividades
 import fetchAllData from '../services/ActAPI'
@@ -78,11 +75,6 @@ export const Dashboard = ({ userType }) => {
       label: 'Historial de Reportes',
       onClick: () => setActiveComponent('Historial de Reportes'),
       icon: <MdHistory className="panel-izq-button-icono" />
-    },
-    {
-      label: 'Nuevo Becario',
-      onClick: () => setActiveComponent('Nuevo Becario'),
-      icon: <MdPersonAdd className="panel-izq-button-icono" />
     },
     {
       label: 'Modificar Becario',

@@ -32,8 +32,6 @@ export const ProfileBecario = ({ setActiveComponent }) => {
 
     const getData = async () => {
         const userLocal = JSON.parse(localStorage.getItem('user'));
-        console.log('userLocal: ', userLocal);
-
         const persona_id = userLocal ? userLocal.persona_id : null;
         const carrera_id = userLocal ? userLocal.carrera_id : null;
 
@@ -42,18 +40,11 @@ export const ProfileBecario = ({ setActiveComponent }) => {
             setError('No se encontró la información del usuario.');
             setLoading(false);
             return;
-        }else{
-            console.log(`El ID de la persona es: ${persona_id}`);
-            console.log(`El no_cuenta de la persona es: ${userLocal.no_cuenta}`);
-            console.log(`El ultimo acceso de la persona es: ${userLocal.ultimo_acceso}`);
         }
+
         try {
             const result = await fetchPersonById({ person_id: persona_id });
-            console.log("API Response:", result);
-
             const userCareer = await fetchCareerById({ career_id: carrera_id });
-            console.log("API Response:", userCareer);
-
             const personData = result.body;
 
             if ( result.state && userCareer.state ) {

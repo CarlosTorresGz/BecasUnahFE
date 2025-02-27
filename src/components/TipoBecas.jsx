@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Accordion, Form, Button, InputGroup } from 'react-bootstrap';
+import { Accordion} from 'react-bootstrap';
 import fetchData from '../services/modalidadesBecaAPI'; // Asegúrate de usar el servicio correcto para obtener las becas
-
-import '../styles/FrequentlyAskedQuestions.css';    
+import '../styles/FrequentlyAskedQuestions.css';
+import '../styles/TipoBecas.css';    
 
 const TipoBecas = () => {
     const [data, setData] = useState([]);
@@ -12,7 +12,6 @@ const TipoBecas = () => {
             const result = await fetchData();
             const becas = result.becarios;
             if (Array.isArray(becas)) {
-                console.log("Becas Recibidas:", becas);
                 setData(becas);
             } else {
                 console.error("Error: La API no devolvió becas en el formato esperado.");

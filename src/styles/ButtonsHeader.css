@@ -1,0 +1,97 @@
+.barra-navegacion-button {
+    width: 180px;
+    height: 50px;
+    background-color: transparent;
+    color: #20527E;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.barra-navegacion-button:hover {
+    background-color: #FBFCF8;
+    border: 5px;
+    border-style: none none solid;
+    border-color: #20527E;    
+    transition: background-color 0.3s ease!important;
+
+}
+
+.dropdown-toggle {
+    background-color: transparent!important;
+    width: 150px!important;
+    height: 50px!important;
+    color: #20527E!important;
+    font-weight: bold!important;
+    font-size: 20px!important;
+    border: none!important;
+    
+}
+
+.dropdown-toggle:hover {
+    background-color: #FBFCF8!important;
+    border: 5px!important;
+    border-style: none none solid!important;
+    border-color: #20527E!important;    
+    transition: background-color 0.3s ease!important;
+
+}
+
+.dropdown-menu {
+    background-color: #20527E!important;
+    
+}
+
+.dropdown-item {
+    color: #FFB500!important;
+    font-weight: 400!important;
+    font-size: 20px!important;
+}
+
+.dropdown-item:hover {
+    background-color: #FBFCF8;
+    color: #20527E!important;
+    font-weight: 400!important;
+    font-size: 20px!important;
+}
+
+/* Estilos responsivos */
+@media (max-width: 576px) {
+    
+    .logo-pasee{
+        display: none;
+    }
+
+    .titulo-pasee {
+        display: flex;
+        font-size: 1.8rem;
+    }
+
+    .barra-navegacion-enlaces {
+        gap: 0.5rem;
+    }
+
+    .barra-navegacion-button {
+        width: 100px;
+        height: 40px;
+        font-size: 12px!important;
+    }
+
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+    .barra-navegacion-enlaces {
+        gap: 0.5rem;
+    }
+
+    
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    
+    
+ }

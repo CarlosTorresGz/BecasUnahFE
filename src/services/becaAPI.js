@@ -1,8 +1,6 @@
 import apiUrl from "../config";
 
 export const fetchBecaById = async ({ beca_id }) => {
-    console.log('beca_id: ', beca_id)
-
     try {
         const response = await fetch(`${apiUrl}/api/becas/${beca_id}`, {
             method: "GET",
@@ -12,7 +10,6 @@ export const fetchBecaById = async ({ beca_id }) => {
         });
 
         const data = await response.json();
-        console.log('responseData: ', data);
 
         if (!data.status) {
             return { state: false, body: data.beca };

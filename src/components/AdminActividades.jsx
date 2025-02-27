@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../styles/AdminActividades.css';
+import '../styles/ActividadesDisponibles.css';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
@@ -70,29 +71,19 @@ const AdminActividades = ({ data }) => {
             setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
             setActividadAEliminar(null);
 
-            // Oculta el mensaje después de 3 segundos
-            setTimeout(() => setMensajeConfirmacion(""), 3000);
+            // Oculta el mensaje después de 6 segundos
+            setTimeout(() => setMensajeConfirmacion(""), 6000);
 
         } else {
             toast.error('Error al eliminar la actividad.');
         }
-
-
     };
 
     const handleEdit = (actividad) => {
         setActividadSeleccionada(actividad);
-        const actividadId = actividad.actividad_id;
-
-
-        // O actividad.actividad_id, dependiendo de cómo lo llames
-        console.log('Editar actividad con ID:', actividadId);
-        // Aquí puedes implementar la lógica para abrir el formulario de edición.
     };
 
     const handleSave = async (actividadEditada) => {
-        console.log('actividadEditada: ', actividadEditada)
-        //setActividadSeleccionada(actividadEditada)
         // Formatear la fecha correctamente
         actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
 
@@ -114,102 +105,101 @@ const AdminActividades = ({ data }) => {
 
     const handleChangeImage = async (e) => {
         const file = e.target.files[0]; // Obtener el archivo seleccionado
-        console.log('file: ', file);
 
         if (file) {
             //subir a Azure Storage
             try {
                 const imageUrl = await uploadImageToAzure(file);
-                console.log('imageUrl: ', imageUrl)
                 setActividadSeleccionada((prev) => ({ ...prev, imagen: imageUrl }));
-                console.log('Imagen subida con éxito.');
                 toast.success('Imagen subida con éxito.');
             } catch (error) {
                 console.log('Error al subir la imagen. ', error);
+                toast.error('Error al subir la imagen.');
             }
         };
     }
 
-    return (
+    return (        
         <div className="actividades-container">
             {mensajeConfirmacion && (
                 <div className="mensaje-confirmacion">
                     {mensajeConfirmacion}
                 </div>
             )}
-            {actividadSeleccionada ? (
+            {actividadSeleccionada ? (                
                 // Vista expandida para editar actividad
                 <div className="actividad-expandida">
-                    <div className="actividad-izquierda">
-                        <label className="form-label">
-                            <strong>Cambiar imagen:</strong>
-                            <input type="file" onChange={handleChangeImage} className="form-input" />
-                        </label>
-                        <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
-                        <button className="boton-cancelar" onClick={() => setActividadSeleccionada(null)}>Cancelar</button>
-                    </div>
-                    <div className="actividad-derecha">
-                        <label className="form-label">
-                            <strong>Nombre:</strong>
-                            <input
-                                type="text"
-                                value={actividadSeleccionada.nombre_actividad}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, nombre_actividad: e.target.value })}
-                                className="form-input"
-                            />
-                        </label>
-                        <label className="form-label">
-                            <strong>Fecha:</strong>
-                            <input
-                                type="date"
-                                value={convertirFecha(actividadSeleccionada.fecha_actividad)}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha_actividad: e.target.value })}
-                                className="form-input"
-                            />
-                        </label>
-
-                        <label className="form-label">
-                            <strong>Horas Beca:</strong>
-                            <input
-                                type="number"
-                                value={actividadSeleccionada.numero_horas}
-                                onChange={(e) => setActividadSeleccionada({
-                                    ...actividadSeleccionada,
-                                    numero_horas: Number(e.target.value) // Convertir a número
-                                })}
-                                className="form-input"
-                            />
-                        </label>
-
-                        <label className="form-label">
-                            <strong>Descripción:</strong>
-                            <textarea
-                                value={actividadSeleccionada.descripcion}
-                                onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, descripcion: e.target.value })}
-                                className="form-textarea"
-                            />
-                        </label>
-                        <label className="form-label">
-                            <strong>Estado de la actividad:</strong>
-                        </label>
-                        <div className="flex flex-col space-y-2">
-                            {["Disponible", "Cancelada", "Terminada"].map((estado) => (
-                                <label key={estado} className="flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        name="estado_actividad" // Mantén el mismo nombre para que formen un grupo
-                                        value={estado} // Aquí asignamos correctamente el valor del estado
-                                        checked={actividadSeleccionada.estado_actividad === estado}
-                                        onChange={(e) =>
-                                            setActividadSeleccionada({ ...actividadSeleccionada, estado_actividad: e.target.value })
-                                        }
-                                        className="form-radio"
-                                    />
-                                    <span>{estado}</span>
-                                </label>
-                            ))}
+                    <div className='informacion-actividad'>
+                        <div className="actividad-izquierda">
+                            <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
+                            <label className="form-label">
+                                <strong>Cambiar imagen:</strong>
+                                <input type="file" onChange={handleChangeImage} className="form-input" />
+                            </label>
                         </div>
+                        <div className="actividad-derecha">
+                            <label className="form-label">
+                                <strong>Nombre:</strong>
+                                <input
+                                    type="text"
+                                    value={actividadSeleccionada.nombre_actividad}
+                                    onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, nombre_actividad: e.target.value })}
+                                    className="form-input"
+                                />
+                            </label>
+                            <label className="form-label">
+                                <strong>Fecha:</strong>
+                                <input
+                                    type="date"
+                                    value={convertirFecha(actividadSeleccionada.fecha_actividad)}
+                                    onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha_actividad: e.target.value })}
+                                    className="form-input"
+                                />
+                            </label>
+                            <label className="form-label">
+                                <strong>Horas Beca:</strong>
+                                <input
+                                    type="number"
+                                    value={actividadSeleccionada.numero_horas}
+                                    onChange={(e) => setActividadSeleccionada({
+                                        ...actividadSeleccionada,
+                                        numero_horas: Number(e.target.value) // Convertir a número
+                                    })}
+                                    className="form-input"
+                                />
+                            </label>
+                            <label className="form-label">
+                                <strong>Descripción:</strong>
+                                <textarea
+                                    value={actividadSeleccionada.descripcion}
+                                    onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, descripcion: e.target.value })}
+                                    className="form-textarea"
+                                />
+                            </label>
+                            <label className="form-label">
+                                <strong>Estado de la actividad:</strong>
+                            </label>
+                            <div className="radio-inputs">
+                                {["Disponible", "Cancelada", "Terminada"].map((estado) => (
+                                    <label key={estado} className="radio">
+                                        <input
+                                            type="radio"
+                                            name="estado_actividad" // Mantén el mismo nombre para que formen un grupo
+                                            value={estado} // Aquí asignamos correctamente el valor del estado
+                                            checked={actividadSeleccionada.estado_actividad === estado}
+                                            onChange={(e) =>
+                                                setActividadSeleccionada({ ...actividadSeleccionada, estado_actividad: e.target.value })
+                                            }
+                                        />
+                                        <span className='name'>{estado}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
+                    <div className='actividad-button'>
+                        <button className="boton-cancelar" onClick={() => setActividadSeleccionada(null)}>Cancelar</button>
                         <button className="boton-guardar" onClick={() => handleSave(actividadSeleccionada)}>Guardar</button>
                     </div>
                 </div>
@@ -217,7 +207,7 @@ const AdminActividades = ({ data }) => {
                 // Vista normal
                 <div className="actividades-list">
                     {actividades.map((actividad) => (
-                        <div key={actividad.id} className="actividad-box">
+                        <div key={actividad.actividad_id} className="actividad-box">
                             <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
                             <div className="actividad-info">
                                 <h3>{actividad.nombre_actividad}</h3>
@@ -237,7 +227,7 @@ const AdminActividades = ({ data }) => {
             {actividadAEliminar && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <h3>¿Estás seguro de que deseas eliminar la actividad "{actividadAEliminar.nombre_actividad}"?</h3>
+                        <h3>{`¿Estás seguro de que deseas eliminar la actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
                         <div className="modal-buttons">
                             <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
                             <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>

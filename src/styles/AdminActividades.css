@@ -1,119 +1,39 @@
-.actividades-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-.actividades-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.actividad-box {
-    width: 300px;
-    height: 400px; /* Fija una altura para que todas las tarjetas sean iguales */
-    background-color: #003b74; /* Cambiado a azul para administradores */
-    border-radius: 8px;
-    border-style: groove;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: #FBFCF8;
-    cursor: pointer;
-}
-
-.actividad-box:hover {
-    background-color: #0056b3; /* Un tono más oscuro de azul para el hover */
-    transition-duration: 100ms;
-}
-
-.actividad-imagen {
-    width: 100%;
-    height: 200px; /* Fija una altura para todas las imágenes */
-    object-fit: cover; /* Mantiene la proporción y ajusta la imagen sin deformarla */
-    border-radius: 8px;
-}
-
-.actividad-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centra el contenido verticalmente */
-    padding: 10px 0;
-}
-
-h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #FBFCF8;
-}
-
-p {
-    font-size: 14px;
-    margin: 5px 0;
-    color: #FBFCF8;
-}
-
 .actividad-expandida {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background-color: #003b74;
-    border-radius: 8px;
-    border-style: groove;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-}
-
-.actividad-expandida p {
-    font-size: 18px;
-}
-
-.actividad-expandida h3 {
-    font-size: 24px;
-}
-
-.actividad-izquierda {
-    width: 50%;
-    text-align: left;
-}
+    display: block;
+  }
 
 .boton-cancelar {
-    width: 120px; /* Ajuste el tamaño del botón para que la palabra se vea centrada */
-    height: 40px; /* Ajuste el tamaño del botón */
-    margin-top: 20px;
-    background-color: #FFB500; /* Color del botón */
-    color: #003b74; /* Color del texto */
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: #FFB500;
+    color: #003b74;
     border: none;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Colocar a la izquierda */
     cursor: pointer;
 }
 
 .boton-cancelar:hover {
-    background-color: #FFA500; /* Color de hover */
+    background-color: #FFA500;
+    font-weight: bold;
 }
 
 .boton-guardar {
-    padding: 10px 15px;
-    margin: 15px 0; /* Margin para separarlo de los campos anteriores */
-    background-color: #FFB500;
-    color: #003b74;
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: #228B22;
+    color: #FBFCF8;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
 .boton-guardar:hover {
-    background-color: #FFA500;
+    background-color: #117F63;
+    font-weight: bold;
 }
 
 .boton-editar, .boton-borrar {
@@ -125,8 +45,13 @@ p {
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.boton-editar:hover, .boton-borrar:hover {
+.boton-editar:hover {
     color: #FFB500;
+    transform: scale(1.2);
+}
+
+.boton-borrar:hover {
+    color: #C50000;
     transform: scale(1.2);
 }
 
@@ -137,9 +62,31 @@ p {
     color:#FBFCF8;
 }
 
+.form-label input{    
+    color:#28272C;
+    border: 0 none;
+}
+
 .form-input, .form-textarea {
     padding: 10px;
-    border-radius: 1px }
+    border-radius: 0.5rem;
+    background-color:#FBFCF8;
+}
+
+.form-textarea {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+.estado {
+    display: flex;
+    gap: 25px
+}
+
+.estado-actividad {
+    color: #FBFCF8;
+    gap: 10px;
+}
 
 .mensaje-confirmacion {
     position: fixed;
@@ -155,9 +102,64 @@ p {
     z-index: 1000;
 }
 
+.actividad-button {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.informacion-actividad {
+    display: flex;        
+}
+
+strong {
+    margin-bottom: 10px;
+}
+
+/*Radio Button */
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #FBFCF8;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 300px;
+    font-size: 14px;
+  }
+  
+  .radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .radio-inputs .radio input {
+    display: none;
+  }
+  
+  .radio-inputs .radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .5rem 0;
+    color: rgb(51, 65, 84);
+    transition: all .15s ease-in-out;
+  }
+  
+  .radio-inputs .radio input:checked + .name {
+    background-color: #003b74;
+    font-weight: 600;
+    color: #FBFCF8;
+  }
  
 /* Modales */
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -186,15 +188,24 @@ p {
 .modal-buttons {
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;    
     align-items: center;
+    gap: 15px;
 }
 
 .boton-confirmar {
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
     background-color: #C50000;
     color: #FBFCF8;
-    padding: 10px;
     border: none;
     cursor: pointer;
 }
 
+.boton-confirmar:hover {
+    background-color: #c80a0a;
+    font-weight: bold;
+}

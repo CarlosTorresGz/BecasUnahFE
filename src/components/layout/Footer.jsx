@@ -11,6 +11,7 @@ const Footer = () => {
 
   return (
     <footer className="footer">
+      <div className="footer-content">
       <div className="footer-top">
         <img src={VOAE} alt="VOAE Logo" className="footer-logo" />
         <div className="center-text">
@@ -39,6 +40,7 @@ const Footer = () => {
         <div className="footer-column">
           <button className="contact-button"><strong>CONTÁCTENOS</strong></button>
         </div>
+      </div>
       </div>
     </footer>
   );

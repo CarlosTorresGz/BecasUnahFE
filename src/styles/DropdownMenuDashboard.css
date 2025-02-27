@@ -5,8 +5,7 @@
     color: #FBFCF8!important;
     font-weight: bold!important;
     font-size: 20px!important;
-    border: none!important;
-    
+    border: none!important;    
 }
 
 .dropdown-menu-dashboard:hover {
@@ -39,6 +38,7 @@
 .dropdown-toggle::after {
     content: none!important;
 }
+
 /*Responsive*/
 /*Mobile Devices*/
 @media only screen and (max-width: 767px) { 

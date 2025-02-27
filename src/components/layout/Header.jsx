@@ -1,51 +1,97 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../styles/Header.css';
+import '../../styles/ButtonsHeader.css';
 import VOAE from '../../img/VOAE.png';
 import UNAH from '../../img/UNAH.png';
+import DropdownButton from './ButtonsHeader';
+import { RxHamburgerMenu } from "react-icons/rx";
+import { FaChevronDown } from "react-icons/fa";
+import '../../styles/DropdownMenuDashboard.css';
 
-const Header = () => {
+function ButtonBarraNavegacion({ text, onClick }) {
+  return (
+    <button
+      className="barra-navegacion-button"
+      onClick={onClick}>
+      {text}
+    </button>
+  );
+}
+
+function MenuNavegacion({ text, onClick }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(prevState => !prevState);
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsDropdownOpen(false); // Cierra el menú principal
+    setIsLoginOpen(false); // Cierra el menú de login
   };
 
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.login')) {
-      setIsDropdownOpen(false);
+  return (
+    <nav className="nav-menu">
+      <button className='menu-button' onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+        <RxHamburgerMenu />
+      </button>
+      <ul className={`nav-list ${isDropdownOpen ? 'open' : ''}`}>
+        <li className="nav-item" onClick={() => handleNavigation("/")}>Comunicados</li>
+        <li className="nav-item" onClick={() => handleNavigation("/tipo-becas")}>Becas</li>
+        <li className="nav-item login"
+          onClick={() => setIsLoginOpen(!isLoginOpen)}
+          aria-expanded={isLoginOpen} >
+          Login <FaChevronDown />
+          <ul className={`dropdown-login ${isLoginOpen ? 'open' : ''}`}>
+            <li onClick={() => handleNavigation("/login")}>Estudiantes</li>
+            <li onClick={() => handleNavigation("/login/employee")}>Administradores</li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+const Header = () => {
+  const optionHeader = [
+    {
+      label: 'Comunicados',
+      onClick: '',
+      icon: ''
+    },
+    {
+      label: 'Becas',
+      onClick: '',
+      icon: ''
+    },
+    {
+      label: 'Iniciar Sesión',
+      onClick: '',
+      icon: ''
     }
-  };
+  ];
 
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+  const navigate = useNavigate();
+
+  const opciones = [
+    { label: 'Administrador', onClick: () => navigate('/login/employee') },
+    { label: 'Becario', onClick: () => navigate('/login') }
+  ];
 
   return (
     <header className="header">
+      <MenuNavegacion optionDropdownMenu={optionHeader} />
       <div className="logo">
         <Link to="/">
           <img src={VOAE} alt="Logo 1" />
+          <img src={UNAH} alt="Logo 2" />
         </Link>
-        <img src={UNAH} alt="Logo 2" />
       </div>
-      <nav className="nav">
-        <ul className="nav-list">
-          <li className="nav-item">Comunicados</li>
-          <li className="nav-item" onClick={() => navigate("/tipo-becas")}>Becas</li>
-          <li className="nav-item login" onClick={toggleDropdown} aria-expanded={isDropdownOpen}>
-            Login
-            <ul className={`dropdown-login ${isDropdownOpen ? 'open' : ''}`}>
-              <li onClick={() => navigate("/login")}>Estudiantes</li>
-              <li onClick={() => navigate("/login/employee")}>Administradores</li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div className='barra-navegacion-enlaces'>
+        <ButtonBarraNavegacion text='Comunicados' onClick={() => navigate('/FAQ')} />
+        <ButtonBarraNavegacion text='Becas' onClick={() => navigate('/tipo-becas')} />
+        <DropdownButton textButton='Ingresar' items={opciones} />
+      </div>
     </header>
   );
 };
