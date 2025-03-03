@@ -10,8 +10,14 @@ export const DropdownMenu = ({ optionDropdownMenu }) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {optionDropdownMenu.map((option, index) => (
-          <Dropdown.Item key={index} onClick={option.onClick}>{option.label}</Dropdown.Item>
+        {optionDropdownMenu.map((option, index) => (          
+            option.clasification.map((categoria, i) => (
+              index === 0 ? (
+                <Dropdown.Item key={i} onClick={categoria.onClick}>{option.title} {categoria.label}</Dropdown.Item>
+              ) : (
+                <Dropdown.Item key={i} onClick={categoria.onClick}>{categoria.label}</Dropdown.Item>
+              )              
+            ))
         ))}
       </Dropdown.Menu>
     </Dropdown>
