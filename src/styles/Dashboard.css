@@ -9,8 +9,7 @@ body {
     display: flex;
     flex: 1;
     column-gap: 10px;
-    min-height: 800px;
-    
+    /*min-height: 800px;*/
 }
 
 .panel-superior {
@@ -22,7 +21,6 @@ body {
     text-align: center;
     height: 100px;
     gap: 10px;
-
 }
 
 .panel-superior h1{
@@ -37,18 +35,24 @@ body {
 
 .panel-izq {
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     background: linear-gradient(90deg, #003b74, #20527E);
     width: 75px;
-    padding: 5px;
+    padding: 20px 10px;
     gap: 10px;
     transition: width 0.5s ease-in-out;
+    height: calc(100vh - 100px);
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .panel-der {
     flex: 1;
+    background-color: #FBFCF8;    
+    padding: 20px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 
 .panel-der-content {
@@ -65,13 +69,17 @@ body {
     }
 
     .panel-superior {
+        position: fixed;
+        top: 0;
         padding: 5px;
         height: 100px;
-        gap: 5px;        
+        width: 100%;
+        gap: 5px;  
+        z-index: 1;      
     }
 
     .panel-superior h1{
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .panel-izq {
@@ -79,6 +87,7 @@ body {
     }
 
     .panel-der {
+        margin-top: 100px;
         height: 100%;
         width: 40%;
     }

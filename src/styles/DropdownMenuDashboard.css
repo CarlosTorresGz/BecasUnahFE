@@ -1,11 +1,11 @@
 .dropdown-menu-dashboard {
     background-color: transparent!important;
-    width: 100px!important;
+    width: 50px!important;
     height: 40px!important;
     color: #FBFCF8!important;
     font-weight: bold!important;
     font-size: 20px!important;
-    border: none!important;    
+    border: none!important;
 }
 
 .dropdown-menu-dashboard:hover {
@@ -18,21 +18,24 @@
 }
 
 .dropdown-menu {
-  background: linear-gradient(180deg, #003260 70%, #20527E 100%);
+    position: fixed!important;
+    top: 30px!important;
+  background: linear-gradient(180deg, #003b74 70%, #20527E 100%);
     
 }
 
 .dropdown-item {
     color: #FBFCF8!important;
-    font-weight: 400!important;
-    font-size: 20px!important;
+    font-weight: 300!important;
+    font-size: 1rem!important;
 }
 
 .dropdown-item:hover {
     background-color: #FBFCF8;
     color: #20527E!important;
-    font-weight: 400!important;
-    font-size: 20px!important;
+    font-weight: 300!important;
+    font-size: 1rem!important;
+    font-weight: bold!important;
 }
 
 .dropdown-toggle::after {
