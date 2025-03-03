@@ -109,12 +109,32 @@
 /*Responsive*/
 /*Mobile Devices*/
 @media only screen and (max-width: 767px) { 
+    .profile-becario-name {
+        font-size: 20px;
+    }
+
+    .profile-becario-info-item {
+        width: 100%;
+    }
+
+    .profile-becario-info-item-label {
+        font-size: 12px;
+    }
     
+    .profile-becario-info-item-value {
+        font-size: 12px;
+    }
 }
 
 /* Tablet Devices */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .profile-becario-info-item-label {
+        font-size: 14px;
+    }
     
+    .profile-becario-info-item-value {
+        font-size: 14px;
+    }
 }
 
 /* Laptop Devices */
