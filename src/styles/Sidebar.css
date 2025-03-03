@@ -1,8 +1,13 @@
 .panel-izq.expanded {
     width: 250px;
+    align-items: normal;
 }
 
 .panel-izq-toggle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
     background: none;
     border: none;
     color: #FBFCF8;
@@ -21,7 +26,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px;
-    background: #20527E;
+    background: #003B74;
     color: #FBFCF8;
     border: none;
     border-radius: 8px;
@@ -31,10 +36,30 @@
 }
 
 .panel-izq-button:hover {
-    background: #3A94E4;
+    background: #002E5B;
     transform: scale(1.05);
 }
 
 .panel-izq-button-icono {
     font-size: 24px;
+}
+
+.panel-izq-category {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 5px;
+    gap: 10px;
+}
+
+.panel-izq-category-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.panel-izq-category-clasification {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
