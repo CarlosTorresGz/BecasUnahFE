@@ -9,6 +9,7 @@ import ActividadesDisponibles from './ActividadesDisponibles';
 import AdminActividades from './AdminActividades';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Report } from './Report';
 import 'animate.css';
 
 //Data de las actividades
@@ -165,6 +166,9 @@ export const Dashboard = ({ userType }) => {
                     return <ProfileBecario setActiveComponent={setActiveComponent} />;
                   case 'Mi Beca':
                     return <MiBeca />;
+                  case 'Historial de Reportes':
+                  case 'Reportes Recibidos':
+                    return <Report userType={ userType } />
                   default:
                     return userType === 'becario'
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
