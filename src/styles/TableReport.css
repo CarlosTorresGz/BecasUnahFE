@@ -1,0 +1,56 @@
+.table-report h1 {
+    color: #20527E;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table {
+    --bs-table-bg: 'none';
+    --bs-table-striped-color: #28272C;
+
+}
+
+.table>:not(caption)>*>* {
+    color: #FFB500;
+}
+
+th {
+    color: #FFB500!important;
+}
+
+.table td {
+    color: #28272C!important;
+    text-align: center;
+}
+
+.table-head {
+    background-color: #20527E;
+    color: #FFB500;
+    padding: 10px;
+    text-align: center;
+}
+
+.table-button {
+    background-color: #20527E;
+    color: #FFB500;
+    border: 0;
+    padding: 5px;
+}
+
+.table-button {
+    background-color: #20527E;
+    color: #FBFCF8;
+    border: 0;
+    padding: 5px;
+    width: 150px;
+    /*height: 50px;*/
+    border-radius: 5px;
+}
+
+.table-button:hover {
+    color: #20527E;
+    font-weight: bold;
+    background-color: #FBFCF8;
+    border: 2px solid #20527E;
+    transition: width 0.5s ease-in-out;
+}
