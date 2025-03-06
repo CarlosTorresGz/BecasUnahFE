@@ -104,7 +104,7 @@ export const MiBeca = () => {
                         {planillas.map(pago => (
                             <tr key={pago.planilla_id}>
                                 <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
-                                <td>{beca.monto ? `L. {beca.monto.toFixed(2)}` : 'ND'}</td>
+                                <td>{beca.monto ? `L. ${beca.monto.toFixed(2)}` : 'ND'}</td>
                                 <td className={assignColorToCobroStatus(pago)}>{pago.estado_entrega === "Entregado" ? '✅' : '❌'}</td>
                             </tr>
 
