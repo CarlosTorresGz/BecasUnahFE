@@ -1,0 +1,62 @@
+
+.btn-outline-secondary {
+    background-color: #20527E;
+    color: #FBFCF8;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #FBFCF8;
+    color: #20527E;
+    border: 1px solid #20527E;
+}
+
+.input-group {
+    border: 1px solid #20527E;
+    border-radius: 10px;
+}
+
+.form-control {
+
+}
+
+.informacion-general {
+    color: #20527E;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info-general {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.info-general-etiqueta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: calc(100% / 3) - 20px;
+}
+
+.info-general-etiqueta span{
+    color: #20527E;
+    font-weight: bold;
+    text-align: left;
+    
+}
+
+.info-general-etiqueta input{
+    text-align: left;
+    width: 250px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid #20527E;
+}
+
+.info-general-etiqueta input:focus-visible{
+    outline: none;
+}

@@ -7,7 +7,6 @@
 .table {
     --bs-table-bg: 'none';
     --bs-table-striped-color: #28272C;
-
 }
 
 .table>:not(caption)>*>* {
@@ -53,4 +52,8 @@ th {
     background-color: #FBFCF8;
     border: 2px solid #20527E;
     transition: width 0.5s ease-in-out;
+}
+
+.alter-tr {
+    background-color: #c7ddf1;
 }
