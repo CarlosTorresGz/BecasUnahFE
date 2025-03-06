@@ -25,13 +25,14 @@ export const TableReport = ({ data }) => {
                     {data.map((report, index) => (
                         <tr key={report.reporte_id}>
                             <td>{index + 1}</td>
-                            <td style={{textAlign: 'left'}}><FaFilePdf /> {report.nombre_reporte}</td>
+                            <td style={{ textAlign: 'left' }}><FaFilePdf /> {report.nombre_reporte}</td>
                             <td >{new Date(report.fecha_reporte).toLocaleString('es-ES')}</td>
-                            <td >
-                                <button className='table-button' onClick={() => { descargarPDF(report.enlace) }}>
-                                    Descargar
-                                </button>
+                            <td>
+                                <a href={report.enlace} download target="_blank" rel="noopener noreferrer">
+                                    <button className="table-button">Descargar</button>
+                                </a>
                             </td>
+
                         </tr>
                     ))}
                 </tbody>
