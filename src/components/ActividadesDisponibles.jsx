@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
+import { useEffect } from "react";
 import '../styles/ActividadesDisponibles.css';
+import FormularioInscripcion from './Inscripcion';
 
 const ActividadesDisponibles = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
+    const handleInscribirseClick = () => {
+        setMostrarFormulario(true);
+    };
+
+    const handleCloseFormulario = () => {
+        setMostrarFormulario(false);
+    };
+
+    if (mostrarFormulario && actividadSeleccionada) {
+        return (
+            <div className="formulario-fullscreen">
+                <FormularioInscripcion
+                    actividad={actividadSeleccionada}
+                    onClose={handleCloseFormulario}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="actividades-container">
@@ -40,7 +62,7 @@ const ActividadesDisponibles = ({ data }) => {
             )}
 
             {actividadSeleccionada && (
-                <button className="boton-inscribirse">Inscribirse</button>
+                <button className="boton-inscribirse" onClick={handleInscribirseClick}>Inscribirse</button>
             )}
         </div>
     );
