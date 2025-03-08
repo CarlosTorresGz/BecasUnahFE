@@ -95,6 +95,11 @@ export const Dashboard = ({ userType }) => {
           onClick: () => setActiveComponent('Ingreso de Nueva Actividad'),
           icon: <MdAddTask className="panel-izq-button-icono" />
         },
+        {
+          label: 'Lista de Asistencia',
+          onClick: () => setActiveComponent('Lista de Asistencia'),
+          icon: <MdChecklist className="panel-izq-button-icono" />
+        },
       ],
     },
     {
