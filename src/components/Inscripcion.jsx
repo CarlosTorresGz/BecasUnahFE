@@ -1,26 +1,49 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "../styles/Inscripcion.css";
+import inscripcionActividad from "../services/inscripcionActividadAPI";
+import { toast } from 'sonner';
 
 const FormularioInscripcion = ({ actividad, onClose }) => {
-
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
         cuenta: "",
-        genero: "",
-        email: "",
-        carrera: ""
+        email: ""
     });
+    const [errors, setErrors] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+
+        if (e.target.name === "email") {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@unah\.hn$/;
+            if (!emailRegex.test(e.target.value)) {
+                setErrors((prev) => ({ ...prev, email: "Debe ser un correo de la UNAH (@unah.hn)" }));
+            } else {
+                setErrors((prev) => ({ ...prev, email: "" }));
+            }
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Datos enviados:", formData);
-        onClose();
+        const response = await inscripcionActividad({ actividadId: actividad.actividad_id, noCuenta: formData.cuenta });
+        
+        if (response.state) {
+            toast.success(`${response.body}`);
+
+            setFormData({
+                nombre: "",
+                apellido: "",
+                cuenta: "",
+                email: ""
+            });
+
+            onClose();
+        } else {
+            toast.info(`${response.body}`);
+        }        
     };
 
     return (
@@ -64,7 +87,7 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                 </Form.Group>
 
                 <Form.Group controlId="cuenta">
-                    <Form.Label>3. Número de Cuenta de la UNAH/ID</Form.Label>
+                    <Form.Label>3. Número de Cuenta de la UNAH</Form.Label>
                     <Form.Text className="text-muted">
                         Escribir el número de cuenta que asignó la universidad al momento de inscribirse en la carrera. Ejemplo: 20201001876.
                     </Form.Text>
@@ -73,10 +96,11 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         name="cuenta"
                         value={formData.cuenta}
                         onChange={handleChange}
+                        maxLength={11}
                         required
                     />
                 </Form.Group>
-
+                {/*
                 <Form.Group controlId="genero">
                     <Form.Label>4. Género</Form.Label>
                     <Form.Text className="text-muted">
@@ -101,9 +125,9 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         />
                     </div>
                 </Form.Group>
-
+                */}
                 <Form.Group controlId="email">
-                    <Form.Label>5. Correo electrónico de la UNAH</Form.Label>
+                    <Form.Label>4. Correo electrónico de la UNAH</Form.Label>
                     <Form.Text className="text-muted">
                         Escribir el correo electrónico asignado por la universidad. Ejemplo: kargisshc@unah.hn
                     </Form.Text>
@@ -114,8 +138,9 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         onChange={handleChange}
                         required
                     />
+                    {errors.email && <p className="text-danger">{errors.email}</p>}
                 </Form.Group>
-
+                {/*
                 <Form.Group controlId="carrera">
                     <Form.Label>6. Soy estudiante de la siguiente carrera</Form.Label>
                     <Form.Control
@@ -126,7 +151,7 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         required
                     />
                 </Form.Group>
-
+                */}
                 <Button type="submit" variant="primary" className="w-20 mt-3">
                     Inscribirse
                 </Button>
