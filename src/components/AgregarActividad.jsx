@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
 import '../styles/AgregarActividad.css';
 import { MdCheckCircle } from "react-icons/md"; // Importa el icono
+import { uploadImageToAzure } from '../services/uploadPictureAzure';
+
 
 const AgregarActividad = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fecha, setFecha] = useState('');
   const [horasBeca, setHorasBeca] = useState('');
+  const [ubicacion, setUbicacion] = useState('');
   const [foto, setFoto] = useState(null);
   const [organizador, setOrganizador] = useState('');
   const [mensajeExito, setMensajeExito] = useState(false);
 
+  
+  const handleChangeImage = async (e) => {
+    const file = e.target.files[0]; // Obtener el archivo seleccionado
+
+    if (file) {
+        //subir a Azure Storage
+        try {
+            const imageUrl = await uploadImageToAzure(file); 
+            console.log(imageUrl);        
+            toast.success('Imagen subida con éxito.');
+            setFoto(imageUrl);
+        } catch (error) {
+            console.log('Error al subir la imagen. ', error);
+            toast.error('Error al subir la imagen.');
+        }
+    };
+}
+  
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Lógica para guardar la nueva actividad
@@ -19,6 +41,7 @@ const AgregarActividad = () => {
       descripcion,
       fecha,
       horasBeca,
+      ubicacion,
       foto,
       organizador
     });
@@ -31,6 +54,7 @@ const AgregarActividad = () => {
     setDescripcion('');
     setFecha('');
     setHorasBeca('');
+    setUbicacion('');
     setFoto(null);
     setOrganizador('');
 
@@ -91,11 +115,22 @@ const AgregarActividad = () => {
           />
         </div>
         <div className="form-group">
+          <label htmlFor="ubicacion">Ubicacion</label>
+          <input
+            type="text"
+            id="ubicacion"
+            value={ubicacion}
+            onChange={(e) => setHorasBeca(e.target.value)}
+            pattern="\d*"
+            required
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor="foto">Foto</label>
           <input
             type="file"
             id="foto"
-            onChange={(e) => setFoto(e.target.files[0])}
+            onChange={handleChangeImage} //tiene la url esta funcion
             required
           />
         </div>
