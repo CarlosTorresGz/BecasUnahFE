@@ -2,7 +2,7 @@ import apiUrl from "../config";
 
 const updateActividad = async (actividad) => {
     try {
-        const response = await fetch(`${apiUrl}/api/postActivityAvailable/?`, {
+        const response = await fetch(`${apiUrl}/api/actividad/?`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
