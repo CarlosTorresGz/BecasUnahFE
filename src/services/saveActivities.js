@@ -1,9 +1,9 @@
 import apiUrl from "../config";
 
-const updateActividad = async (actividad) => {
+const saveActivities = async (actividad) => {
     try {
         const response = await fetch(`${apiUrl}/api/postActivityAvailable/?`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -13,10 +13,10 @@ const updateActividad = async (actividad) => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log('Actividad Guardada:', data);
+            console.log('Actividad Guardad:', data);
             return data; // Regresar la respuesta de la API
         } else {
-            console.error('Error al Guardar actividad:', data);
+            console.error('Error al actualizar actividad:', data);
             return null; // O manejar el error según sea necesario
         }
     } catch (error) {
@@ -25,4 +25,4 @@ const updateActividad = async (actividad) => {
     }
 };
 
-export default updateActividad;
+export default saveActivities;
