@@ -1,0 +1,13 @@
+.scrollable-card {
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.scrollable-card::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scrollable-card::-webkit-scrollbar-thumb {
+    background-color: transparent
+}
+
