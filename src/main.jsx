@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard';
 import { AuthProvider } from './context/AuthContext';
 import TipoBecas from './components/TipoBecas';
 import AgregarActividad from './components/AgregarActividad';  // Importa el nuevo componente
+import Comunicados from './components/Comunicados';  // Importa el nuevo componente
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
           {/* Rutas con Navbar y Footer */}
           <Route path="/" element={<MainLayout />} >
             <Route index element={<MainContent />} />
+            <Route path="/comunicados" element={<Comunicados />} /> {/* Nueva ruta */}
             <Route path="/login" element={<LoginApp />} />
             <Route path="/login/employee" element={<LoginApp number="No. Empleado" />} />
             <Route path="/change-password" element={<ChangePassword />} />

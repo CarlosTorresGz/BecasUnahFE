@@ -1,0 +1,81 @@
+.comunicados-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: none; /* Eliminar borde */
+  }
+  
+  .comunicados-container h2 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 20px;
+  }
+  
+  .comunicados-table,
+  .convocatoria-table,
+  .circulares-table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-spacing: 0;
+    border-collapse: collapse; /* Asegurarse de que no haya bordes */
+  }
+  
+  .comunicados-table th,
+  .convocatoria-table th,
+  .circulares-table th,
+  .comunicados-table td,
+  .convocatoria-table td,
+  .circulares-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: none; /* Eliminar bordes */
+  }
+  
+  .comunicados-table th,
+  .convocatoria-table th,
+  .circulares-table th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .comunicados-table td:first-child,
+  .convocatoria-table td:first-child,
+  .circulares-table td:first-child {
+    display: flex;
+    align-items: center;
+  }
+  
+  .comunicados-table tr,
+  .convocatoria-table tr,
+  .circulares-table tr {
+    background-color: white;
+  }
+  
+  .comunicados-table tr:nth-child(even),
+  .convocatoria-table tr:nth-child(even),
+  .circulares-table tr:nth-child(even) {
+    background-color: rgba(0, 51, 102, 0.1); /* Azul claro con opacidad */
+  }
+  
+  .comunicados-table tr:hover,
+  .convocatoria-table tr:hover,
+  .circulares-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .download-button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .download-button:hover {
+    background-color: #002244;
+  }

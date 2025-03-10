@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../styles/Header.css';
 import '../../styles/ButtonsHeader.css';
@@ -36,7 +36,7 @@ function MenuNavegacion({ text, onClick }) {
         <RxHamburgerMenu />
       </button>
       <ul className={`nav-list ${isDropdownOpen ? 'open' : ''}`}>
-        <li className="nav-item" onClick={() => handleNavigation("/")}>Comunicados</li>
+        <li className="nav-item" onClick={() => handleNavigation("/comunicados")}>Comunicados</li>
         <li className="nav-item" onClick={() => handleNavigation("/tipo-becas")}>Becas</li>
         <li className="nav-item login"
           onClick={() => setIsLoginOpen(!isLoginOpen)}
@@ -88,7 +88,7 @@ const Header = () => {
         </Link>
       </div>
       <div className='barra-navegacion-enlaces'>
-        <ButtonBarraNavegacion text='Comunicados' onClick={() => navigate('/FAQ')} />
+        <ButtonBarraNavegacion text='Comunicados' onClick={() => navigate('/comunicados')} />
         <ButtonBarraNavegacion text='Becas' onClick={() => navigate('/tipo-becas')} />
         <DropdownButton textButton='Ingresar' items={opciones} />
       </div>
