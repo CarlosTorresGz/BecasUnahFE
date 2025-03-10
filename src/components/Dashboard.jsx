@@ -178,7 +178,7 @@ export const Dashboard = ({ userType }) => {
                   case 'Reportes Recibidos':
                     return <Report userType={userType} />;
                   case 'Nueva Actividad':
-                    return <AgregarActividad />; // Agregar el componente AgregarActividad
+                    return <AgregarActividad data={dataFetch.actividades} />; // Agregar el componente AgregarActividad
                   default:
                     return userType === 'becario'
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
