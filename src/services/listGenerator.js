@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 const generatePDF = (list, nameAct) => {
     const font = "times";
@@ -21,7 +21,8 @@ const generatePDF = (list, nameAct) => {
             list["No. Cuenta"],
             list["Nombre Completo"],
             list["Correo Institucional"],
-            list.Asistencia
+            list.Asistencia ? 'Asistió' : ''
+            
         ];
         tableRows.push(listData);
     });
@@ -31,17 +32,17 @@ const generatePDF = (list, nameAct) => {
 
     // Set font and size
     doc.setFont(font, "bold")
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     doc.setTextColor(0, 0, 10);
     doc.text("Lista de Asistencia", pageWidth / 2, 20, { align: "center" });
     doc.setFontSize(12);
-    doc.text(`Actividad: ${nameAct}`, pageWidth / 2, 30, { align: "center" });
+    doc.text(`Actividad: ${nameAct}`, pageWidth / 2, 27, { align: "center" });
     
     // Tabla con autoTable
-    doc.autoTable({
+    autoTable(doc, { 
         head: [tableColumn],
         body: tableRows,
-        startY: 35,
+        startY: 30,
         styles: {
             textColor: [0, 0, 10]
         },
@@ -54,21 +55,24 @@ const generatePDF = (list, nameAct) => {
             // Adjust column widths as needed
             //0: { cellWidth: 20 }, 
             //1: { cellWidth: 40 },
-            //2: { cellWidth: 80 },
+            //2: { cellWidth: 60 },
             //3: { cellWidth: 60 },
-            //4: { cellWidth: 50 },
+            4: { cellWidth: 55, halign: 'center' },
+            fontSize: 10.5,
+            font: font,
+            cellPadding: { top: 2, right: 2, bottom: 2, left: 2 },
         },
         alternateRowStyles: {
             textColor: [10, 10, 10]
         },
         bodyStyles: {
-            fontSize: 12,
+            fontSize: 10.5,
             font: font,
-            cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
+            cellPadding: { top: 2, right: 2, bottom: 2, left: 2 },
             textColor: [0, 0, 0],
             rowPageBreak: 'avoid',
         },
-        margin: { top: 10, left: 13 },
+        margin: { top: 10, left: 10 },
     });
 
     //const dateStr = format(new Date(), "yyyyMMdd");
