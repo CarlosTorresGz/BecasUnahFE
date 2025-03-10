@@ -1,3 +1,11 @@
+.table {
+    --bs-table-striped-bg: #FFF!important;
+}
+
+.card {
+    border-color: #003b74;
+}
+
 .scrollable-card {
     max-height: 370px;
     overflow-y: auto;
@@ -11,3 +19,37 @@
     background-color: transparent
 }
 
+.table-thead {
+    background-color: #003b74;
+    text-align: center;
+}
+
+.table-tbody {
+    background-color: #FBFCF8;
+}
+
+.button-asistencia {
+    background-color: #003b74;
+    color: #FBFCF8;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 40px;
+}
+
+.button-asistencia:hover {
+    background-color: #FBFCF8 ;
+    color: #003b74;
+    border: 1px solid #003b74;
+}
+
+.list-group-item.active {
+    background-color: #003b74;
+    border-color: #003b74;
+}
+
+.form-check-input:checked {
+    background-color: #003b74;
+    border-color: #003b74;
+}
