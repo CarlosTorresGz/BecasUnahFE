@@ -10,6 +10,7 @@ import AdminActividades from './AdminActividades';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Report } from './Report';
+import AgregarActividad from './AgregarActividad'; // Importa el componente AgregarActividad
 import 'animate.css';
 import ListadoAsistencia from './ListadoAsistencia';
 
@@ -84,7 +85,7 @@ export const Dashboard = ({ userType }) => {
   const optionAdmin = [
     {
       title: 'Actividades',
-      icon: <MdEventNote  className="panel-izq-button-icono" />,
+      icon: <MdEventNote className="panel-izq-button-icono" />,
       clasification: [
         {
           label: 'Actividades Disponibles',
@@ -93,7 +94,7 @@ export const Dashboard = ({ userType }) => {
         },
         {
           label: 'Nueva Actividad',
-          onClick: () => setActiveComponent('Ingreso de Nueva Actividad'),
+          onClick: () => setActiveComponent('Nueva Actividad'),
           icon: <MdAddTask className="panel-izq-button-icono" />
         },
         {
@@ -105,7 +106,7 @@ export const Dashboard = ({ userType }) => {
     },
     {
       title: 'Reportes',
-      icon: <MdSummarize  className="panel-izq-button-icono" />,
+      icon: <MdSummarize className="panel-izq-button-icono" />,
       clasification: [
         {
           label: 'Revisión de Becas',
@@ -119,10 +120,9 @@ export const Dashboard = ({ userType }) => {
         },
       ],
     },
-
     {
       title: 'Gestión de Becarios',
-      icon: <MdPeopleAlt  className="panel-izq-button-icono" />,
+      icon: <MdPeopleAlt className="panel-izq-button-icono" />,
       clasification: [
         {
           label: 'Modificar Becario',
@@ -132,13 +132,13 @@ export const Dashboard = ({ userType }) => {
         {
           label: 'Planilla',
           onClick: () => setActiveComponent('Planilla'),
-          icon: <MdSummarize  className="panel-izq-button-icono" />
+          icon: <MdSummarize className="panel-izq-button-icono" />
         },
       ],
     },
     {
       title: 'Cerrar Sesión',
-      icon: <MdLogout  className="panel-izq-button-icono" />,
+      icon: <MdLogout className="panel-izq-button-icono" />,
       clasification: [
         {
           label: 'Cerrar Sesión',
@@ -176,7 +176,9 @@ export const Dashboard = ({ userType }) => {
                     return <MiBeca />;
                   case 'Historial de Reportes':
                   case 'Reportes Recibidos':
-                    return <Report userType={ userType } />
+                    return <Report userType={userType} />;
+                  case 'Nueva Actividad':
+                    return <AgregarActividad />; // Agregar el componente AgregarActividad
                   default:
                     return userType === 'becario'
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
