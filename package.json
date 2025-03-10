@@ -12,6 +12,7 @@
   "dependencies": {
     "@azure/storage-blob": "^12.26.0",
     "animate.css": "^4.1.1",
+    "becasunahfrontend": "file:",
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
     "react": "^19.0.0",
