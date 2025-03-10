@@ -9,7 +9,8 @@ import FAQComponent from './components/FrequentlyAskedQuestions';
 import { Toaster } from 'sonner';
 import Dashboard from './components/Dashboard';
 import { AuthProvider } from './context/AuthContext';
-import TipoBecas from './components/TipoBecas';  // Importa el nuevo componente
+import TipoBecas from './components/TipoBecas';
+import AgregarActividad from './components/AgregarActividad';  // Importa el nuevo componente
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')).render(
           {/* Rutas sin Navbar ni Footer */}
           <Route path="dashboard/administrador" element={<Dashboard userType={'admin'} />} />
           <Route path="dashboard/becario" element={<Dashboard userType={'becario'} />} />
+          <Route path="dashboard/administrador/nueva-actividad" element={<AgregarActividad />} /> {/* Nueva ruta */}
         </Routes>
       </Router>
     </AuthProvider>

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { MdEdit, MdDelete, MdCheckCircle } from "react-icons/md"; // Importa el icono
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
-import { MdEdit, MdDelete } from 'react-icons/md';
 import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
