@@ -94,3 +94,11 @@
     background-color: #117F63;
     font-weight: bold;
   }
+
+
+  .boton-guardar:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
