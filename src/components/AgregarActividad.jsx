@@ -73,6 +73,7 @@ const AgregarActividad = ({ data }) => {
     };
 
     await saveActivities(nuevaActividad);
+    setActividades((prevActividades) => [...prevActividades, nuevaActividad]);
 
     setMensajeExito(true);
     setNombre('');
