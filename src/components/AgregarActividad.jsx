@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
-import { MdCheckCircle } from "react-icons/md"; // Importa el icono
+import { MdCheckCircle } from "react-icons/md"; 
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
@@ -16,6 +16,8 @@ const AgregarActividad = ({ data }) => {
   const [foto, setFoto] = useState(null);
   const [organizador, setOrganizador] = useState('');
   const [mensajeExito, setMensajeExito] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -23,9 +25,23 @@ const AgregarActividad = ({ data }) => {
     }
   }, [data]);
 
-  const handleChangeImage = async (e) => {
-    const file = e.target.files[0]; // Obtener el archivo seleccionado
+  useEffect(() => {
+    if (Array.isArray(actividades)) {
+      const existeActividad = actividades.some(
+        (actividad) => actividad.nombre_actividad.trim().toLowerCase() === nombre.trim().toLowerCase()
+      );
+      if (existeActividad) {
+        setError('¡El nombre de la actividad ya existe!');
+        setIsDisabled(true);
+      } else {
+        setError('');
+        setIsDisabled(false);
+      }
+    }
+  }, [nombre, actividades]);
 
+  const handleChangeImage = async (e) => {
+    const file = e.target.files[0];
     if (file) {
       try {
         const imageUrl = await uploadImageToAzure(file);
@@ -41,13 +57,17 @@ const AgregarActividad = ({ data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMostrarConfirmacion(true);
+  };
+
+  const confirmarGuardar = async () => {
     const nuevaActividad = {
       nombre_actividad: nombre,
       descripcion: descripcion,
       fecha_actividad: fecha,
       numero_horas: parseInt(horasBeca),
       ubicacion: ubicacion,
-      imagen: foto, // La URL de la imagen subida
+      imagen: foto, 
       estado_actividad: 'Disponible',
       organizador: organizador
     };
@@ -55,7 +75,6 @@ const AgregarActividad = ({ data }) => {
     await saveActivities(nuevaActividad);
 
     setMensajeExito(true);
-
     setNombre('');
     setDescripcion('');
     setFecha('');
@@ -67,26 +86,13 @@ const AgregarActividad = ({ data }) => {
     setTimeout(() => {
       setMensajeExito(false);
     }, 3000);
+
+    setMostrarConfirmacion(false); // Cerrar la confirmación
   };
 
-  const [isDisabled, setIsDisabled] = useState(true);
-
-  useEffect(() => {
-    if (Array.isArray(actividades)) {
-      const existeActividad = actividades.some(
-        (actividad) => actividad.nombre_actividad.trim().toLowerCase() === nombre.trim().toLowerCase()
-      );
-      if (existeActividad) {
-        setError('¡El nombre de la actividad ya existe!');
-        setIsDisabled(true); // Deshabilita el botón si el nombre ya existe
-      }
-      else {
-        setError('');
-        setIsDisabled(false); // Habilita el botón si el nombre no existe y no está vacío
-      }
-    }
-  }, [nombre, actividades]);
-
+  const cancelarGuardar = () => {
+    setMostrarConfirmacion(false); // Cerrar la confirmación sin guardar
+  };
 
   return (
     <div className="agregar-actividad">
@@ -97,6 +103,19 @@ const AgregarActividad = ({ data }) => {
           <p>Actividad guardada con éxito</p>
         </div>
       )}
+
+      {mostrarConfirmacion && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>¿Estás seguro de que deseas guardar la actividad?</h3>
+            <div className="modal-buttons">
+              <button className="boton-confirmar" onClick={confirmarGuardar}>Sí, guardar</button>
+              <button className="boton-cancelar" onClick={cancelarGuardar}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="nombre">Nombre de la actividad</label>
@@ -168,7 +187,7 @@ const AgregarActividad = ({ data }) => {
             required
           />
         </div>
-        <button type="submit" className="boton-guardar" disabled={isDisabled }>
+        <button type="submit" className="boton-guardar" disabled={isDisabled}>
           Guardar
         </button>
       </form>
