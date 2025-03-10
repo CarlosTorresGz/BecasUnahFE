@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Report } from './Report';
 import 'animate.css';
+import ListadoAsistencia from './ListadoAsistencia';
 
 //Data de las actividades
 import fetchAllData from '../services/ActAPI'
@@ -167,6 +168,8 @@ export const Dashboard = ({ userType }) => {
                     return userType === 'becario'
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
                       : <AdminActividades data={dataFetch.actividades} />;
+                  case 'Lista de Asistencia':
+                    return <ListadoAsistencia data={dataFetch.actividades}/>
                   case 'Bienvenido ':
                     return <ProfileBecario setActiveComponent={setActiveComponent} />;
                   case 'Mi Beca':
