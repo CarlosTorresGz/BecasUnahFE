@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
-import { MdCheckCircle } from "react-icons/md"; 
+import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 const AgregarActividad = ({ data }) => {
   const [actividades, setActividades] = useState([]);
   const [error, setError] = useState('');
+  const [errorFecha, setErrorFecha] = useState('');
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fecha, setFecha] = useState('');
@@ -55,6 +56,20 @@ const AgregarActividad = ({ data }) => {
     }
   };
 
+  const handleChangeDate = (e) => {
+    const fechaActual = new Date();
+    const fechaSeleccionada = new Date(e.target.value);
+    if (fechaSeleccionada < fechaActual) {
+      setErrorFecha('¡La fecha no puede ser anterior a la actual!');
+      setIsDisabled(true);
+      setFecha(e.target.value);
+    } else {
+      setErrorFecha('');
+      setIsDisabled(false);
+      setFecha(e.target.value);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMostrarConfirmacion(true);
@@ -67,7 +82,7 @@ const AgregarActividad = ({ data }) => {
       fecha_actividad: fecha,
       numero_horas: parseInt(horasBeca),
       ubicacion: ubicacion,
-      imagen: foto, 
+      imagen: foto,
       estado_actividad: 'Disponible',
       organizador: organizador
     };
@@ -144,9 +159,10 @@ const AgregarActividad = ({ data }) => {
             type="date"
             id="fecha"
             value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
+            onChange={handleChangeDate}
             required
           />
+          {errorFecha && <p style={{ color: 'red' }}>{errorFecha}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="horasBeca">Horas Becas</label>

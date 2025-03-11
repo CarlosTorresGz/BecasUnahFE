@@ -24,8 +24,6 @@ export const fetchBecaById = async ({ beca_id }) => {
 }
 
 export const fetchStateBecaById = async ({ estado_beca_id }) => {
-    console.log('estado_beca_id: ', estado_beca_id)
-
     try {
         const response = await fetch(`${apiUrl}/api/beca_estado/${estado_beca_id}`, {
             method: "GET",
@@ -35,7 +33,6 @@ export const fetchStateBecaById = async ({ estado_beca_id }) => {
         });
 
         const data = await response.text();
-        console.log('responseData: ', data);
 
         if (!response.ok) {
             return { state: false, body: data };
