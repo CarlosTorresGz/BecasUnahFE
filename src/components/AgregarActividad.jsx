@@ -5,13 +5,14 @@ import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
 import useFormattedDate from '../hooks/useFormattedDate';
+import { date } from 'yup';
 
 
 const AgregarActividad = ({ data }) => {
   const [actividades, setActividades] = useState([]);
   const [error, setError] = useState('');
   const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState(''); 
+  const [descripcion, setDescripcion] = useState('');
   const [horasBeca, setHorasBeca] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [foto, setFoto] = useState(null);
@@ -19,16 +20,16 @@ const AgregarActividad = ({ data }) => {
   const [mensajeExito, setMensajeExito] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
-
-/*Seccion de formato de fechas*/
-const [fecha, setFecha] = useState('');
-const hoy = useFormattedDate(); // Fecha actual
-const anioDespues = useFormattedDate(1); // Un año después
+  const [fecha, setFecha] = useState();
 
 
-
-
-
+  //fecha
+  // Obtener la fecha actual
+const today = new Date();
+// Restar un día por defecto le quita un dia si hora de otro pais
+today.setDate(today.getDate() - 1);
+// Convertir a formato YYYY-MM-DD
+const previousDay = today.toISOString().split("T")[0];
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -66,19 +67,6 @@ const anioDespues = useFormattedDate(1); // Un año después
     }
   };
 
-  const handleChangeDate = (e) => {
-    // const fechaActual = new Date();
-    // const fechaSeleccionada = new Date(e.target.value);
-    // if (fechaSeleccionada < fechaActual) {
-    //   setErrorFecha('¡La fecha no puede ser anterior a la actual!');
-    //   setIsDisabled(true);
-    //   setFecha(e.target.value);
-    // } else {
-    //   setErrorFecha('');
-    //   setIsDisabled(false);
-    //   setFecha(e.target.value);
-    // }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,8 +157,10 @@ const anioDespues = useFormattedDate(1); // Un año después
             type="date"
             id="fecha"
             value={fecha}
-            min={hoy}
-            max={anioDespues}
+            min={previousDay}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() + 1.5))
+              .toISOString()
+              .split("T")[0]}
             onChange={(e) => setFecha(e.target.value)}
             required
           />
