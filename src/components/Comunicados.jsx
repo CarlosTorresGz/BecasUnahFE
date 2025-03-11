@@ -11,7 +11,6 @@ const Comunicados = () => {
     const fetchData = async () => {
       try {
         const fetchedData = await fetchAllData(); 
-        console.log('Fetched Data:', fetchedData);
 
         const groupedDataByCategory = {};
 

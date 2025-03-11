@@ -63,19 +63,20 @@
   .form-group input[type="file"] {
     padding: 3px;
   }
-  
+  /*
   button {
-    background-color: #003366; /* Color del botón */
+    background-color: #003366; /* Color del botón 
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
-  
+ 
   button:hover {
-    background-color: #002244; /* Color del botón al pasar el ratón */
+    background-color: #002244; /* Color del botón al pasar el ratón
   }
+  */
   
   /* Estilos para el botón de guardar */
   .boton-guardar {
@@ -94,7 +95,6 @@
     background-color: #117F63;
     font-weight: bold;
   }
-
 
   .boton-guardar:disabled {
     background-color: #ccc;

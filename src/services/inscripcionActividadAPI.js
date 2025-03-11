@@ -1,7 +1,6 @@
 import apiUrl from "../config";
 
 const inscripcionActividad = async ({actividadId, noCuenta}) => {
-    console.log('inscripcionActividad:', actividadId, noCuenta);
     try {
         const response = await fetch(`${apiUrl}/api/inscriptionactivity`, {
             method: 'POST',
