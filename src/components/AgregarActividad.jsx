@@ -4,14 +4,14 @@ import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
+import useFormattedDate from '../hooks/useFormattedDate';
+
 
 const AgregarActividad = ({ data }) => {
   const [actividades, setActividades] = useState([]);
   const [error, setError] = useState('');
-  const [errorFecha, setErrorFecha] = useState('');
   const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [fecha, setFecha] = useState('');
+  const [descripcion, setDescripcion] = useState(''); 
   const [horasBeca, setHorasBeca] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [foto, setFoto] = useState(null);
@@ -19,6 +19,16 @@ const AgregarActividad = ({ data }) => {
   const [mensajeExito, setMensajeExito] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+
+/*Seccion de formato de fechas*/
+const [fecha, setFecha] = useState('');
+const hoy = useFormattedDate(); // Fecha actual
+const anioDespues = useFormattedDate(1); // Un año después
+
+
+
+
+
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -57,17 +67,17 @@ const AgregarActividad = ({ data }) => {
   };
 
   const handleChangeDate = (e) => {
-    const fechaActual = new Date();
-    const fechaSeleccionada = new Date(e.target.value);
-    if (fechaSeleccionada < fechaActual) {
-      setErrorFecha('¡La fecha no puede ser anterior a la actual!');
-      setIsDisabled(true);
-      setFecha(e.target.value);
-    } else {
-      setErrorFecha('');
-      setIsDisabled(false);
-      setFecha(e.target.value);
-    }
+    // const fechaActual = new Date();
+    // const fechaSeleccionada = new Date(e.target.value);
+    // if (fechaSeleccionada < fechaActual) {
+    //   setErrorFecha('¡La fecha no puede ser anterior a la actual!');
+    //   setIsDisabled(true);
+    //   setFecha(e.target.value);
+    // } else {
+    //   setErrorFecha('');
+    //   setIsDisabled(false);
+    //   setFecha(e.target.value);
+    // }
   };
 
   const handleSubmit = async (e) => {
@@ -159,10 +169,11 @@ const AgregarActividad = ({ data }) => {
             type="date"
             id="fecha"
             value={fecha}
-            onChange={handleChangeDate}
+            min={hoy}
+            max={anioDespues}
+            onChange={(e) => setFecha(e.target.value)}
             required
           />
-          {errorFecha && <p style={{ color: 'red' }}>{errorFecha}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="horasBeca">Horas Becas</label>
