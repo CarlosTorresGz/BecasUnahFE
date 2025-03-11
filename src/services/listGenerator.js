@@ -43,17 +43,16 @@ const generatePDF = (list, nameAct) => {
         head: [tableColumn],
         body: tableRows,
         startY: 30,
+        theme: "grid",
         styles: {
             textColor: [0, 0, 10]
         },
         headStyles: {
-            fillColor: [0, 57, 107],
-            textColor: [255, 255, 255],
+            fillColor: [200, 200, 200],
             halign: 'center'
         },
         columnStyles: {
-            // Adjust column widths as needed
-            //0: { cellWidth: 20 }, 
+            0: { halign: 'center' }, 
             //1: { cellWidth: 40 },
             //2: { cellWidth: 60 },
             //3: { cellWidth: 60 },
@@ -72,7 +71,13 @@ const generatePDF = (list, nameAct) => {
             textColor: [0, 0, 0],
             rowPageBreak: 'avoid',
         },
-        margin: { top: 10, left: 10 },
+        margin: { top: 10, left: 10, right: 10, bottom: 10 },
+        didDrawCell: (data) => {
+            const { doc, cell } = data;
+            doc.setDrawColor(0, 0, 0);
+            doc.setLineWidth(0.05);
+            doc.rect(cell.x, cell.y, cell.width, cell.height, "S"); // Redibuja el borde
+        },
     });
 
     //const dateStr = format(new Date(), "yyyyMMdd");
