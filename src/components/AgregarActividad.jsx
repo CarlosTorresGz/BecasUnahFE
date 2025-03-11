@@ -4,8 +4,6 @@ import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
-import useFormattedDate from '../hooks/useFormattedDate';
-import { date } from 'yup';
 
 
 const AgregarActividad = ({ data }) => {
