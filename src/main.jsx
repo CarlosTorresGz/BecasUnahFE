@@ -2,16 +2,16 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from './components/layout/MainLayout';
-import MainContent from './components/MainContent';
-import { LoginApp } from './components/LoginApp';
-import ChangePassword from './components/ChangePassword';
-import FAQComponent from './components/FrequentlyAskedQuestions';
+import MainContent from './pages/MainContent';
+import { LoginApp } from './pages/LoginApp';
+import ChangePassword from './pages/ChangePassword';
+import FAQComponent from './pages/FrequentlyAskedQuestions';
 import { Toaster } from 'sonner';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
 import { AuthProvider } from './context/AuthContext';
-import TipoBecas from './components/TipoBecas';
-import AgregarActividad from './components/AgregarActividad';  // Importa el nuevo componente
-import Comunicados from './components/Comunicados';  // Importa el nuevo componente
+import TipoBecas from './pages/TipoBecas';
+import AgregarActividad from './pages/AgregarActividad';
+import Comunicados from './pages/Comunicados';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

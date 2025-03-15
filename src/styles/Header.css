@@ -2,12 +2,12 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   justify-items: center;
   padding: 10px 20px;
-  background-color: #FBFCF8;
-  position: static;  /*Hacer que el encabezado sea estático */
+  background-color: var(--secondary-bg-color);
+  position: static;
   top: 0;
   left: 0;
   width: 100%;
@@ -17,6 +17,9 @@
   display: flex;
   gap: 1rem;
   justify-content: flex-start;
+  flex-wrap: nowrap;
+  justify-content: center;
+  flex: 1;
 }
 
 .logo img {
@@ -28,13 +31,12 @@
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
-  position: relative;
 }
 
 .menu-button {
   background-color: transparent;
   border: none;
-  color: #20527E;
+  color: var(--primary-text-color);
   font-size: 24px;
   cursor: pointer;
 }
@@ -48,19 +50,22 @@
   gap: 5px;
   position: absolute;
   top: 50px;
-  left: 10px;
-  background: #FBFCF8;
+  left: 0;
+  background: var(--secondary-bg-color);
   border-radius: 5px;
   z-index: 1000;
+  width: 50%;
+  height: 100%;
 }
 
 .nav-list.open {
   display: flex;
 }
+
 .nav-item {
   cursor: pointer;
-  background-color: #FBFCF8;
-  color: #20527E;
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
   font-weight: bold;
   padding: 10px 15px;
   border-radius: 5px;
@@ -68,10 +73,10 @@
 }
 
 .nav-item:hover {
-  background-color: #FBFCF8;
+  background-color: var(--secondary-bg-color);
   border: 5px;
-  border-style: none none solid;
-  border-color: #20527E;    
+  border-style: none none none solid;
+  border-color: var(--primary-bg-color);    
   transition: background-color 0.3s ease;
 }
 
@@ -84,7 +89,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: #FBFCF8;
+  background: var(--secondary-bg-color);
   list-style: none;
   padding: 0;
   margin-top: 5px;
@@ -99,15 +104,15 @@
 .dropdown-login li {
   padding: 10px 15px;
   cursor: pointer;
-  background-color: #FBFCF8;
-  color: #20527E;
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
   font-weight: bold;  
 }
 
 .dropdown-login li:hover {
   border: 5px;
   border-style: none none none solid;
-  border-color: #20527E;    
+  border-color: var(--primary-bg-color);    
   transition: background-color 0.3s ease;
 }
 

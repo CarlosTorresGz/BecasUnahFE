@@ -1,82 +1,133 @@
 .comunicados-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    border: none; /* Eliminar borde */
-  }
-  
-  .comunicados-container h2 {
-    text-align: center;
-    color: #003366;
-    margin-bottom: 20px;
-  }
-  
-  .comunicados-table,
-  .convocatoria-table,
-  .circulares-table {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  border: none;
+}
+
+.comunicados-container h1 {
+  text-align: center;
+  font-weight: bold;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+}
+
+.comunicados-table,
+.convocatoria-table,
+.circulares-table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-spacing: 0;
+  border-collapse: collapse; /* Asegurarse de que no haya bordes */
+}
+
+.comunicados-table th,
+.convocatoria-table th,
+.circulares-table th,
+.comunicados-table td,
+.convocatoria-table td,
+.circulares-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: none;
+}
+
+.comunicados-table th,
+.convocatoria-table th,
+.circulares-table th {
+  background-color: var(--primary-bg-color);
+  color: var(--secondary-text-color);
+  font-weight: bold;
+}
+
+.comunicados-table td:first-child,
+.convocatoria-table td:first-child,
+.circulares-table td:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.comunicados-table tr,
+.convocatoria-table tr,
+.circulares-table tr {
+  background-color: white;
+}
+
+.comunicados-table tr:nth-child(even),
+.convocatoria-table tr:nth-child(even),
+.circulares-table tr:nth-child(even) {
+  background-color: rgba(0, 51, 102, 0.1); /* Azul claro con opacidad */
+}
+
+.comunicados-table tr:hover,
+.convocatoria-table tr:hover,
+.circulares-table tr:hover {
+  background-color: var(--secondary-bg-color);
+}
+
+.download-button {
+  background-color: var(--primary-bg-color);
+  color: var(--secondary-text-color);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.download-button:hover {
+  background-color: var(--secondary-bg-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--primary-bg-color);
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+  .comunicados-container {
     width: 100%;
-    margin-bottom: 20px;
-    border-spacing: 0;
-    border-collapse: collapse; /* Asegurarse de que no haya bordes */
+    margin: 0;
+    padding: 10px;
   }
+
+  .comunicados-container h2 {
+    font-size: 20px;
+    margin: 10px 0px;
+  }
+
+  .comunicados-table {
+    font-size: 10px;
+    margin: 0;
+  }
+
+  .comunicados-table tbody tr td svg{
+    display: none;
+  }
+
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .comunicados-container {
+    width: 100%;
+    margin: 5px;
+    
+  }
+
+  .comunicados-table {
+    font-size: 10px;
+    margin: 5px
+  }
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
   
-  .comunicados-table th,
-  .convocatoria-table th,
-  .circulares-table th,
-  .comunicados-table td,
-  .convocatoria-table td,
-  .circulares-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border: none; /* Eliminar bordes */
-  }
+}
+
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {
   
-  .comunicados-table th,
-  .convocatoria-table th,
-  .circulares-table th {
-    background-color: #003366;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .comunicados-table td:first-child,
-  .convocatoria-table td:first-child,
-  .circulares-table td:first-child {
-    display: flex;
-    align-items: center;
-  }
-  
-  .comunicados-table tr,
-  .convocatoria-table tr,
-  .circulares-table tr {
-    background-color: white;
-  }
-  
-  .comunicados-table tr:nth-child(even),
-  .convocatoria-table tr:nth-child(even),
-  .circulares-table tr:nth-child(even) {
-    background-color: rgba(0, 51, 102, 0.1); /* Azul claro con opacidad */
-  }
-  
-  .comunicados-table tr:hover,
-  .convocatoria-table tr:hover,
-  .circulares-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .download-button {
-    background-color: #003366;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-  }
-  
-  .download-button:hover {
-    background-color: #002244;
-  }
+}

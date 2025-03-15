@@ -14,7 +14,7 @@
   margin-bottom: 1%;
   padding: 0;
   padding-right: 20px;
-  color: white;
+  color: var(--secondary-text-color);
   background-color: #3AB795;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .formulario-inscripcion .form-label {
-  color: #000;
+  color: var(--fourth-text-color);
   display: inline-block;
 }
 
@@ -51,7 +51,7 @@
 
 .formulario-inscripcion label::after {
   content: " *";
-  color: red;
+  color: var(--error-text-color);
 }
 
 .formulario-inscripcion .form-check label::after {
@@ -61,16 +61,3 @@
 .formulario-inscripcion .form-check{
   color: gray;
 }
-
-.close-btn {
-  background-color: #F5BB00;
-  border: none;
-  margin-left: 1%;
-  width: 11%;
-}
-
-.close-btn:hover {
-  background-color: #EC9F05;
-}
-
-

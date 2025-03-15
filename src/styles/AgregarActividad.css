@@ -78,24 +78,6 @@
   }
   */
   
-  /* Estilos para el botón de guardar */
-  .boton-guardar {
-    width: 120px;
-    height: 50px;
-    font-size: 16px;
-    border-radius: 0.5rem;
-    padding: 10px;
-    background-color: #228B22;
-    color: #FBFCF8;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .boton-guardar:hover {
-    background-color: #117F63;
-    font-weight: bold;
-  }
-
   .boton-guardar:disabled {
     background-color: #ccc;
     color: #666;

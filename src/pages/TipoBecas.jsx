@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Accordion} from 'react-bootstrap';
-import fetchData from '../services/modalidadesBecaAPI'; // Asegúrate de usar el servicio correcto para obtener las becas
+import fetchData from '../services/modalidadesBecaAPI';
 import '../styles/FrequentlyAskedQuestions.css';
 import '../styles/TipoBecas.css';    
 

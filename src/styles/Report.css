@@ -1,17 +1,17 @@
 
 .btn-outline-secondary {
-    background-color: #20527E;
-    color: #FBFCF8;
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
 }
 
 .btn-outline-secondary:hover {
-    background-color: #FBFCF8;
-    color: #20527E;
-    border: 1px solid #20527E;
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color);
+    border: 1px solid var(--primary-bg-color);
 }
 
 .input-group {
-    border: 1px solid #20527E;
+    border: 1px solid var(--primary-bg-color);
     border-radius: 10px;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .informacion-general {
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
     text-align: center;
 }
@@ -43,7 +43,7 @@
 }
 
 .info-general-etiqueta span{
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
     text-align: left;
     
@@ -54,7 +54,7 @@
     width: 250px;
     background-color: transparent;
     border: 0;
-    border-bottom: 2px solid #20527E;
+    border-bottom: 2px solid var(--primary-bg-color);
 }
 
 .info-general-etiqueta input:focus-visible{
