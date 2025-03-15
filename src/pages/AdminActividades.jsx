@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { MdEdit, MdDelete, MdCheckCircle } from "react-icons/md"; // Importa el icono
+import { useState } from 'react';
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
 import updateActividad from '../services/updateActividad';
@@ -7,6 +6,8 @@ import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { handleDelete } from '../services/deleteActividad';
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
+import CardActivity from '../components/CardActivity';
+import { activityPropTypes } from "../util/propTypes";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -51,6 +52,13 @@ const AdminActividades = ({ data }) => {
     const [actividades, setActividades] = useState(data); //todas las actividades
     const [actividadAEliminar, setActividadAEliminar] = useState(null); //actividad a eliminar
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
+    const userRole = localStorage.getItem('userRole');
+
+    const today = new Date();
+    // Restar un día por defecto le quita un dia si hora de otro pais
+    today.setDate(today.getDate() - 1);
+    // Convertir a formato YYYY-MM-DD
+    const previousDay = today.toISOString().split("T")[0];
 
     const cancelDelete = () => {
         setActividadAEliminar(null);
@@ -107,9 +115,12 @@ const AdminActividades = ({ data }) => {
         const file = e.target.files[0]; // Obtener el archivo seleccionado
 
         if (file) {
+            // Obtener el nombre de la actividad
+            const nombreActividad = actividadSeleccionada.nombre_actividad;
+
             //subir a Azure Storage
             try {
-                const imageUrl = await uploadImageToAzure(file);
+                const imageUrl = await uploadImageToAzure(file, nombreActividad);
                 setActividadSeleccionada((prev) => ({ ...prev, imagen: imageUrl }));
                 toast.success('Imagen subida con éxito.');
             } catch (error) {
@@ -119,14 +130,14 @@ const AdminActividades = ({ data }) => {
         };
     }
 
-    return (        
+    return (
         <div className="actividades-container">
             {mensajeConfirmacion && (
                 <div className="mensaje-confirmacion">
                     {mensajeConfirmacion}
                 </div>
             )}
-            {actividadSeleccionada ? (                
+            {actividadSeleccionada ? (
                 // Vista expandida para editar actividad
                 <div className="actividad-expandida">
                     <div className='informacion-actividad'>
@@ -152,6 +163,10 @@ const AdminActividades = ({ data }) => {
                                 <input
                                     type="date"
                                     value={convertirFecha(actividadSeleccionada.fecha_actividad)}
+                                    min={previousDay}
+                                    max={new Date(new Date(actividadSeleccionada.fecha_actividad).setFullYear(new Date(actividadSeleccionada.fecha_actividad).getFullYear() + 1))
+                                        .toISOString()
+                                        .split("T")[0]}
                                     onChange={(e) => setActividadSeleccionada({ ...actividadSeleccionada, fecha_actividad: e.target.value })}
                                     className="form-input"
                                 />
@@ -205,29 +220,18 @@ const AdminActividades = ({ data }) => {
                 </div>
             ) : (
                 // Vista normal
-                <div className="actividades-list">
-                    {actividades.map((actividad) => (
-                        <div key={actividad.actividad_id} className="actividad-box">
-                            <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
-                            <div className="actividad-info">
-                                <h3>{actividad.nombre_actividad}</h3>
-                                <p><strong>Organizador:</strong> {actividad.organizador}</p>
-                                <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
-                                <p><strong>Estado de la Actividad: </strong> {actividad.estado_actividad}</p>
-                            </div>
-                            <div className="actividad-botones">
-                                <button className="boton-editar" onClick={() => handleEdit(actividad)}><MdEdit /></button>
-                                <button className="boton-borrar" onClick={() => handleDeleteActivity(actividad.actividad_id)}><MdDelete /></button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <CardActivity
+                    data={actividades}
+                    userType={userRole ? userRole : 'admin'}
+                    handleEdit={handleEdit}
+                    handleDeleteActivity={handleDeleteActivity}
+                />
             )}
 
             {actividadAEliminar && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <h3>{`¿Estás seguro de que deseas eliminar la actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
+                        <h3>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
                         <div className="modal-buttons">
                             <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
                             <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>
@@ -239,4 +243,5 @@ const AdminActividades = ({ data }) => {
     );
 };
 
+AdminActividades.propTypes = activityPropTypes;
 export default AdminActividades;

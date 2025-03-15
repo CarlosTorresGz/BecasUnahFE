@@ -1,10 +1,56 @@
 /* Estilos para el botón bloqueado */
 .btn-locked {
-    background-color: #c80a0a;
-    border-color: #C50000;
-    color: #FBFCF8;
+    background-color: var(--error-bg-color);
+    border-color: var(--error-bg-color);
+    color: var(--secondary-text-color);
     padding: 10px 25px;
     border: none;
     border-radius: 5px;
     cursor: not-allowed!important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+
+.dots {
+    width: 40px;
+    height: 19.2px;
+    margin: 10px;
+    background: radial-gradient(circle closest-side, var(--color-icon-1) 90%,#0000) 0% 50%,
+           radial-gradient(circle closest-side, var(--color-icon-1) 90%,#0000) 50%  50%,
+           radial-gradient(circle closest-side, var(--color-icon-1) 90%,#0000) 100% 50%;
+    background-size: calc(100%/3) 9.6px;
+    background-repeat: no-repeat;
+    animation: dots-7ar3yq 1.2s infinite linear;
+ }
+ 
+ @keyframes dots-7ar3yq {
+    20% {background-position: 0%   0%, 50%  50%,100%  50%;}
+    40% {background-position: 0% 100%, 50%   0%,100%  50%;}
+    60% {background-position: 0%  50%, 50% 100%,100%   0%;}
+    80% {background-position: 0%  50%, 50%  50%,100% 100%;}
+ }
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    .icon-pass-view {
+        right: 22%;
+        top: 60%;
+        height: 15px;
+    }
+  
+  }
+  
+  /* Tablet Devices */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+  }
+  
+  /* Laptop Devices */
+  @media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+  }
+  
+  /* Desktop Devices */
+  @media only screen and (min-width: 1440px) {
+    
+  }

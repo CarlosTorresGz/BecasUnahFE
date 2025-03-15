@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./auth/Button";
-import { InputField } from "./auth/InputField";
-import { AlertMessage } from "./auth/AlertMessage";
+import { Button } from "../components/auth/Button";
+import { InputField } from "../components/auth/InputField";
+import { AlertMessage } from "../components/auth/AlertMessage";
 import "../styles/ChangePassword.css";
 import EMAIL from "../img/EMAIL.svg";
 import usePasswordValidator from "../hooks/usePasswordValidator";
 import { changePassword } from "../services/userAPI";
 import { toast } from 'sonner'
-import { LuEye } from "react-icons/lu";
-import { LuEyeClosed } from "react-icons/lu";
-
 
 const ChangePassword = () => {
   const [correoInstitucional, setCorreoInstitucional] = useState("")
@@ -18,33 +15,7 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  // Estado separado para cada input
-  const [newPasswordType, setNewPasswordType] = useState('password');
-  const [newPasswordIcon, setNewPasswordIcon] = useState(<LuEyeClosed size={25} />);
-  const [confirmPasswordType, setConfirmPasswordType] = useState('password');
-  const [confirmPasswordIcon, setConfirmPasswordIcon] = useState(<LuEyeClosed size={25} />);
-
   const navigate = useNavigate();
-
-  const handleToggleNewPass = () => {
-    if (newPasswordType === 'password') {
-      setNewPasswordIcon(<LuEye size={25} />);
-      setNewPasswordType('text');
-    } else {
-      setNewPasswordIcon(<LuEyeClosed size={25} />);
-      setNewPasswordType('password');
-    }
-  };
-
-  const handleToggleConfirmNewPass = () => {
-    if (confirmPasswordType === 'password') {
-      setConfirmPasswordIcon(<LuEye size={25} />);
-      setConfirmPasswordType('text');
-    } else {
-      setConfirmPasswordIcon(<LuEyeClosed size={25} />);
-      setConfirmPasswordType('password');
-    }
-  };
   
   const { validatePassword, error } = usePasswordValidator();
 
@@ -64,7 +35,6 @@ const ChangePassword = () => {
       return;
     }
 
-    // Aquí iría la lógica para enviar la nueva contraseña al backend
     const estadoActualizacion = await changePassword({ email: correoInstitucional, newPass: newPassword });
 
     if (estadoActualizacion.state) {
@@ -103,38 +73,34 @@ const ChangePassword = () => {
             />
             <div style={{ position: 'relative' }}>
               <InputField
-                type={newPasswordType}
+                type="password"
                 value={newPassword}
                 placeholder="Contraseña Nueva"
                 onChange={handlePasswordChange}
                 className="custom-input"
+                isPassword={true}
               />
-              <span className="flex icon-pass" onClick={handleToggleNewPass}>
-                {newPasswordIcon}
-              </span>
             </div>
             <div style={{ position: 'relative' }}>
               <InputField
-                type={confirmPasswordType}
+                type="password"
                 value={confirmPassword}
                 placeholder="Confirmar Contraseña Nueva"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="custom-input"
+                isPassword={true}
               />
-              <span className="flex icon-pass" onClick={handleToggleConfirmNewPass}>
-                {confirmPasswordIcon}
-              </span>
             </div>
             <div className="button-group">
               <Button
                 type="submit"
                 text="Guardar"
-                className="custom-btn-save"
+                className="boton-guardar"
               />
               <Button
                 type="button"
                 text="Regresar"
-                className="custom-btn yellow-btn"
+                className="boton-cancelar"
                 onClick={handleBack}
               />
             </div>

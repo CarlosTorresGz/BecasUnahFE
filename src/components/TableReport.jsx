@@ -1,5 +1,6 @@
 import '../styles/TableReport.css'
 import { FaFilePdf } from "react-icons/fa6";
+import { tableReportPropTypes } from "../util/propTypes";
 
 export const TableReport = ({ data }) => {
     return (
@@ -39,4 +40,5 @@ export const TableReport = ({ data }) => {
     );
 }
 
+TableReport.propTypes = tableReportPropTypes;
 export default TableReport;

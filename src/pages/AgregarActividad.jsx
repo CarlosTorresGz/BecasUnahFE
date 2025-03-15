@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
 import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
-
+import { activityPropTypes } from "../util/propTypes";
 
 const AgregarActividad = ({ data }) => {
   const [actividades, setActividades] = useState([]);
@@ -20,14 +20,11 @@ const AgregarActividad = ({ data }) => {
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [fecha, setFecha] = useState();
 
-
-  //fecha
-  // Obtener la fecha actual
-const today = new Date();
-// Restar un día por defecto le quita un dia si hora de otro pais
-today.setDate(today.getDate() - 1);
-// Convertir a formato YYYY-MM-DD
-const previousDay = today.toISOString().split("T")[0];
+  const today = new Date();
+  // Restar un día por defecto le quita un dia si hora de otro pais
+  today.setDate(today.getDate() - 1);
+  // Convertir a formato YYYY-MM-DD
+  const previousDay = today.toISOString().split("T")[0];
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -53,8 +50,10 @@ const previousDay = today.toISOString().split("T")[0];
   const handleChangeImage = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      const nombreActividad = nombre;
+
       try {
-        const imageUrl = await uploadImageToAzure(file);
+        const imageUrl = await uploadImageToAzure(file, nombreActividad);
         console.log(imageUrl);
         toast.success('Imagen subida con éxito.');
         setFoto(imageUrl);
@@ -64,7 +63,6 @@ const previousDay = today.toISOString().split("T")[0];
       }
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,7 +119,7 @@ const previousDay = today.toISOString().split("T")[0];
           <div className="modal-content">
             <h3>¿Estás seguro de que deseas guardar la actividad?</h3>
             <div className="modal-buttons">
-              <button className="boton-confirmar" onClick={confirmarGuardar}>Sí, guardar</button>
+              <button className="boton-guardar" onClick={confirmarGuardar}>Sí, guardar</button>
               <button className="boton-cancelar" onClick={cancelarGuardar}>Cancelar</button>
             </div>
           </div>
@@ -211,4 +209,5 @@ const previousDay = today.toISOString().split("T")[0];
   );
 };
 
+AgregarActividad.propTypes = activityPropTypes;
 export default AgregarActividad;

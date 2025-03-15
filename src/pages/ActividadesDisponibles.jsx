@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { useEffect } from "react";
+import { useState } from 'react';
 import '../styles/ActividadesDisponibles.css';
-import FormularioInscripcion from './Inscripcion';
+import FormularioInscripcion from '../pages/InscripcionActividad';
+import CardActivity from '../components/CardActivity';
+import { activityPropTypes } from "../util/propTypes";
 
 const ActividadesDisponibles = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const userRole = localStorage.getItem('userRole');
+
+    const handleCardClick = (actividad) => {
+        setActividadSeleccionada(actividad);
+    };
 
     const handleInscribirseClick = () => {
         setMostrarFormulario(true);
@@ -47,18 +53,11 @@ const ActividadesDisponibles = ({ data }) => {
                 </div>
             ) : (
                 // Vista normal
-                <div className="actividades-list">
-                    {data.map((actividad) => (
-                        <div key={actividad.actividad_id} className="actividad-box" onClick={() => setActividadSeleccionada(actividad)}>
-                            <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
-                            <div className="actividad-info">
-                                <h3>{actividad.nombre_actividad}</h3>
-                                <p><strong>Organizador:</strong> {actividad.organizador}</p>
-                                <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <CardActivity
+                    data={data}
+                    userType={userRole? userRole : 'becario'}
+                    onClick={handleCardClick}
+                />
             )}
 
             {actividadSeleccionada && (
@@ -69,4 +68,5 @@ const ActividadesDisponibles = ({ data }) => {
 
 };
 
+ActividadesDisponibles.propTypes = activityPropTypes;
 export default ActividadesDisponibles;

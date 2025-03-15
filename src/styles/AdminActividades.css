@@ -8,15 +8,17 @@
     font-size: 16px;
     border-radius: 0.5rem;
     padding: 10px;
-    background-color: #FFB500;
-    color: #003b74;
+    background-color: var(--therciary-bg-color);
+    color: var(--secondary-text-color);
     border: none;
     cursor: pointer;
 }
 
 .boton-cancelar:hover {
-    background-color: #FFA500;
+    background-color: var(--secondary-bg-color);
+    color: var(--therciary-text-color);
     font-weight: bold;
+    border: 1px solid var(--therciary-bg-color);
 }
 
 .boton-guardar {
@@ -25,50 +27,35 @@
     font-size: 16px;
     border-radius: 0.5rem;
     padding: 10px;
-    background-color: #228B22;
-    color: #FBFCF8;
+    background-color: var(--success-bg-color);
+    color: var(--secondary-text-color);
     border: none;
     cursor: pointer;
 }
 
 .boton-guardar:hover {
-    background-color: #117F63;
+    background-color: var(--secondary-bg-color);
+    color: var(--success-text-color);
     font-weight: bold;
-}
-
-.boton-editar, .boton-borrar {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #FBFCF8;
-    transition: color 0.2s ease;
-}
-
-.boton-editar:hover {
-    color: #FFB500; /* Color del icono de editar al pasar el mouse */
-}
-
-.boton-borrar:hover {
-    color: #C50000; /* Color del icono de borrar al pasar el mouse */
+    border: 1px solid var(--success-bg-color);
 }
 
 .form-label {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
-    color:#FBFCF8;
+    color: var(--secondary-text-color);
 }
 
 .form-label input{    
-    color:#28272C;
+    color: var(--fourth-text-color);
     border: 0 none;
 }
 
 .form-input, .form-textarea {
     padding: 10px;
     border-radius: 0.5rem;
-    background-color:#FBFCF8;
+    background-color: var(--secondary-bg-color);
 }
 
 .form-textarea {
@@ -82,30 +69,22 @@
 }
 
 .estado-actividad {
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     gap: 10px;
 }
 
 .mensaje-confirmacion {
     position: fixed;
-    top: 10px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #28a745;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
     z-index: 1000;
-}
-
-.actividad-button {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
 }
 
 .informacion-actividad {
@@ -122,7 +101,7 @@ strong {
     display: flex;
     flex-wrap: wrap;
     border-radius: 0.5rem;
-    background-color: #FBFCF8;
+    background-color: var(--secondary-bg-color);
     box-sizing: border-box;
     box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
     padding: 0.25rem;
@@ -152,9 +131,9 @@ strong {
 }
 
 .radio-inputs .radio input:checked + .name {
-    background-color: #003b74;
+    background-color: var(--primary-bg-color);
     font-weight: 600;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
 }
 
 /* Modales */
@@ -172,7 +151,7 @@ strong {
 
 .modal-content {
     width: 40%;
-    background: #FBFCF8;
+    background: var(--secondary-bg-color);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -180,7 +159,8 @@ strong {
 }
 
 .modal-content h3 {
-    color: #003b74;
+    color: var(--primary-text-color);
+    font-size: 25px;
 }
 
 .modal-buttons {
@@ -197,34 +177,36 @@ strong {
     font-size: 16px;
     border-radius: 0.5rem;
     padding: 10px;
-    background-color: #C50000;
-    color: #FBFCF8;
+    background-color: var(--error-bg-color);
+    color: var(--secondary-text-color);
     border: none;
     cursor: pointer;
 }
 
 .boton-confirmar:hover {
-    background-color: #c80a0a;
+    background-color: var(--secondary-bg-color);
     font-weight: bold;
+    color: var(--error-text-color);
+    border: 1px solid var(--error-bg-color);
 }
 
 .notificacion-exito {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #d4edda; /* Color de fondo */
-    color: #28a745; /* Color del texto */
-    padding: 15px 30px; /* Tamaño del padding */
-    border: 1px solid #c3e6cb; /* Borde */
-    border-radius: 8px; /* Radio del borde */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: #d4edda;
+    color: #28a745;
+    padding: 15px 30px;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    font-size: 16px; /* Tamaño del texto */
-    font-weight: bold; /* Texto en negrita */
+    font-size: 16px;
+    font-weight: bold;
     display: flex;
     align-items: center;
     gap: 10px;
-    animation: fadeInOut 3s ease-in-out; /* Agregar animación */
+    animation: fadeInOut 3s ease-in-out;
 }
 
 .notificacion-exito .icono {

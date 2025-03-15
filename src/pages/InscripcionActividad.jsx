@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import "../styles/Inscripcion.css";
 import inscripcionActividad from "../services/inscripcionActividadAPI";
 import { toast } from 'sonner';
+import { activityInscriptionPropTypes } from "../util/propTypes";
 
 const FormularioInscripcion = ({ actividad, onClose }) => {
     const [formData, setFormData] = useState({
@@ -100,32 +101,6 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         required
                     />
                 </Form.Group>
-                {/*
-                <Form.Group controlId="genero">
-                    <Form.Label>4. Género</Form.Label>
-                    <Form.Text className="text-muted">
-                        Escribir su género. Masculino o Femenino.
-                    </Form.Text>
-                    <div className="d-flex gap-4 radio-buttons">
-                        <Form.Check
-                            type="radio"
-                            label="Masculino"
-                            name="genero"
-                            value="Masculino"
-                            checked={formData.genero === "Masculino"}
-                            onChange={() => setFormData({ ...formData, genero: "Masculino" })}
-                        />
-                        <Form.Check
-                            type="radio"
-                            label="Femenino"
-                            name="genero"
-                            value="Femenino"
-                            checked={formData.genero === "Femenino"}
-                            onChange={() => setFormData({ ...formData, genero: "Femenino" })}
-                        />
-                    </div>
-                </Form.Group>
-                */}
                 <Form.Group controlId="email">
                     <Form.Label>4. Correo electrónico de la UNAH</Form.Label>
                     <Form.Text className="text-muted">
@@ -140,25 +115,14 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                     />
                     {errors.email && <p className="text-danger">{errors.email}</p>}
                 </Form.Group>
-                {/*
-                <Form.Group controlId="carrera">
-                    <Form.Label>6. Soy estudiante de la siguiente carrera</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="carrera"
-                        value={formData.carrera}
-                        onChange={handleChange}
-                        required
-                    />
-                </Form.Group>
-                */}
-                <Button type="submit" variant="primary" className="w-20 mt-3">
+                <Button type="submit" variant="primary" className="w-20 m-3 boton-guardar">
                     Inscribirse
                 </Button>
-                <Button type="button" variant="secondary" className="w-20 mt-3 close-btn" onClick={onClose}>Volver</Button>
+                <Button type="button" variant="secondary" className="w-20 m-3 boton-cancelar" onClick={onClose}>Volver</Button>
             </Form>
         </div>
     );
 };
 
+FormularioInscripcion.propTypes = activityInscriptionPropTypes;
 export default FormularioInscripcion;

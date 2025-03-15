@@ -1,7 +1,8 @@
 import { AuthProvider } from "../context/AuthContext"
-import { LoginForm } from "./auth/LoginForm"
-import universityLogo from "../img/logo-unah-4.png"
+import { LoginForm } from "../components/auth/LoginForm"
+import universityLogo from "../img/logo-unah.png"
 import "../styles/LoginApp.css"
+import { loginPropTypes } from "../util/propTypes";
 
 export const LoginApp = ( {number} ) => { //number => No. Empleado | No. Cuenta
   return (
@@ -11,12 +12,12 @@ export const LoginApp = ( {number} ) => { //number => No. Empleado | No. Cuenta
           <div className="login-img p-4">
             <img src={universityLogo} alt="Logo Universidad"/>
           </div>
-
+          {/*
           <div className="d-flex align-items-center">
             <div className="vertical-line"></div>
           </div>
-
-          <div className="text-center p-4">
+          */}
+          <div className="text-center p-4 login-form">
             <h3 className="text-dark fs-6">
               PROGRAMA DE ATENCIÓN SOCIOECONÓMICA Y ESTÍMULOS EDUCATIVOS (PASEE)
             </h3>
@@ -31,3 +32,5 @@ export const LoginApp = ( {number} ) => { //number => No. Empleado | No. Cuenta
     </AuthProvider>
   )
 }
+
+LoginApp.propTypes = loginPropTypes;

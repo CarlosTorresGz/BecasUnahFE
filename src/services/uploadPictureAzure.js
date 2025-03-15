@@ -4,13 +4,13 @@ const AZURE_STORAGE_ACCOUNT_NAME = 'storageprojectunah';
 const containerName = 'contenedorpictures';
 const sasToken = 'sp=racw&st=2025-02-24T19:51:49Z&se=2025-04-25T03:51:49Z&sv=2022-11-02&sr=c&sig=EM79r3Wzz%2FuTP9LBmy0eplE6rs7vhnzdaL84Hq2vBB4%3D';  // Reemplaza con tu token SAS
 
-export const uploadImageToAzure = async (file) => {
+export const uploadImageToAzure = async (file, nombreActividad) => {
     const blobServiceClient = new BlobServiceClient(
         `https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net?${sasToken}`,
         new AnonymousCredential()
     );
     const containerClient = blobServiceClient.getContainerClient(containerName);
-    const blobName = `${Date.now()}-${file.name}`;
+    const blobName = `${nombreActividad}-${Date.now()}`;
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
     try {

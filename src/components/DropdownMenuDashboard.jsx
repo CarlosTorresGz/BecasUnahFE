@@ -1,6 +1,7 @@
 import '../styles/DropdownMenuDashboard.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { RxHamburgerMenu } from "react-icons/rx";
+import { dashboardPropTypes } from "../util/propTypes";
 
 export const DropdownMenu = ({ optionDropdownMenu }) => {
   return (
@@ -23,3 +24,5 @@ export const DropdownMenu = ({ optionDropdownMenu }) => {
     </Dropdown>
   );
 }
+
+DropdownMenu.propTypes = dashboardPropTypes;

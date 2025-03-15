@@ -8,7 +8,6 @@
 
 .profile-becario-header {
     display: flex;
-    /*background-color: #FBFCF8;*/
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -16,12 +15,12 @@
 
 .profile-becario-photo {
     border-radius: 25px;
-    border: 5px solid #FBFCF8;
+    border: 5px solid var(--secondary-bg-color);
 
 }
 
 .profile-becario-name {
-    color: #20527E;
+    color: var(--primary-text-color);
 }
 
 .profile-becario-content {
@@ -37,24 +36,6 @@
     gap: 20px;
 }
 
-.profile-becario-info-item {
-    background-color: #20527e2a;
-    width: 500px;
-    height: 50px;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.profile-becario-info-item-label {
-    color: #28272C;
-    font-weight: bold;
-}
-
-.profile-becario-info-item-value {
-    color: #20527E;
-    font-style: italic;
-}
-
 .profile-becario-action {
     display: flex;
     flex-direction: column;
@@ -67,9 +48,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #20527E;
+    background-color: var(--primary-bg-color);
     border: 0;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     width: 150px;
     height: 50px;
     padding: 10px;
@@ -77,10 +58,10 @@
 }
 
 .profile-becario-buttom-blue:hover {
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
-    background-color: #FBFCF8;
-    border: 2px solid #20527E;
+    background-color: var(--secondary-bg-color);
+    border: 2px solid var(--primary-bg-color);
     transition: width 0.5s ease-in-out;
 }
 
@@ -88,9 +69,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #C50000;
+    background-color: var(--error-bg-color);
     border: 0;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     width: 150px;
     height: 50px;
     padding: 10px;
@@ -98,10 +79,10 @@
 }
 
 .profile-becario-buttom-red:hover {
-    color: #C50000;
+    color: var(--error-text-color);
     font-weight: bold;
-    background-color: #FBFCF8;
-    border: 2px solid #C50000;
+    background-color: var(--secondary-bg-color);
+    border: 2px solid var(--error-bg-color);
     transition: width 0.5s ease-in-out;
 }
 

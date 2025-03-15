@@ -7,7 +7,6 @@ import '../styles/FrequentlyAskedQuestions.css';
 
 const FAQComponent = () => {
     const [data, setData] = useState([]);
-    const [originalData, setOriginalData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     const getData = async () => {
@@ -17,7 +16,6 @@ const FAQComponent = () => {
     
             if (Array.isArray(preguntas)) {
                 setData(preguntas);
-                setOriginalData(preguntas);
             } else {
                 console.error("Error: La API no devolvió preguntas en el formato esperado.");
             }
@@ -32,18 +30,6 @@ const FAQComponent = () => {
         getData();
     }, []);
 
-    const handleSearch = () => {
-        if (searchTerm.trim() === "") {
-            setData(originalData);
-        } else {
-            const filteredData = originalData.filter(item =>
-                item.pregunta.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.respuesta.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setData(filteredData);
-        }
-    };
-
     return (
         <div className='faq-section'>
             <h1>Preguntas Frecuentes</h1>
@@ -55,7 +41,7 @@ const FAQComponent = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outline-secondary" id="button-addon2" disabled>
+                <Button variant="outline-secondary" id="button-addon2">
                     Buscar
                 </Button>
             </InputGroup>
