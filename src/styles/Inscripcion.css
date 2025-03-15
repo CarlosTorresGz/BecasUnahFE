@@ -19,10 +19,7 @@
 }
 
 .form-main {
-  padding-left: 20px;  
-  padding-right: 20px; 
-  padding-bottom: 20px; 
-  padding-top: 0; 
+  padding: 20px; 
 }
 
 .text-center {
@@ -34,8 +31,10 @@
 }
 
 .formulario-inscripcion .form-label {
-  color: var(--fourth-text-color);
+  color: var(--primary-text-color);
   display: inline-block;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .formulario-inscripcion .form-text {
@@ -43,19 +42,11 @@
   margin-top: -1%;
 }
 
-.form-control,
-.radio-buttons {
+.form-control {
   margin-top: 2%;
   margin-bottom: 2%;
-}
-
-.formulario-inscripcion label::after {
-  content: " *";
-  color: var(--error-text-color);
-}
-
-.formulario-inscripcion .form-check label::after {
-  content: "";
+  color: var(--fourth-text-color);
+  font-weight: 450;
 }
 
 .formulario-inscripcion .form-check{
