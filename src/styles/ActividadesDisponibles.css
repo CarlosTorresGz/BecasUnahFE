@@ -5,73 +5,11 @@
   padding: 20px;
 }
 
-.actividades-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.actividad-box {
-  width: 300px;
-  height: 400px;
-  background-color: #003b74;
-  border-radius: 8px;
-  border-style: groove;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: #FBFCF8;
-  cursor: pointer;
-}
-
-.actividad-box:hover {
-  background-color: #0056b3;
-  transition-duration: 100ms;
-  transform: scale(1.05);
-}
-
-.actividad-imagen {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.actividad-info {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 10px 0;
-}
-
-h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #FBFCF8;
-  /*
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 95%;
-  */
-}
-
-p {
-  font-size: 14px;
-  margin: 5px 0;
-  color: #FBFCF8;
-}
-
 .actividad-expandida {
   display: flex;
   width: 100%;
   height: 100%;
-  background-color: #003b74;
+  background-color: var(--primary-bg-color);
   border-radius: 8px;
   border-style: groove;
   box-shadow: 0px 4px 6px rgba(40, 39, 44, 0.1);
@@ -80,10 +18,14 @@ p {
 
 .actividad-expandida p {
   font-size: 18px;
+  margin: 5px 0;
+  color: var(--secondary-text-color);
 }
 
 .actividad-expandida h3 {
-  font-size: 24px;
+  font-size: 25px;
+  margin-bottom: 10px;
+  color: var(--secondary-text-color);
 }
 
 .actividad-izquierda {
@@ -95,7 +37,7 @@ p {
   width: 25px;
   height: 25px;
   margin-top: 2%;
-  background-color: #003b74;
+  background-color: var(--primary-bg-color);
   border: none;
   border-radius: 50%;
   display: flex;
@@ -107,7 +49,7 @@ p {
 .boton-volver::before {
   content: '⇦';
   font-size: 36px;
-  color: #FFB500;
+  color: var(--therciary-text-color);
   font-weight: bold;
 }
 
@@ -136,22 +78,23 @@ p {
 }
 
 .boton-inscribirse {
-  width: 80%;
-  max-width: 600px;
-  padding: 15px;
+  width: 240px;
+  height: 50px;
+  font-size: 16px;
+  padding: 10px;
   margin-top: 4%;
-  background-color:#003b74;
-  color: #FBFCF8;
+  background-color: var(--primary-bg-color);
+  color: var(--secondary-text-color);
   font-size: 18px;  
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .boton-inscribirse:hover {
   background-color: #FBFCF8;
-  color: #003b74;
-  border: 2px solid #20527E;
+  color: var(--primary-text-color);
+  border: 2px solid var(--primary-bg-color);
   font-weight: bold;
   transition: width 0.5s ease-in-out; 
 }
@@ -167,7 +110,11 @@ p {
 
 /*Responsive*/
 /*Mobile Devices*/
-@media only screen and (max-width: 767px) { 
+@media only screen and (max-width: 767px) {
+  .actividades-container {
+    padding: 0;
+  }
+
   .actividad-izquierda p{
     font-size: clamp(10px, 12px, 14px);
   }
@@ -178,6 +125,13 @@ p {
   
   .actividad-derecha h3 {
     font-size: clamp(10px, 12px, 14px);
+  }
+
+  .boton-inscribirse {
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    padding: 10px;
   }
 
 }

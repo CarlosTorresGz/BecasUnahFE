@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MdMenu } from "react-icons/md";
 import '../styles/Sidebar.css';
 import { FaChevronDown } from "react-icons/fa";
+import { dashboardPropTypes } from "../util/propTypes";
 
 export const Sidebar = ({ optionSidebar }) => {
     const [expanded, setExpanded] = useState(false);
@@ -54,3 +55,5 @@ export const Sidebar = ({ optionSidebar }) => {
         </div>
     );
 };
+
+Sidebar.propTypes = dashboardPropTypes;

@@ -1,20 +1,12 @@
 .table {
     --bs-table-bg: 'none';
-    --bs-table-striped-color: #28272C;
-
+    --bs-table-striped-color: var(--fourth-bg-color);
 }
 
 .table>:not(caption)>*>* {
-    color: #FFB500;
+    color: var(--therciary-text-color);
 }
 
-th {
-    color: #FFB500!important;
-}
-
-td {
-    color: #28272C!important;
-}
 .mi-beca {
     display: flex;
     flex-direction: column;
@@ -23,7 +15,7 @@ td {
 }
 
 .mi-beca h1 {
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
 }
 
@@ -34,15 +26,28 @@ td {
     gap: 10px;
 }
 
-.table-calendar {
-   width: 100%; 
+.mi-beca-calendario {
+   width: 800px; 
+}
+
+.mi-beca-calendario h1{
+    display: flex;
+    justify-content: center;
 }
 
 .table-calendar-head {
-    background-color: #20527E;
-    color: #FFB500;
+    background-color: var(--primary-bg-color);
+    color: var(--therciary-text-color);
     padding: 10px;
     text-align: center;
+}
+
+.table-calendar-head th {
+    color: var(--therciary-text-color)!important;
+}
+
+.table-calendar-head td {
+    color: var(--fourth-text-color)!important;
 }
 
 .table-description {

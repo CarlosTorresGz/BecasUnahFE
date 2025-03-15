@@ -9,15 +9,15 @@ body {
     display: flex;
     flex: 1;
     column-gap: 10px;
-    /*min-height: 800px;*/
 }
 
 .panel-superior {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, #003b74, #20527E);
+    /*background: var(--primary-bg-color);*/
+    background: linear-gradient(90deg, var(--primary-bg-color), #002E5B);
     padding: 10px;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     text-align: center;
     height: 100px;
     gap: 10px;
@@ -27,6 +27,7 @@ body {
     margin-bottom: 3px;
     text-align: center;
     margin: auto;
+    font-weight: bold;
 }
 
 .panel-superior div.dropdown {
@@ -37,7 +38,8 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: linear-gradient(90deg, #003b74, #20527E);
+    /*background: var(--primary-bg-color);*/
+    background: linear-gradient(90deg, var(--primary-bg-color), #002E5B);
     width: 75px;
     padding: 20px 10px;
     gap: 10px;
@@ -49,7 +51,7 @@ body {
 
 .panel-der {
     flex: 1;
-    background-color: #FBFCF8;    
+    background-color: var(--secondary-bg-color);    
     padding: 20px;
     height: calc(100vh - 100px);
     overflow-y: auto;

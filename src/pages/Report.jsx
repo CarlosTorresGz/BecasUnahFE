@@ -1,9 +1,11 @@
 import '../styles/Report.css';
 import { useState, useEffect } from 'react';
-import { Form, Button, InputGroup, Spinner } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import { fetchReport, fetchBecarioInfoReport } from '../services/reportAPI';
-import TableReport from './TableReport';
+import TableReport from '../components/TableReport';
 import { toast } from 'sonner';
+import { dashboardPropTypes } from "../util/propTypes";
+import SpinnerLoading from '../components/SpinnerLoading';
 
 export const Report = ({ userType }) => {
     const [loading, setLoading] = useState(false);
@@ -31,7 +33,6 @@ export const Report = ({ userType }) => {
 
     useEffect(() => {
         //if (!noCuenta) return;
-
         const getData = async () => {
             setLoading(true);
             try {
@@ -95,11 +96,7 @@ export const Report = ({ userType }) => {
     return (
         <div className="report">
             {loading ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner animation="border" role="status" style={{ color: "#20527E" }}>
-                        <span className="visually-hidden" style={{ color: "#20527E" }}>Loading...</span>
-                    </Spinner>
-                </div>
+                <SpinnerLoading />
             ) : userType === 'becario' ? (
                 <TableReport data={data} />
             ) : (
@@ -167,3 +164,5 @@ export const Report = ({ userType }) => {
         </div >
     );
 };
+
+Report.propTypes = dashboardPropTypes;

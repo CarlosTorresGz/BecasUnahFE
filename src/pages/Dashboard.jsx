@@ -1,8 +1,8 @@
 import '../styles/Dashboard.css';
 import { useState } from 'react';
-import { Sidebar } from './Sidebar';
-import { DropdownMenu } from './DropdownMenuDashboard';
-import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdEdit, MdLogout, MdSummarize, MdPeopleAlt, MdAssignmentTurnedIn, MdAssignment, MdReceiptLong } from "react-icons/md";
+import { Sidebar } from '../components/Sidebar';
+import { DropdownMenu } from '../components/DropdownMenuDashboard';
+import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdLogout, MdSummarize, MdPeopleAlt, MdAssignmentTurnedIn, MdAssignment, MdReceiptLong } from "react-icons/md";
 import { ProfileBecario } from './ProfileBecario';
 import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
@@ -10,13 +10,14 @@ import AdminActividades from './AdminActividades';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Report } from './Report';
-import AgregarActividad from './AgregarActividad'; // Importa el componente AgregarActividad
+import AgregarActividad from './AgregarActividad';
 import 'animate.css';
 import ListadoAsistencia from './ListadoAsistencia';
+import { dashboardPropTypes } from "../util/propTypes";
 
 //Data de las actividades
-import fetchAllData from '../services/ActAPI'
-import fetchParcialData from '../services/ActAPIParcial'
+import fetchAllData from '../services/ActividadesAdminAPI'
+import fetchParcialData from '../services/ActividadesBecarioAPI'
 
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();
@@ -125,11 +126,6 @@ export const Dashboard = ({ userType }) => {
       icon: <MdPeopleAlt className="panel-izq-button-icono" />,
       clasification: [
         {
-          label: 'Modificar Becario',
-          onClick: () => setActiveComponent('Modificar Becario'),
-          icon: <MdEdit className="panel-izq-button-icono" />
-        },
-        {
           label: 'Planilla',
           onClick: () => setActiveComponent('Planilla'),
           icon: <MdSummarize className="panel-izq-button-icono" />
@@ -193,4 +189,5 @@ export const Dashboard = ({ userType }) => {
   );
 };
 
+Dashboard.propTypes = dashboardPropTypes;
 export default Dashboard;

@@ -1,0 +1,113 @@
+.actividades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.actividad-box {
+    width: 300px;
+    height: 400px;
+    background-color: var(--primary-bg-color);
+    border-radius: 23px;
+    border-style: groove;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+}
+
+.actividad-box:hover {
+    background-color: var(--primary-color-hover);
+    transition-duration: 100ms;
+    transform: scale(1.05);
+}
+
+.actividad-imagen {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.actividad-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 5px;
+}
+
+.actividad-info h3{
+    color: var(--secondary-text-color);
+    font-size: 25px;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.actividad-info p{
+    color: var(--secondary-text-color);
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.actividad-button {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.boton-editar, .boton-borrar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--secondary-text-color);
+    transition: color 0.2s ease;
+}
+
+.boton-editar:hover {
+    color: var(--therciary-text-color);
+}
+
+.boton-borrar:hover {
+    color: var(--error-text-color);
+}
+
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    .actividad-info h3{
+        font-size: 20px;
+    }   
+
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+ }
+
+ /* Desktop Devices */
+ @media only screen and (min-width: 1440px) {
+    
+ }

@@ -10,13 +10,13 @@
     gap: 20px;
     background: none;
     border: none;
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     font-size: 24px;
     cursor: pointer;
 }
 
 .panel-izq-button-text{
-    color: #FBFCF8;
+    color: var(--secondary-text-color);
     font-size: clamp(10px, 14px, 18px);
     text-align: left;
 }
@@ -26,8 +26,8 @@
     align-items: center;
     gap: 10px;
     padding: 10px;
-    background: #003B74;
-    color: #FBFCF8;
+    background: var(--primary-bg-color);
+    color: var(--secondary-text-color);
     border: none;
     border-radius: 8px;
     transition: background 0.3s ease, transform 0.2s ease;

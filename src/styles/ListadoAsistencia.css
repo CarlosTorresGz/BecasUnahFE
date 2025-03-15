@@ -3,7 +3,7 @@
 }
 
 .card {
-    border-color: #003b74;
+    border-color: var(--primary-bg-color);
 }
 
 .scrollable-card {
@@ -20,17 +20,17 @@
 }
 
 .table-thead {
-    background-color: #003b74;
+    background-color: var(--primary-bg-color);
     text-align: center;
 }
 
 .table-tbody {
-    background-color: #FBFCF8;
+    background-color: var(--secondary-bg-color);
 }
 
 .button-asistencia {
-    background-color: #003b74;
-    color: #FBFCF8;
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -39,17 +39,40 @@
 }
 
 .button-asistencia:hover {
-    background-color: #FBFCF8 ;
-    color: #003b74;
-    border: 1px solid #003b74;
+    background-color: var(--secondary-bg-color) ;
+    color: var(--primary-text-color);
+    border: 1px solid var(--primary-bg-color);
 }
 
 .list-group-item.active {
-    background-color: #003b74;
-    border-color: #003b74;
+    background-color: var(--primary-bg-color);
+    border-color: var(--primary-bg-color);
 }
 
 .form-check-input:checked {
-    background-color: #003b74;
-    border-color: #003b74;
+    background-color: var(--primary-bg-color);
+    border-color: var(--primary-bg-color);
 }
+
+.colorful {
+    margin: auto;
+    width: 44.8px;
+    height: 44.8px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side, var(--therciary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--primary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--therciary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--primary-bg-color) 94%,#0000),
+           #ffb500;
+    background-size: 105% 105%;
+    background-repeat: no-repeat;
+    animation: colorful-7utelwmd 2s infinite;
+ }
+ 
+ @keyframes colorful-7utelwmd {
+    0% {background-position: 50% -56px,-44.8px 50%, 50% calc(100% + 56px),calc(100% + 56px) 50%;}
+    20%, 25% {background-position: 50% -56px,-56px 50%, 50% calc(100% + 56px),50% 50%;}
+    45%, 50% {background-position: 50% -56px,-56px 50%, 50% 50% ,50% 50%;}
+    75%, 75% {background-position: 50% -56px, 50%  50%, 50% 50%,50% 50%;}
+    95%, 100% {background-position: 50%  50% , 50%  50%, 50% 50%,50% 50%;}
+ }

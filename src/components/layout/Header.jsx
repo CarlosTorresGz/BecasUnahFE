@@ -19,7 +19,8 @@ function ButtonBarraNavegacion({ text, onClick }) {
   );
 }
 
-function MenuNavegacion({ text, onClick }) {
+/* Menu Movil */
+function MenuNavegacion() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ function MenuNavegacion({ text, onClick }) {
         <li className="nav-item login"
           onClick={() => setIsLoginOpen(!isLoginOpen)}
           aria-expanded={isLoginOpen} >
-          Login <FaChevronDown />
+          Ingresar <FaChevronDown />
           <ul className={`dropdown-login ${isLoginOpen ? 'open' : ''}`}>
             <li onClick={() => handleNavigation("/login")}>Estudiantes</li>
             <li onClick={() => handleNavigation("/login/employee")}>Administradores</li>
@@ -53,24 +54,6 @@ function MenuNavegacion({ text, onClick }) {
 }
 
 const Header = () => {
-  const optionHeader = [
-    {
-      label: 'Comunicados',
-      onClick: '',
-      icon: ''
-    },
-    {
-      label: 'Becas',
-      onClick: '',
-      icon: ''
-    },
-    {
-      label: 'Iniciar Sesión',
-      onClick: '',
-      icon: ''
-    }
-  ];
-
   const navigate = useNavigate();
 
   const opciones = [
@@ -80,7 +63,7 @@ const Header = () => {
 
   return (
     <header className="header">
-      <MenuNavegacion optionDropdownMenu={optionHeader} />
+      <MenuNavegacion />
       <div className="logo">
         <Link to="/">
           <img src={VOAE} alt="Logo 1" />

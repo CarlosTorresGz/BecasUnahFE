@@ -7,6 +7,7 @@ import { InputField } from "./InputField";
 import { useNavigate } from "react-router-dom";
 import { iniciarSesionBecario, iniciarSesionEmployee } from "../../services/userAPI";
 import { toast } from 'sonner'
+import { loginPropTypes } from "../../util/propTypes";
 import '../../styles/LoginForm.css';
 
 export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
@@ -14,6 +15,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const [noCuenta, setNoCuenta] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     // Usa el hook useLoginAttempts
@@ -36,9 +38,11 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
         if (locked) {
             setError(`Demasiados intentos fallidos. Espere ${timeLeft} segundos.`);
+            setLoading(false);
             return;
         }
 
@@ -55,20 +59,22 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
             const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'admin';
 
             login(loggedUser, () => {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userRole', userRole);
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userRole', userRole);
 
-            // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
-            localStorage.removeItem("login_attempts");
-            localStorage.removeItem("locked_until");
+                // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
+                localStorage.removeItem("login_attempts");
+                localStorage.removeItem("locked_until");
 
-            toast.success('Autenticación exitosa');
+                toast.success('Autenticación exitosa');
 
-            navigate(userRole === "becario" ? "/dashboard/becario" : "/dashboard/administrador");
-        });
+                navigate(userRole === "becario" ? "/dashboard/becario" : "/dashboard/administrador");
+                setLoading(false);
+            });
         } else {
             incrementAttempts(); // Aumenta intentos si hay error
             toast.error('Los datos ingresados no son correctos.');
+            setLoading(false);
         }
 
     };
@@ -82,6 +88,7 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
                 placeholder={placeHolder}
                 onChange={(e) => setNoCuenta(e.target.value)}
                 className="custom-input"
+                isPassword={false}
             />
             <InputField
                 type="password"
@@ -89,11 +96,12 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
                 placeholder="Contraseña"
                 onChange={(e) => setPassword(e.target.value)}
                 className="custom-input"
+                isPassword={true} // Indicar que es un campo de contraseña
             />
             <Button
                 type="submit"
-                text={locked ? `Espere ${timeLeft} segundos` : "Ingresar"}
-                className={!locked ? 'custom-btn' : 'btn-locked'}
+                text={locked ? `Espere ${timeLeft} segundos` : (loading ? '' : "Ingresar")}
+                className={`${!locked && !loading ? 'custom-btn' : 'btn-locked'} ${loading ? 'dots' : ''}`}
                 disabled={locked}
             />
             {attempts > 0 && (
@@ -102,3 +110,5 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
         </form>
     );
 };
+
+LoginForm.propTypes = loginPropTypes;

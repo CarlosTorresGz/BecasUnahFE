@@ -1,17 +1,42 @@
+import { useState, useRef  } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { FaChevronDown } from "react-icons/fa";
+import { headerPropTypes } from "../../util/propTypes";
 
-function DropdownButton( {textButton, items} ) {
+function DropdownButton({ textButton, items }) {
+    const [show, setShow] = useState(false);
+    const timeoutRef = useRef(null);
+
+    const handleMouseEnter = () => {
+        clearTimeout(timeoutRef.current);
+        setShow(true);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            setShow(false);
+        }, 500);
+    };
+
+    const handleClick = (onClick) => {
+        onClick();
+        setShow(false);
+    };
+
     return (
-        <Dropdown>
+        <Dropdown
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            show={show}
+        >
             <Dropdown.Toggle className='barra-navegacion-button'>
                 {textButton} <FaChevronDown />
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {items.map((item, index) => (
-                    <Dropdown.Item
+                    <Dropdown.Item className='dropdown-item-header'
                         key={index}
-                        onClick={item.onClick}
+                        onClick={() => handleClick(item.onClick)}
                     >
                         {item.label}
                     </Dropdown.Item>
@@ -22,4 +47,5 @@ function DropdownButton( {textButton, items} ) {
     );
 }
 
+DropdownButton.propTypes = headerPropTypes;
 export default DropdownButton;

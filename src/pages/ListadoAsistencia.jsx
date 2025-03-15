@@ -1,38 +1,43 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, Table, Button, ListGroup, Form, Row, Col, InputGroup } from "react-bootstrap";
 import "../styles/ListadoAsistencia.css"
 import generatePDF from "../services/listGenerator";
 import { fetchParticipantesActividadById, actualizarAsistencia } from "../services/participantesActividadAPI";
 import { toast } from "sonner";
 import { MdSearch } from "react-icons/md";
+import { activityPropTypes } from "../util/propTypes";
 
 const ListadoAsistencia = ({ data }) => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(data[0].actividad_id);
     const [participantesActividad, setParticipantesActividad] = useState([]);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState("");
+    const [nombreActividad, setNombreActividad] = useState(data[0].nombre_actividad);
+    const [loading, setLoading] = useState(false);
 
-    const obtenerParticipantesActividad = async (actividad_id) => {
+    const obtenerParticipantesActividad = async (actividad_id, nombre_actividad) => {
         setActividadSeleccionada(actividad_id);
-
+        setNombreActividad(nombre_actividad);
+        setLoading(true);
         const response = await fetchParticipantesActividadById({ actividad_id });
 
         if (response.state) {
             setParticipantesActividad(response.body);
+            setLoading(false);
         } else {
             setParticipantesActividad([]);
             setError(response.body.error);
+            setLoading(false);
         }
     }
 
     useEffect(() => {
-        obtenerParticipantesActividad(actividadSeleccionada);
-    }, [actividadSeleccionada]);
+        obtenerParticipantesActividad(actividadSeleccionada, nombreActividad);
+    }, [actividadSeleccionada, nombreActividad]);
 
     const toggleAsistencia = async (actividad_id, no_cuenta) => {
         try {
             const asistenciaActualizada = await actualizarAsistencia({ actividadId: actividad_id, noCuenta: no_cuenta });
-
             // Actualizar el estado en el frontend
             setParticipantesActividad((prev) =>
                 prev.map((becario) =>
@@ -41,17 +46,17 @@ const ListadoAsistencia = ({ data }) => {
                         : becario
                 )
             );
-            
+
             participantesActividad.map((becario) => {
                 if (becario["No. Cuenta"] === no_cuenta) {
                     if (!becario.Asistencia) {
                         toast.success(`${asistenciaActualizada.body}`);
-                    }else {
+                    } else {
                         toast.warning(`Asistencia desmarcada.`);
                     }
                 }
             });
-            
+
         } catch (error) {
             console.error("Error al actualizar la asistencia:", error);
         }
@@ -85,17 +90,16 @@ const ListadoAsistencia = ({ data }) => {
                                         {data.filter(item =>
                                             item.nombre_actividad.toLowerCase().includes(searchTerm.trim().toLowerCase())
                                         )
+                                            .filter(actividadEstado =>
+                                                actividadEstado.estado_actividad != 'Cancelada'
+                                            )
                                             .map((actividad) => (
                                                 <ListGroup.Item
                                                     key={actividad.actividad_id}
                                                     action
                                                     active={actividadSeleccionada === actividad.actividad_id}
-                                                    onClick={() => {
-                                                        /*setActividadSeleccionada(actividad.actividad_id);
-                                                        obtenerParticipantesActividad(actividadSeleccionada);*/
-                                                        obtenerParticipantesActividad(actividad.actividad_id);
-                                                    }
-                                                    }
+                                                    onClick={() => { obtenerParticipantesActividad(actividad.actividad_id, actividad.nombre_actividad); }}
+                                                    style={{fontSize: '0.9rem'}}
                                                 >
                                                     {actividad.nombre_actividad}
                                                 </ListGroup.Item>
@@ -113,42 +117,47 @@ const ListadoAsistencia = ({ data }) => {
                 <Col md={7} className="mb-4">
                     <Card>
                         <Card.Body>
-                            <Card.Title>Lista de Asistencia</Card.Title>
-                            <div className="scrollable-card">
-                                <Table striped bordered hover>
-                                    <thead className="table-thead">
-                                        <tr>
-                                            <th>No. Cuenta</th>
-                                            <th>Becario</th>
-                                            <th>Correo Institucional</th>
-                                            <th>Asistencia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="table-tbody">
-                                        {participantesActividad && participantesActividad.length > 0 ? (
-                                            participantesActividad.map((becario) => (
-                                                <tr key={becario["No. Cuenta"]}>
-                                                    <td>{becario["No. Cuenta"]}</td>
-                                                    <td style={{ textAlign: 'left' }}>{becario["Nombre Completo"]}</td>
-                                                    <td style={{ textAlign: 'left' }}>{becario["Correo Institucional"]}</td>
-                                                    <td className="text-center">
-                                                        <Form.Check
-                                                            type="checkbox"
-                                                            checked={becario.Asistencia}
-                                                            onChange={() => toggleAsistencia(actividadSeleccionada, becario["No. Cuenta"])}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
+                            <Card.Title>{`Lista de Asistencia: ${nombreActividad}`}</Card.Title>
+                            {!loading ? (
+                                <div className="scrollable-card">
+                                    <Table striped bordered hover>
+                                        <thead className="table-thead">
                                             <tr>
-                                                <td colSpan={4} className="text-center">{error}</td>
+                                                <th>No. Cuenta</th>
+                                                <th>Becario</th>
+                                                <th>Correo Institucional</th>
+                                                <th>Asistencia</th>
                                             </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
+                                        </thead>
+                                        <tbody className="table-tbody">
+                                            {participantesActividad && participantesActividad.length > 0 ? (
+                                                participantesActividad.map((becario) => (
+                                                    <tr key={becario["No. Cuenta"]}>
+                                                        <td>{becario["No. Cuenta"]}</td>
+                                                        <td style={{ textAlign: 'left' }}>{becario["Nombre Completo"]}</td>
+                                                        <td style={{ textAlign: 'left' }}>{becario["Correo Institucional"]}</td>
+                                                        <td className="text-center">
+                                                            <Form.Check
+                                                                type="checkbox"
+                                                                checked={becario.Asistencia}
+                                                                onChange={() => toggleAsistencia(actividadSeleccionada, becario["No. Cuenta"])}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={4} className="text-center">{error}</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </Table>
 
-                            </div>
+                                </div>
+                            ) : (
+                                <div className="colorful"></div>
+                            )}
+
                         </Card.Body>
                     </Card>
                     <Button variant="primary" className="button-asistencia mt-3" onClick={() => generatePDF(participantesActividad, data.find(a => a.actividad_id === actividadSeleccionada).nombre_actividad)}>
@@ -160,4 +169,5 @@ const ListadoAsistencia = ({ data }) => {
     );
 };
 
+ListadoAsistencia.propTypes = activityPropTypes;
 export default ListadoAsistencia;

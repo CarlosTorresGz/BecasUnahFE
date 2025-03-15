@@ -1,0 +1,26 @@
+/* Variables CSS */
+:root {
+    --primary-bg-color: #003b74;
+    --secondary-bg-color: #FBFCF8;
+    --therciary-bg-color: #FFB500;
+    --fourth-bg-color: #28272C;
+    --success-bg-color: #228B22;
+    --error-bg-color: #C50000;
+
+    --primary-text-color: #003b74;
+    --secondary-text-color: #FBFCF8;
+    --therciary-text-color: #FFB500;
+    --fourth-text-color: #28272C;
+    --success-text-color: #228B22;
+    --error-text-color: #C50000;
+    
+    --color-icon-1: #003b74;
+    --color-icon-2: #FBFCF8;
+    
+    --primary-color-hover: #0056b3;
+    --secondary-color-hover: #FFF;
+    --therciary-color-hover: #FFA500;
+    --fourth-color-hover: #000;
+    --success-color-hover: #117F63;
+    --error-color-hover: #c80a0a;
+}

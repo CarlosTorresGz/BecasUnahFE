@@ -1,56 +1,55 @@
 .table-report h1 {
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
     text-align: center;
 }
 
 .table {
     --bs-table-bg: 'none';
-    --bs-table-striped-color: #28272C;
+    --bs-table-striped-color: var(--fourth-text-color);
 }
 
 .table>:not(caption)>*>* {
-    color: #FFB500;
+    color: var(--therciary-text-color);
 }
 
 th {
-    color: #FFB500!important;
+    color: var(--therciary-text-color)!important;
 }
 
 .table td {
-    color: #28272C!important;
+    color: var(--fourth-text-color)!important;
     text-align: center;
 }
 
 .table-head {
-    background-color: #20527E;
-    color: #FFB500;
+    background-color: var(--primary-bg-color);
+    color: var(--var(--therciary-text-color));
     padding: 10px;
     text-align: center;
 }
 
 .table-button {
-    background-color: #20527E;
-    color: #FFB500;
+    background-color: var(--primary-bg-color);
+    color: var(--var(--therciary-text-color));
     border: 0;
     padding: 5px;
 }
 
 .table-button {
-    background-color: #20527E;
-    color: #FBFCF8;
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
     border: 0;
     padding: 5px;
     width: 150px;
-    /*height: 50px;*/
     border-radius: 5px;
 }
 
 .table-button:hover {
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
-    background-color: #FBFCF8;
-    border: 2px solid #20527E;
+    background-color: var(--secondary-bg-color);
+    border: 2px solid var(--primary-bg-color);
     transition: width 0.5s ease-in-out;
 }
 

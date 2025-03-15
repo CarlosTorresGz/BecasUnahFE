@@ -1,8 +1,9 @@
 .barra-navegacion-button {
+    font-family: 'Poppins', sans-serif;
     width: 180px;
     height: 50px;
     background-color: transparent;
-    color: #20527E;
+    color: var(--primary-text-color);
     font-weight: bold;
     font-size: 20px;
     text-align: center;
@@ -13,10 +14,10 @@
 }
 
 .barra-navegacion-button:hover {
-    background-color: #FBFCF8;
+    background-color: var(--secondary-bg-color);
     border: 5px;
     border-style: none none solid;
-    border-color: #20527E;    
+    border-color: var(--primary-bg-color);    
     transition: background-color 0.3s ease!important;
 
 }
@@ -25,43 +26,39 @@
     background-color: transparent!important;
     width: 150px!important;
     height: 50px!important;
-    color: #20527E!important;
+    color: var(--primary-text-color)!important;
     font-weight: bold!important;
     font-size: 20px!important;
-    border: none!important;
-    
+    border: none!important;    
 }
 
 .dropdown-toggle:hover {
-    background-color: #FBFCF8!important;
+    background-color: var(--secondary-bg-color)!important;
     border: 5px!important;
     border-style: none none solid!important;
-    border-color: #20527E!important;    
+    border-color: var(--primary-bg-color)!important;    
     transition: background-color 0.3s ease!important;
-
 }
 
 .dropdown-menu {
-    background-color: #20527E!important;
-    
+    background-color: var(--primary-bg-color)!important;
+    font-size: 20px;    
 }
 
-.dropdown-item {
-    color: #FFB500!important;
+.dropdown-item-header {
     font-weight: 400!important;
     font-size: 20px!important;
 }
 
-.dropdown-item:hover {
-    background-color: #FBFCF8;
-    color: #20527E!important;
+.dropdown-item-header:hover {
+    background-color: var(--secondary-bg-color)!important;
+    color: var(--primary-text-color)!important;
     font-weight: 400!important;
-    font-size: 20px!important;
 }
 
-/* Estilos responsivos */
-@media (max-width: 576px) {
-    
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
     .logo-pasee{
         display: none;
     }
@@ -78,20 +75,22 @@
     .barra-navegacion-button {
         width: 100px;
         height: 40px;
-        font-size: 12px!important;
+        font-size: 12px;
     }
-
-}
-
-@media (min-width: 576px) and (max-width: 768px) {
-    .barra-navegacion-enlaces {
-        gap: 0.5rem;
-    }
-
+  
+  }
+  
+  /* Tablet Devices */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
     
-}
-
-@media (min-width: 768px) and (max-width: 992px) {
+  }
+  
+  /* Laptop Devices */
+  @media only screen and (min-width: 1024px) and (max-width: 1439px) {
     
+  }
+  
+  /* Desktop Devices */
+  @media only screen and (min-width: 1440px) {
     
- }
+  }
