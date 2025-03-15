@@ -1,50 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import "../styles/Inscripcion.css";
 import inscripcionActividad from "../services/inscripcionActividadAPI";
 import { toast } from 'sonner';
 import { activityInscriptionPropTypes } from "../util/propTypes";
+import { fetchPersonById } from '../services/personAPI';
 
 const FormularioInscripcion = ({ actividad, onClose }) => {
-    const [formData, setFormData] = useState({
-        nombre: "",
-        apellido: "",
-        cuenta: "",
-        email: ""
-    });
-    const [errors, setErrors] = useState('');
+    const [persona, setPersona] = useState(null);
+    const [noCuenta, setNoCuenta] = useState(null);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const getData = async () => {
+        const userLocal = JSON.parse(localStorage.getItem('user'));
+        const persona_id = userLocal ? userLocal.persona_id : null;
 
-        if (e.target.name === "email") {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@unah\.hn$/;
-            if (!emailRegex.test(e.target.value)) {
-                setErrors((prev) => ({ ...prev, email: "Debe ser un correo de la UNAH (@unah.hn)" }));
-            } else {
-                setErrors((prev) => ({ ...prev, email: "" }));
+        try {
+            const result = await fetchPersonById({ person_id: persona_id });
+            const personData = result.body;
+
+            if (result.state) {
+                setPersona(personData);
+                setNoCuenta(userLocal ? userLocal.no_cuenta : null);                
             }
-        }
+        } catch (error) {
+            console.error('Error al obtener los datos de la persona:', error);
+        }        
     };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await inscripcionActividad({ actividadId: actividad.actividad_id, noCuenta: formData.cuenta });
-        
+
+        const response = await inscripcionActividad({ actividadId: actividad.actividad_id, noCuenta: noCuenta });
+
         if (response.state) {
             toast.success(`${response.body}`);
-
-            setFormData({
-                nombre: "",
-                apellido: "",
-                cuenta: "",
-                email: ""
-            });
-
             onClose();
         } else {
             toast.info(`${response.body}`);
-        }        
+        }
     };
 
     return (
@@ -58,62 +55,41 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                 <h2 className="mb-0">Inscripción en {actividad.nombre_actividad}</h2>
             </div>
             <Form onSubmit={handleSubmit} className="form-main">
-                <span className="text-danger small">* Obligatorio</span>
                 <Form.Group controlId="nombre">
-                    <Form.Label>1. Nombre</Form.Label>
-                    <Form.Text className="text-muted">
-                        Escriba su primer nombre y segundo nombre así como aparece en su DNI. Ejemplo: Carlos Eduardo.
-                    </Form.Text>
+                    <Form.Label>1. Nombre(s)</Form.Label>
                     <Form.Control
                         type="text"
                         name="nombre"
-                        value={formData.nombre}
-                        onChange={handleChange}
-                        required
+                        value={persona ? `${persona.primer_nombre} ${persona.segundo_nombre}` : ''}
+                        readOnly={!!persona}
                     />
                 </Form.Group>
-
                 <Form.Group controlId="apellido">
-                    <Form.Label>2. Apellido</Form.Label>
-                    <Form.Text className="text-muted">
-                        Escriba su primer y segundo apellido, así como aparece en su DNI. Ejemplo: Pérez Pérez.
-                    </Form.Text>
+                    <Form.Label>2. Apellido(s)</Form.Label>
                     <Form.Control
                         type="text"
                         name="apellido"
-                        value={formData.apellido}
-                        onChange={handleChange}
-                        required
+                        value={persona ? `${persona.primer_apellido} ${persona.segundo_apellido}` : ''}
+                        readOnly={!!persona}
                     />
                 </Form.Group>
-
                 <Form.Group controlId="cuenta">
                     <Form.Label>3. Número de Cuenta de la UNAH</Form.Label>
-                    <Form.Text className="text-muted">
-                        Escribir el número de cuenta que asignó la universidad al momento de inscribirse en la carrera. Ejemplo: 20201001876.
-                    </Form.Text>
                     <Form.Control
                         type="text"
                         name="cuenta"
-                        value={formData.cuenta}
-                        onChange={handleChange}
-                        maxLength={11}
-                        required
+                        value={noCuenta ? noCuenta : ''}
+                        readOnly={!!noCuenta}
                     />
                 </Form.Group>
                 <Form.Group controlId="email">
                     <Form.Label>4. Correo electrónico de la UNAH</Form.Label>
-                    <Form.Text className="text-muted">
-                        Escribir el correo electrónico asignado por la universidad. Ejemplo: kargisshc@unah.hn
-                    </Form.Text>
                     <Form.Control
                         type="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
+                        value={persona ? persona.correo_institucional : ''}
+                        readOnly={!!persona}
                     />
-                    {errors.email && <p className="text-danger">{errors.email}</p>}
                 </Form.Group>
                 <Button type="submit" variant="primary" className="w-20 m-3 boton-guardar">
                     Inscribirse
