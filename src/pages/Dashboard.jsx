@@ -178,7 +178,7 @@ export const Dashboard = ({ userType }) => {
                   default:
                     return userType === 'becario'
                       ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                      : <AdminActividades data={dataFetch.actividades} />;
+                      : <AdminActividades />;
                 }
               })()}
             </div>

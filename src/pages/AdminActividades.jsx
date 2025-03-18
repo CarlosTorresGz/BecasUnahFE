@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
 import updateActividad from '../services/updateActividad';
@@ -8,12 +8,13 @@ import { handleDelete } from '../services/deleteActividad';
 import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
 import { activityPropTypes } from "../util/propTypes";
+import fetchAllData from '../services/ActividadesAdminAPI';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
-    const day = String(date.getDate()).padStart(2, '0'); // Asegura que tenga dos dígitos
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 };
 
@@ -34,31 +35,39 @@ const convertirFecha = (fecha) => {
         Dec: '12',
     };
     const partes = fecha.split('-');
-    // Si ya está en formato numérico (yyyy-MM-dd)
     if (partes[1]?.length === 2) {
         return fecha;
     }
     const [anio, mesTexto, dia] = partes;
     const mes = meses[mesTexto];
-    // Si el mes no existe en el objeto, devuelve la fecha original
     if (!mes) return fecha;
 
     return `${anio}-${mes}-${dia}`;
 };
 
-const AdminActividades = ({ data }) => {
+const AdminActividades = () => {
     const { user } = useAuth();
-    const [actividadSeleccionada, setActividadSeleccionada] = useState(null); //abrir o cerrar una actividad
-    const [actividades, setActividades] = useState(data); //todas las actividades
-    const [actividadAEliminar, setActividadAEliminar] = useState(null); //actividad a eliminar
+    const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
+    const [actividades, setActividades] = useState([]);
+    const [actividadAEliminar, setActividadAEliminar] = useState(null);
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
     const userRole = localStorage.getItem('userRole');
-
+    
     const today = new Date();
-    // Restar un día por defecto le quita un dia si hora de otro pais
     today.setDate(today.getDate() - 1);
-    // Convertir a formato YYYY-MM-DD
     const previousDay = today.toISOString().split("T")[0];
+
+    useEffect(() => {
+        const loadActividades = async () => {
+            try {
+                const dataFetch = await fetchAllData();
+                setActividades(dataFetch.actividades);
+            } catch (error) {
+                toast.error('Error al cargar las actividades.');
+            }
+        };
+        loadActividades();
+    }, []);
 
     const cancelDelete = () => {
         setActividadAEliminar(null);
@@ -79,7 +88,6 @@ const AdminActividades = ({ data }) => {
             setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
             setActividadAEliminar(null);
 
-            // Oculta el mensaje después de 6 segundos
             setTimeout(() => setMensajeConfirmacion(""), 6000);
 
         } else {
@@ -92,13 +100,12 @@ const AdminActividades = ({ data }) => {
     };
 
     const handleSave = async (actividadEditada) => {
-        // Formatear la fecha correctamente
         actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
 
         const response = await updateActividad(actividadEditada);
         if (response) {
             toast.success('Actividad actualizada con éxito!');
-            setActividadSeleccionada(null)
+            setActividadSeleccionada(null);
 
             const actividadesActualizadas = actividades.map((actividad) =>
                 actividad.actividad_id === actividadEditada.actividad_id ? actividadEditada : actividad
@@ -108,17 +115,13 @@ const AdminActividades = ({ data }) => {
         } else {
             toast.error('Hubo un error al actualizar la actividad.');
         }
-
     };
 
     const handleChangeImage = async (e) => {
-        const file = e.target.files[0]; // Obtener el archivo seleccionado
-
+        const file = e.target.files[0];
         if (file) {
-            // Obtener el nombre de la actividad
             const nombreActividad = actividadSeleccionada.nombre_actividad;
 
-            //subir a Azure Storage
             try {
                 const imageUrl = await uploadImageToAzure(file, nombreActividad);
                 setActividadSeleccionada((prev) => ({ ...prev, imagen: imageUrl }));
@@ -128,7 +131,7 @@ const AdminActividades = ({ data }) => {
                 toast.error('Error al subir la imagen.');
             }
         };
-    }
+    };
 
     return (
         <div className="actividades-container">
@@ -138,7 +141,6 @@ const AdminActividades = ({ data }) => {
                 </div>
             )}
             {actividadSeleccionada ? (
-                // Vista expandida para editar actividad
                 <div className="actividad-expandida">
                     <div className='informacion-actividad'>
                         <div className="actividad-izquierda">
@@ -178,7 +180,7 @@ const AdminActividades = ({ data }) => {
                                     value={actividadSeleccionada.numero_horas}
                                     onChange={(e) => setActividadSeleccionada({
                                         ...actividadSeleccionada,
-                                        numero_horas: Number(e.target.value) // Convertir a número
+                                        numero_horas: Number(e.target.value)
                                     })}
                                     className="form-input"
                                 />
@@ -199,8 +201,8 @@ const AdminActividades = ({ data }) => {
                                     <label key={estado} className="radio">
                                         <input
                                             type="radio"
-                                            name="estado_actividad" // Mantén el mismo nombre para que formen un grupo
-                                            value={estado} // Aquí asignamos correctamente el valor del estado
+                                            name="estado_actividad"
+                                            value={estado}
                                             checked={actividadSeleccionada.estado_actividad === estado}
                                             onChange={(e) =>
                                                 setActividadSeleccionada({ ...actividadSeleccionada, estado_actividad: e.target.value })
@@ -219,7 +221,6 @@ const AdminActividades = ({ data }) => {
                     </div>
                 </div>
             ) : (
-                // Vista normal
                 <CardActivity
                     data={actividades}
                     userType={userRole ? userRole : 'admin'}
