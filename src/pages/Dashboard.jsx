@@ -18,6 +18,7 @@ import { dashboardPropTypes } from "../util/propTypes";
 //Data de las actividades
 import fetchAllData from '../services/ActividadesAdminAPI'
 import fetchParcialData from '../services/ActividadesBecarioAPI'
+import SeguimientoBeca from './SeguimientoBeca';
 
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();
@@ -155,34 +156,32 @@ export const Dashboard = ({ userType }) => {
       </div>
       <div className="principal">
         <Sidebar optionSidebar={optionSidebar} />
-        <div className="panel-der">
-          <div className="panel-der-content">
-            <div id='aquiContenido'>
-              {(() => {
-                switch (activeComponent) {
-                  case 'Actividades Disponibles':
-                    return userType === 'becario'
-                      ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                      : <AdminActividades data={dataFetch.actividades} />;
-                  case 'Lista de Asistencia':
-                    return <ListadoAsistencia data={dataFetch.actividades}/>
-                  case 'Bienvenido ':
-                    return <ProfileBecario setActiveComponent={setActiveComponent} />;
-                  case 'Mi Beca':
-                    return <MiBeca />;
-                  case 'Historial de Reportes':
-                  case 'Reportes Recibidos':
-                    return <Report userType={userType} />;
-                  case 'Nueva Actividad':
-                    return <AgregarActividad data={dataFetch.actividades} />;
-                  default:
-                    return userType === 'becario'
-                      ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                      : <AdminActividades data={dataFetch.actividades} />;
-                }
-              })()}
-            </div>
-          </div>
+        <div className="panel-der" id='aquiContenido'>
+          {(() => {
+            switch (activeComponent) {
+              case 'Actividades Disponibles':
+                return userType === 'becario'
+                  ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
+                  : <AdminActividades data={dataFetch.actividades} />;
+              case 'Lista de Asistencia':
+                return <ListadoAsistencia data={dataFetch.actividades} />
+              case 'Bienvenido ':
+                return <ProfileBecario setActiveComponent={setActiveComponent} />;
+              case 'Mi Beca':
+                return <MiBeca />;
+              case 'Historial de Reportes':
+              case 'Reportes Recibidos':
+                return <Report userType={userType} />;
+              case 'Revisión de Becas':
+                return <SeguimientoBeca />
+              case 'Nueva Actividad':
+                return <AgregarActividad data={dataFetch.actividades} />;
+              default:
+                return userType === 'becario'
+                  ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
+                  : <AdminActividades data={dataFetch.actividades} />;
+            }
+          })()}
         </div>
       </div>
     </div>
