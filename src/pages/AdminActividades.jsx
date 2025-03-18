@@ -95,7 +95,7 @@ const AdminActividades = ({ data }) => {
         // Formatear la fecha correctamente
         actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
 
-        const response = updateActividad(actividadEditada);
+        const response = await updateActividad(actividadEditada);
         if (response) {
             toast.success('Actividad actualizada con éxito!');
             setActividadSeleccionada(null)
