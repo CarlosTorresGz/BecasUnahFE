@@ -2,8 +2,8 @@ import apiUrl from "../config";
 
 const saveActivities = async (actividad) => {
     try {
-        const response = await fetch(`${apiUrl}/api/postActivityAvailable/?`, {
-            method: 'PUT',
+        const response = await fetch(`${apiUrl}/api/actividad/?`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },

@@ -14,11 +14,11 @@ import AgregarActividad from './AgregarActividad';
 import 'animate.css';
 import ListadoAsistencia from './ListadoAsistencia';
 import { dashboardPropTypes } from "../util/propTypes";
+import SeguimientoBeca from './SeguimientoBeca';
 
 //Data de las actividades
 import fetchAllData from '../services/ActividadesAdminAPI'
 import fetchParcialData from '../services/ActividadesBecarioAPI'
-import SeguimientoBeca from './SeguimientoBeca';
 
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();
@@ -179,7 +179,7 @@ export const Dashboard = ({ userType }) => {
               default:
                 return userType === 'becario'
                   ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                  : <AdminActividades data={dataFetch.actividades} />;
+                  : <AdminActividades />;
             }
           })()}
         </div>
