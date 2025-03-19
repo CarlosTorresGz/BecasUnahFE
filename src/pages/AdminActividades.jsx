@@ -9,6 +9,7 @@ import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
 import { activityPropTypes } from "../util/propTypes";
 import fetchAllData from '../services/ActividadesAdminAPI';
+import { deletePictureAzure } from '../services/deletePictureAzure';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -77,10 +78,31 @@ const AdminActividades = () => {
         setActividadAEliminar(actividades.find(actividad => actividad.actividad_id === id));
     };
 
+    const eliminarImagen = () => {
+        const getBlobNameFromUrl = (url) => {
+            const cleanUrl = url.split('?')[0]; // Elimina los parámetros del SAS Token
+            return decodeURIComponent(cleanUrl.split('/').pop()); // Decodifica caracteres especiales como %20
+        };
+    
+        const imageUrl = actividadAEliminar.imagen;
+        const blobName = getBlobNameFromUrl(imageUrl);
+    
+        console.log(blobName);
+    };
+    
     const confirmDelete = async () => {
         const actividadId = actividadAEliminar.actividad_id;
         const empleadoId = user.empleado_id.trim();
+        const urlImagen = actividadAEliminar.imagen;
 
+        //Eliminar imagen
+        const cleanUrl = urlImagen.split('?')[0];
+        const blobName = decodeURIComponent(cleanUrl.split('/').pop());
+        console.log(blobName);
+
+        const deleteImagen = await deletePictureAzure(blobName);
+        console.log('deleteImagen: ', deleteImagen)
+        
         const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
 
         if (deleteActividad.state) {
@@ -93,6 +115,7 @@ const AdminActividades = () => {
         } else {
             toast.error('Error al eliminar la actividad.');
         }
+
     };
 
     const handleEdit = (actividad) => {
