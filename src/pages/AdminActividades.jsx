@@ -9,6 +9,7 @@ import { uploadImageToAzure } from '../services/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
 import { activityPropTypes } from "../util/propTypes";
 import fetchAllData from '../services/ActividadesAdminAPI';
+import { deletePictureAzure } from '../services/deletePictureAzure';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -63,6 +64,7 @@ const AdminActividades = () => {
                 const dataFetch = await fetchAllData();
                 setActividades(dataFetch.actividades);
             } catch (error) {
+                console.log('error: ', error)
                 toast.error('Error al cargar las actividades.');
             }
         };
@@ -80,6 +82,15 @@ const AdminActividades = () => {
     const confirmDelete = async () => {
         const actividadId = actividadAEliminar.actividad_id;
         const empleadoId = user.empleado_id.trim();
+        const urlImagen = actividadAEliminar.imagen;
+
+        //Eliminar imagen
+        const cleanUrl = urlImagen.split('?')[0];
+        const blobName = decodeURIComponent(cleanUrl.split('/').pop());
+        console.log(blobName);
+
+        const deleteImagen = await deletePictureAzure(blobName);
+        console.log('deleteImagen: ', deleteImagen)
 
         const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
 
