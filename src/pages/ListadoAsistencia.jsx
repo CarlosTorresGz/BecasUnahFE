@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, Table, Button, ListGroup, Form, Row, Col, InputGroup } from "react-bootstrap";
 import "../styles/ListadoAsistencia.css"
-import generatePDF from "../services/listGenerator";
+import generatePDF from "../util/listGenerator";
 import { fetchParticipantesActividadById, actualizarAsistencia } from "../services/participantesActividadAPI";
 import { toast } from "sonner";
 import { MdSearch } from "react-icons/md";
