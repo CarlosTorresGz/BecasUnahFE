@@ -5,11 +5,11 @@ import updateActividad from '../services/updateActividad';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { handleDelete } from '../services/deleteActividad';
-import { uploadImageToAzure } from '../services/uploadPictureAzure';
+import { uploadImageToAzure } from '../util/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
 import { activityPropTypes } from "../util/propTypes";
 import fetchAllData from '../services/ActividadesAdminAPI';
-import { deletePictureAzure } from '../services/deletePictureAzure';
+import { deletePictureAzure } from '../util/deletePictureAzure';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
