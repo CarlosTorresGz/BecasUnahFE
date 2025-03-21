@@ -2,9 +2,11 @@ import '../styles/SeguimientoBeca.css';
 import { useState, useEffect } from 'react';
 import { SearchBar } from '../components/SearchBar';
 import { InfoItem } from '../components/InformacionItem';
-import generatePDF from '../services/reportSeguimientoGenerator';
+import generatePDF from '../util/reportSeguimientoGenerator';
 import { toast } from 'sonner';
-import { uploadPDFAzure } from '../services/uploadPDFAzure';
+import { uploadPDFAzure } from '../util/uploadPDFAzure';
+import { sendEmail } from '../services/sendEmail';
+import { handleLoginRedirect } from '../util/handleLoginRedirect ';
 
 function nameBecario(nombres, apellidos) {
     let nombre = nombres.split(' ');
@@ -67,7 +69,7 @@ export const SeguimientoBeca = () => {
         ],
 
     });
-    
+
     const [searchNoCuenta, setSearchNoCuenta] = useState('');
     const [selectedPeriodo, setSelectedPeriodo] = useState('I Periodo');
     const [anioPeriodo, setAnioPeriodo] = useState(date.getFullYear());
@@ -83,6 +85,7 @@ export const SeguimientoBeca = () => {
             //const result = await fetchReport({ no_cuenta: noCuenta });
             //setDataSeguimiento(result);
 
+            toast.success("Datos obtenidos con éxito");
         } catch (error) {
             console.error('Error al obtener los datos:', error);
             setError(error.message || 'Error al obtener los datos.');
@@ -135,23 +138,54 @@ export const SeguimientoBeca = () => {
         setActiveTab(tabId);
     };
 
+    useEffect(() => {
+        const getAuthCodeFromUrl = () => {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("code"); // Extrae el código de autenticación
+        };
+
+        const authCode = getAuthCodeFromUrl();
+        if (authCode) {
+            sessionStorage.setItem("authCode", authCode);
+            console.log("Authorization Code guardado:", authCode);
+        }
+    }, []);
+
     const handleCreateAndSaveReport = async (dataSeguimiento, newStateBeca, observacionCambioEstado, observacion) => {
-        console.log("Generando Reporte...");
-        console.log("Datos del seguimiento:", dataSeguimiento);
-        console.log("Nuevo Estado de Beca:", newStateBeca);
-        console.log("Motivo del Cambio:", observacionCambioEstado);
-        console.log("Observaciones Generales:", observacion);
+        try {
+            console.log("Generando Reporte...");
+            console.log("Datos del seguimiento:", dataSeguimiento);
+            console.log("Nuevo Estado de Beca:", newStateBeca);
+            console.log("Motivo del Cambio:", observacionCambioEstado);
+            console.log("Observaciones Generales:", observacion);
 
-        //creamos el pdf
-        const pdfBlob = generatePDF(dataSeguimiento, newStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo);
-        console.log('pdfBlob: ', pdfBlob)
+            //creamos el pdf
+            const pdfBlob = generatePDF(dataSeguimiento, newStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo);
+            //Guardamos el PDF en Azure Storage
+            const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo);
+            console.log('pdfURL: ', pdfURL)
 
-        //Guardamos el PDF en Azure Storage
-        const pdfURL = uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo);
-        console.log('pdfURL: ', pdfURL)
+            //Enviar el PDF
+            const authCode = sessionStorage.getItem("authCode");
+            if (!authCode) {
+                await handleLoginRedirect();
+            }
 
-        //Guardar el reporte en la base de datos...
+            console.log("AuthCode almacenado:", authCode);
+            await sendEmail({ email: 'rodrigo.funes@unah.hn', pdfURL })
 
+            // Mostrar mensaje de éxito con toast
+            toast.success("Reporte generado y enviado con éxito");
+
+            sessionStorage.removeItem("authCode");
+
+            //Guardar el reporte en la base de datos...
+
+
+        } catch (error) {
+            console.error("Error al generar el reporte o enviar el correo:", error);
+            toast.error("Hubo un error al generar o enviar el reporte.");
+        }
     };
 
     return (
@@ -305,8 +339,8 @@ export const SeguimientoBeca = () => {
 
                                     ))}
                                     <tr>
-                                        <td style={{borderTop: '1px solid var(--primary-bg-color)'}} colSpan={3}>Total Horas</td>
-                                        <td style={{borderTop: '1px solid var(--primary-bg-color)'}}>{totalHoras}</td>
+                                        <td style={{ borderTop: '1px solid var(--primary-bg-color)' }} colSpan={3}>Total Horas</td>
+                                        <td style={{ borderTop: '1px solid var(--primary-bg-color)' }}>{totalHoras}</td>
                                     </tr>
                                 </tbody>
                             </table>
