@@ -89,10 +89,3 @@ export const headerPropTypes = {
     textButton: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
 };
-
-export const searchBarPropTypes = {
-    text: PropTypes.string.isRequired,
-    searchTerm: PropTypes.string.isRequired,
-    setSearchTerm: PropTypes.func.isRequired,
-    onSearch: PropTypes.func
-};

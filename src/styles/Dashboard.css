@@ -57,6 +57,12 @@ body {
     overflow-y: auto;
 }
 
+.panel-der-content {
+    flex: 1;
+    margin: 10px;
+}
+
+
 /*Responsive*/
 /*Mobile Devices*/
 @media only screen and (max-width: 767px) { 
