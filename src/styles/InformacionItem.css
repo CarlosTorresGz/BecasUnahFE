@@ -1,17 +1,23 @@
 .profile-becario-info-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
     background-color: #20527e2a;
     width: 500px;
     height: 55px;
     padding: 10px;
     border-radius: 0.5rem;
+    font-size: 18px;
 }
 
 .profile-becario-info-item-label {
-    color: var(--fourth-text-color);
+    color: var(--primary-text-color);
     font-weight: bold;
 }
 
 .profile-becario-info-item-value {
-    color: var(--primary-text-color);
+    color: var(--fourth-text-color);
     font-style: italic;
+    font-weight: 500;
 }
