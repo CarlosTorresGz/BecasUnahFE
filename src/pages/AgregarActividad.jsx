@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
 import { MdCheckCircle } from "react-icons/md";
-import { uploadImageToAzure } from '../util/uploadPictureAzure';
-import saveActivities from '../services/saveActivities';
+import { uploadImageToAzure } from '../services/uploadPictureAzure';
+import saveActivities from '../services/updateActividad';
 import { toast } from 'sonner';
 import { activityPropTypes } from "../util/propTypes";
 

@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@azure/msal-browser": "^4.8.0",
-    "@azure/msal-react": "^3.0.7",
     "@azure/storage-blob": "^12.26.0",
     "animate.css": "^4.1.1",
     "becasunahfrontend": "file:",
