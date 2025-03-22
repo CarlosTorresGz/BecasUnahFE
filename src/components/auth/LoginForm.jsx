@@ -9,6 +9,7 @@ import { iniciarSesionBecario, iniciarSesionEmployee } from "../../services/user
 import { toast } from 'sonner'
 import { loginPropTypes } from "../../util/propTypes";
 import '../../styles/LoginForm.css';
+import obtenerUsuario from "../../util/jwtDecode";
 
 export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
     const { login } = useAuth();
@@ -55,7 +56,10 @@ export const LoginForm = ({ placeHolder = "No. Cuenta" }) => {
         }
 
         if (statusLogin.state) { //exito
-            const loggedUser = placeHolder === 'No. Cuenta' ? statusLogin.data.becario : statusLogin.data.employee;
+            localStorage.setItem("token", statusLogin.data.token);
+
+            //const loggedUser = placeHolder === 'No. Cuenta' ? statusLogin.data.becario : statusLogin.data.employee;
+            const loggedUser = obtenerUsuario();
             const userRole = placeHolder === 'No. Cuenta' ? 'becario' : 'admin';
 
             login(loggedUser, () => {

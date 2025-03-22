@@ -5,6 +5,7 @@ import { InfoItem } from '../components/InformacionItem';
 import generatePDF from '../services/reportSeguimientoGenerator';
 import { toast } from 'sonner';
 import { uploadPDFAzure } from '../services/uploadPDFAzure';
+import { sendEmail } from '../util/sendEmail';
 
 function nameBecario(nombres, apellidos) {
     let nombre = nombres.split(' ');
@@ -147,9 +148,11 @@ export const SeguimientoBeca = () => {
         console.log('pdfBlob: ', pdfBlob)
 
         //Guardamos el PDF en Azure Storage
-        const pdfURL = uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo);
+        const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo);
         console.log('pdfURL: ', pdfURL)
 
+        //enviar pdf
+        await sendEmail({ email: 'rodrigo.funes@unah.hn', pdfURL})
         //Guardar el reporte en la base de datos...
 
     };

@@ -2,8 +2,9 @@ import apiUrl from "../config";
 
 export const iniciarSesionBecario = async ({noCuenta, password}) => {
     try {        
-        const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
-            method: "POST",
+        //const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
+        const response = await fetch(`http://localhost:7071/api/auth/loginBecario`, {
+                method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -11,7 +12,7 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
         });
 
         const data = await response.json();
-        
+        console.log('data: ', data)
         if (!data.status) {
             return { state: false, becario: {descripcion: "Error en la autenticación"} };
         }
@@ -26,7 +27,9 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
 
 export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
     try {        
-        const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
+        //const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
+        const response = await fetch(`http://localhost:7071/api/auth/loginEmployee`, {
+
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

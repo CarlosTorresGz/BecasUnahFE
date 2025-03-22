@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.8.0",
+    "@azure/msal-react": "^3.0.7",
     "@azure/storage-blob": "^12.26.0",
     "animate.css": "^4.1.1",
     "becasunahfrontend": "file:",
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
