@@ -6,7 +6,7 @@ import generatePDF from '../util/reportSeguimientoGenerator';
 import { toast } from 'sonner';
 import { uploadPDFAzure } from '../util/uploadPDFAzure';
 import { sendEmail } from '../services/sendEmail';
-import { handleLoginRedirect } from '../util/handleLoginRedirect ';
+import { sendEmailACS } from '../services/sendEmailACS';
 
 function nameBecario(nombres, apellidos) {
     let nombre = nombres.split(' ');
@@ -18,6 +18,7 @@ export const SeguimientoBeca = () => {
     const [activeTab, setActiveTab] = useState('generalInformation');
     const date = new Date();
     const [loading, setLoading] = useState(false);
+    const [sendEmail, setSendEmail] = useState(false);
     const [error, setError] = useState(null);
 
     //Aqui se guardaria toda la informacion recibida en caso de ser un solo JSON
@@ -138,19 +139,6 @@ export const SeguimientoBeca = () => {
         setActiveTab(tabId);
     };
 
-    useEffect(() => {
-        const getAuthCodeFromUrl = () => {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("code"); // Extrae el código de autenticación
-        };
-
-        const authCode = getAuthCodeFromUrl();
-        if (authCode) {
-            sessionStorage.setItem("authCode", authCode);
-            console.log("Authorization Code guardado:", authCode);
-        }
-    }, []);
-
     const handleCreateAndSaveReport = async (dataSeguimiento, newStateBeca, observacionCambioEstado, observacion) => {
         try {
             console.log("Generando Reporte...");
@@ -166,18 +154,19 @@ export const SeguimientoBeca = () => {
             console.log('pdfURL: ', pdfURL)
 
             //Enviar el PDF
-            const authCode = sessionStorage.getItem("authCode");
-            if (!authCode) {
-                await handleLoginRedirect();
-            }
-
-            console.log("AuthCode almacenado:", authCode);
-            await sendEmail({ email: 'rodrigo.funes@unah.hn', pdfURL })
+            setSendEmail(true);
+            const name = dataSeguimiento ? nameBecario(dataSeguimiento.informacionGeneral.nombre, dataSeguimiento.informacionGeneral.apellido) : ''
+            await sendEmailACS({
+                email: 'rodrigo.funes@unah.hn',
+                pdfURL,
+                name,
+                periodo: selectedPeriodo,
+                anio: anioPeriodo
+            })
 
             // Mostrar mensaje de éxito con toast
             toast.success("Reporte generado y enviado con éxito");
-
-            sessionStorage.removeItem("authCode");
+            setSendEmail(false);
 
             //Guardar el reporte en la base de datos...
 
@@ -356,12 +345,21 @@ export const SeguimientoBeca = () => {
                             <textarea
                                 value={observacion}
                                 onChange={e => setObservacion(e.target.value)}></textarea>
+
                             <button
-                                className='boton-guardar mt-3'
+                                className={`boton-guardar mt-3 ${sendEmail ? '' : ''}`}
                                 onClick={() => handleCreateAndSaveReport(dataSeguimiento, newStateBeca, observacionCambioEstado, observacion)}
                             >
-                                Generar Reporte
+                                {sendEmail ? (
+                                    <span className="dotsSending">
+                                        Enviando <span className="dotSending">.</span><span className="dotSending">.</span><span className="dotSending">.</span>
+                                    </span>
+                                ) : (
+                                    "Generar Reporte"
+                                )}
                             </button>
+
+
                         </>
                     ) : (
                         <p>Ingrese un No. cuenta para mostrar la información.</p>
