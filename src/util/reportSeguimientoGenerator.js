@@ -276,7 +276,7 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
     
     const pdfBlob = doc.output('blob');
     const blobUrl = URL.createObjectURL(pdfBlob);
-    window.open(blobUrl);
+    //window.open(blobUrl);
     return pdfBlob;
 };
 

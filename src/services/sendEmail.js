@@ -5,23 +5,21 @@ export const sendEmail = async ({ email, pdfURL }) => {
     console.log('correo: ', email)
     console.log('pdfURL: ', pdfURL)
 
-    const authCode = sessionStorage.getItem("authCode"); // Obtener el código almacenado
-
-    if (!authCode) {
-        toast.error("No hay authCode.");
-        return;
-    }
     try {
-        const response = await fetch(`${apiUrl}/api/sendEmail?`, {
-        //const response = await fetch(`http://localhost:7071/api/sendEmail`, { //Para Desarrollo
+        //const response = await fetch(`${apiUrl}/api/sendEmail?`, {
+        const response = await fetch(`http://localhost:7071/api/sendEmail`, { //Para Desarrollo
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                correo: email,
-                authCode: authCode, // Code de inicio sesion
+                persona_id: 26,
+                fromEmail: "djcasco@unah.hn",
+                toEmail: email,
                 pdfURL: pdfURL, // URL del PDF en Azure Storage
+                subject: "Reporte Seguimiento Academico",
+                bodyMessage: "Adjunto se envia el reporte",
+                contrasena: "$2b$10$W5LidGE4fY8T/dCCsDJCMeYy9ng9HV/NCrf0WkZUhhyjJ0vMUwNbC"
             }),
         });
 
