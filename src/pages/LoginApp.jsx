@@ -3,6 +3,7 @@ import { LoginForm } from "../components/auth/LoginForm"
 import universityLogo from "../img/logo-unah.png"
 import "../styles/LoginApp.css"
 import { loginPropTypes } from "../util/propTypes";
+import LoginButton from "../components/LoginButton";
 
 export const LoginApp = ( {number} ) => { //number => No. Empleado | No. Cuenta
   return (
@@ -24,6 +25,7 @@ export const LoginApp = ( {number} ) => { //number => No. Empleado | No. Cuenta
             <p>Iniciar Sesión</p>
             <div>
               <LoginForm placeHolder={number}/>
+              {/*{number === 'No. Empleado' ? <LoginButton/> : ''}*/}
             </div>
             <a href="/change-password" className="forgot-password">Cambio de contraseña</a>
           </div>
