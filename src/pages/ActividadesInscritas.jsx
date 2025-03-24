@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/ActividadesInscritas.css";
 import ActividadesInscritasData from "../services/ActividadesInscritasBecario";
 import { useAuth } from '../context/AuthContext';
+import ActividadesCancelarInscripcion from "../services/ActividadesCancelarInscripcion";
 
 const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, imagen, organizador, ubicacion, onCancelar, deshabilitarHover }) => {
   return (
@@ -26,6 +27,7 @@ const ActividadesInscritas = () => {
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
   const [mensajeExito, setMensajeExito] = useState("");
+  const [mensajeError, setMensajeError] = useState("");
 
   useEffect(() => {
     const loadActividades = async () => {
@@ -41,26 +43,40 @@ const ActividadesInscritas = () => {
     };
 
     loadActividades();
-  }, []);
+  }, [user?.no_cuenta]);  // Recargar cuando cambia el usuario
 
   const handleCancelarClick = (actividad) => {
     setActividadConfirmacion(actividad);
     setMostrarConfirmacion(true);
   };
 
-  const handleConfirmar = () => {
-    setActividades((prevActividades) =>
-      prevActividades.filter((actividad) => actividad.nombre_actividad !== actividadConfirmacion.nombre_actividad)
-    );
+  const handleCancelar = () => {
+
     setActividadConfirmacion(null);
     setMostrarConfirmacion(false);
-    setMensajeExito("¡Actividad cancelada con éxito!");
-    setTimeout(() => setMensajeExito(""), 3000);
+    setMensajeError(""); // Limpiar mensaje de error si se cierra la confirmación
   };
 
-  const handleCancelar = () => {
-    setActividadConfirmacion(null);
-    setMostrarConfirmacion(false);
+  const handleConfirmar = async () => {
+    try {
+      // Llamada al servicio para cancelar la inscripción en la base de datos
+      console.log("actividad Id es: ",actividadConfirmacion.actividad_id)
+      await ActividadesCancelarInscripcion(actividadConfirmacion.actividad_id, user.becario_id);
+      
+      // Eliminar la actividad de la lista local si la cancelación fue exitosa
+      setActividades((prevActividades) =>
+        prevActividades.filter((actividad) => actividad.nombre_actividad !== actividadConfirmacion.nombre_actividad)
+      );
+      
+      setActividadConfirmacion(null);
+      setMostrarConfirmacion(false);
+      setMensajeExito("¡Actividad cancelada con éxito!");
+      setTimeout(() => setMensajeExito(""), 3000); // Mensaje de éxito por 3 segundos
+    } catch (error) {
+      console.error("Error al cancelar la inscripción:", error);
+      setMensajeError("Hubo un error al cancelar la inscripción.");
+      setTimeout(() => setMensajeError(""), 3000); // Mensaje de error por 3 segundos
+    }
   };
 
   return (
@@ -89,7 +105,7 @@ const ActividadesInscritas = () => {
       {mostrarConfirmacion && (
         <div className="confirmacion-global">
           <div className="confirmacion">
-            <p>¿Estás seguro de cancelar la actividad inscrita?</p>
+            <p>¿Estás seguro de cancelar la actividad inscrita: <strong>{actividadConfirmacion.nombre_actividad}</strong>?</p>
             <div className="confirmacion-botones">
               <button className="confirm-button" onClick={handleConfirmar}>
                 Sí
@@ -103,6 +119,7 @@ const ActividadesInscritas = () => {
       )}
 
       {mensajeExito && <div className="mensaje-exito">{mensajeExito}</div>}
+      {mensajeError && <div className="mensaje-error">{mensajeError}</div>} {/* Mostrar mensaje de error */}
     </div>
   );
 };
