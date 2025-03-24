@@ -1,0 +1,72 @@
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    background-color: #f0f0f5; /* Fondo general */
+    padding: 20px;
+  }
+  
+  .card {
+    width: 300px;
+    height: auto; /* Ajusta automáticamente la altura según el contenido */
+    min-height: 400px; /* Hace la tarjeta más alta */
+    border: 4px solid transparent; /* Borde transparente inicialmente */
+    border-radius: 8px;
+    background-color: #003366; /* Azul oscuro para el fondo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    padding: 20px; /* Agrega más espacio interno */
+    padding-bottom: 80px; /* Espacio reservado para el botón */
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s, background-color 0.3s; /* Animación suave */
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Aumentar tamaño ligeramente */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    background-color: #1a73e8; /* Cambiar a azul más brillante al pasar el mouse */
+    border-color: #28a745; /* Aparece el borde verde */
+  }
+  
+  .card-image {
+    width: 90%;
+    height: auto;
+    margin: 10px auto; /* Espaciado arriba y centrado horizontal */
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff; /* Texto blanco */
+    margin: 10px 0;
+  }
+  
+  .card-date-activity,
+  .card-date-inscription,
+  .card-scholar-hours {
+    font-size: 0.9rem;
+    color: #e0e0e0; /* Texto gris claro */
+    margin: 5px 0 15px; /* Espaciado adicional entre el texto y el botón */
+  }
+  
+  .card-cancel-button {
+    position: absolute;
+    bottom: 10px; /* Fijado cerca de la parte inferior */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #cc0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .card-cancel-button:hover {
+    background-color: #990000;
+  }
+  
