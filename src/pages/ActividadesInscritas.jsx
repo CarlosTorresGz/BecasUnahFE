@@ -53,19 +53,24 @@ const ActividadesInscritas = () => {
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
   const [mensajeExito, setMensajeExito] = useState("");
 
+  // Función para activar el cuadro de confirmación
   const handleCancelarClick = (actividad) => {
-    setActividadConfirmacion(actividad);
-    setMostrarConfirmacion(true);
+    setActividadConfirmacion(actividad); // Guarda la actividad seleccionada
+    setMostrarConfirmacion(true); // Muestra el cuadro de confirmación
   };
 
+  // Función para confirmar y eliminar la actividad
   const handleConfirmar = () => {
-    setActividades(actividades.filter((actividad) => actividad.id !== actividadConfirmacion.id)); // Elimina la actividad
-    setActividadConfirmacion(null);
-    setMostrarConfirmacion(false);
-    setMensajeExito("¡Actividad cancelada con éxito!"); // Muestra el mensaje de éxito
-    setTimeout(() => setMensajeExito(""), 3000); // Oculta el mensaje después de 3 segundos
+    setActividades((prevActividades) =>
+      prevActividades.filter((actividad) => actividad.id !== actividadConfirmacion.id)
+    );
+    setActividadConfirmacion(null); // Limpia la actividad seleccionada
+    setMostrarConfirmacion(false); // Oculta el cuadro de confirmación
+    setMensajeExito("¡Actividad cancelada con éxito!");
+    setTimeout(() => setMensajeExito(""), 3000); // Oculta el mensaje de éxito después de 3 segundos
   };
 
+  // Función para cancelar el cuadro de confirmación
   const handleCancelar = () => {
     setActividadConfirmacion(null);
     setMostrarConfirmacion(false); // Oculta el cuadro de confirmación
