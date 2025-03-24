@@ -1,7 +1,8 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo) => {
+const generatePDF = (dataSeguimiento, actividadesFiltradas, oldStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo) => {
+    console.log('actividadesFiltradas: ', actividadesFiltradas)
     let lastY = 50;
     let totalHoras = 0;
 
@@ -25,19 +26,19 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
     const tableActividadesRows = [];
 
     const tableInformacionGeneralRows = [
-        ["Nombre del Becario:", `${dataSeguimiento.informacionGeneral.nombre} ${dataSeguimiento.informacionGeneral.apellido}`],
-        ["Número de Cuenta:", dataSeguimiento.informacionGeneral.no_cuenta],
-        ["Correo Institucional:", dataSeguimiento.informacionGeneral.correo_institucional],
-        ["Carrera:", dataSeguimiento.informacionGeneral.nombre_carrera],
-        ["Centro de Estudio:", dataSeguimiento.informacionGeneral.centro_estudio],
+        ["Nombre del Becario:", `${dataSeguimiento.nombre} ${dataSeguimiento.apellido}`],
+        ["Número de Cuenta:", dataSeguimiento.no_cuenta],
+        ["Correo Institucional:", dataSeguimiento.correo_institucional],
+        ["Carrera:", dataSeguimiento.nombre_carrera],
+        ["Centro de Estudio:", dataSeguimiento.nombre_centro_estudio],
     ];
 
     const tableDesempenoColumn = ["Indice Global", "Indice Anual", "Indice del Periodo"];
     const tableDesempenoRows = [
         [
-            dataSeguimiento.desempenoAcademico.indiceGlobal,
-            dataSeguimiento.desempenoAcademico.indiceAnual,
-            dataSeguimiento.desempenoAcademico.indicePerido
+            dataSeguimiento.indice_global,
+            dataSeguimiento.indice_anual,
+            dataSeguimiento.indice_periodo
         ]
     ];
 
@@ -48,7 +49,7 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
                 styles: { fontStyle: "bold" }
             },
             {
-                content: dataSeguimiento.estadoBeca.tipoBeca,
+                content: dataSeguimiento.nombre_beca,
                 colSpan: 3
             }
         ],
@@ -58,29 +59,32 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
                 styles: { fontStyle: "bold" }
             },
             {
-                content: dataSeguimiento.estadoBeca.inicioBeca,
+                content: dataSeguimiento.fecha_inicio_beca,
                 colSpan: 3
             }
         ],
         [
             { content: "Estado anterior:", styles: { fontStyle: "bold" } },
-            { content: dataSeguimiento.estadoBeca.estadoActual, colSpan: 1 },
+            { content: oldStateBeca ? oldStateBeca : dataSeguimiento.estado_beca, colSpan: 1 },
             { content: "Estado actual:", styles: { fontStyle: "bold" } },
-            { content: newState ? newState : dataSeguimiento.estadoBeca.estadoActual, colSpan: 1 },
+            { content: dataSeguimiento.estado_beca, colSpan: 1 },
         ],
     ];
 
-    dataSeguimiento.actividadesRealizadas.forEach((list, index) => {
-        const listData = [
-            index + 1,
-            list.nombre_actividad,
-            list.fecha_actividad,
-            list.horas
-        ];
-        totalHoras += list.horas;
-        tableActividadesRows.push(listData);
-    });
-    tableActividadesRows.push(['', '', 'Total de Horas', totalHoras]);
+    if (actividadesFiltradas.length > 0) {
+        actividadesFiltradas.forEach((list, index) => {
+            const listData = [
+                index + 1,
+                list.nombre_actividad,
+                list.fecha_actividad,
+                list.numero_horas
+            ];
+            totalHoras += list.numero_horas;
+            tableActividadesRows.push(listData);
+        });
+        tableActividadesRows.push(['', '', 'Total de Horas', totalHoras]);
+    }
+    
 
     // Set font and size
     doc.setFont(font, "bold")
@@ -166,7 +170,7 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
     // Actualizar la posición después de la tabla
     lastY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : lastY + 5
 
-    if (newState.trim() !== '') {
+    if (oldStateBeca.trim() !== '') {
         //Tabla Observaciones Cambio beca estado
         autoTable(doc, {
             head: [['Motivo del cambio:']],
@@ -275,7 +279,7 @@ const generatePDF = (dataSeguimiento, newState, observacionCambioEstado, observa
     lastY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 5 : lastY + 5;
     
     const pdfBlob = doc.output('blob');
-    const blobUrl = URL.createObjectURL(pdfBlob);
+    //const blobUrl = URL.createObjectURL(pdfBlob);
     //window.open(blobUrl);
     return pdfBlob;
 };
