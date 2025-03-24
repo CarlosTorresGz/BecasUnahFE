@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import '../styles/ActividadesRealizadas.css';
 
 const ActividadesRealizadas = ({ actividades }) => {
-    const [mesSeleccionado, setMesSeleccionado] = useState(new Date().getMonth() + 1);
+    const mesActual = new Date().getMonth() + 1;
+    const mesAnterior = mesActual === 1 ? 12 : mesActual - 1;
+
+    const [mesSeleccionado, setMesSeleccionado] = useState(mesAnterior);
     const [actividadesMesActual, setActividadesMesActual] = useState([]);
     const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);
 
     useEffect(() => {
-        const mesActual = new Date().getMonth() + 1;
         const actividadesMes = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
         const otrasActividades = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
 
@@ -81,9 +83,16 @@ const ActividadesRealizadas = ({ actividades }) => {
             <div className="selector-container">
                 <Form.Group controlId="mesSeleccionado" className="selector-mes">
                     <Form.Control as="select" value={mesSeleccionado} onChange={e => setMesSeleccionado(parseInt(e.target.value))}>
-                        {[...Array(12).keys()].map(mes => (
-                            <option key={mes + 1} value={mes + 1}>{new Date(2023, mes).toLocaleString('default', { month: 'long' })}</option>
-                        ))}
+                        {[...Array(12).keys()].map(mes => {
+                            if (mes + 1 !== mesActual) {
+                                return (
+                                    <option key={mes + 1} value={mes + 1}>
+                                        {new Date(2023, mes).toLocaleString('default', { month: 'long' })}
+                                    </option>
+                                );
+                            }
+                            return null;
+                        })}
                     </Form.Control>
                 </Form.Group>
                 <p className="total-horas-2">Total de horas en el mes seleccionado: {totalHorasOtrosMeses}</p>
