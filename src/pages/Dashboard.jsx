@@ -16,6 +16,7 @@ import 'animate.css';
 import ListadoAsistencia from './ListadoAsistencia';
 import { dashboardPropTypes } from "../util/propTypes";
 import SeguimientoBeca from './SeguimientoBeca';
+import ActividadesRealizadas from './ActividadesRealizadas';
 
 //Data de las actividades
 import fetchAllData from '../services/ActividadesAdminAPI';
@@ -166,6 +167,8 @@ export const Dashboard = ({ userType }) => {
                   : <AdminActividades data={dataFetch.actividades} />;
               case 'Actividades Inscritas':
                 return <ActividadesInscritas actividades={dataFetchBecarios.actividades} />;
+              case 'Actividades Realizadas':
+                return <ActividadesRealizadas actividades={dataFetch.actividades} />;
               case 'Lista de Asistencia':
                 return <ListadoAsistencia data={dataFetch.actividades} />;
               case 'Bienvenido ':
