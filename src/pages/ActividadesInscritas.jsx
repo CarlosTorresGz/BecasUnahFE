@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../styles/ActividadesInscritas.css";
 import ActividadesInscritasData from "../services/ActividadesInscritasBecario";
-import { useAuth } from '../context/AuthContext';
+//import { useAuth } from '../context/AuthContext';
 import ActividadesCancelarInscripcion from "../services/ActividadesCancelarInscripcion";
 
 const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, imagen, organizador, ubicacion, onCancelar, deshabilitarHover }) => {
   return (
-    <div className={`card ${deshabilitarHover ? "deshabilitar-hover" : ""}`}>
-      <img className="card-image" src={imagen} alt={nombre} />
-      <h2 className="card-title">{nombre}</h2>
-      <p className="card-organizer">Organizador: {organizador}</p>
-      <p className="card-location">Ubicación: {ubicacion}</p>
-      <p className="card-date-activity">Fecha de la actividad: {new Date(fechaActividad).toLocaleDateString()}</p>
-      <p className="card-date-inscription">Fecha de inscripción: {new Date(fechaInscripcion).toLocaleDateString()}</p>
-      <p className="card-scholar-hours">Horas beca: {horasBecas}</p>
-      <button className="card-cancel-button" onClick={onCancelar}>
+    <div className={`cardActInscrita ${deshabilitarHover ? "deshabilitar-hover" : ""}`}>
+      <img className="cardActInscrita-image" src={imagen} alt={nombre} />
+      <h2 className="cardActInscrita-title">{nombre}</h2>
+      <p className="cardActInscrita-organizer">Organizador: {organizador}</p>
+      <p className="cardActInscrita-location">Ubicación: {ubicacion}</p>
+      <p className="cardActInscrita-date-activity">Fecha de la actividad: {new Date(fechaActividad).toLocaleDateString()}</p>
+      <p className="cardActInscrita-date-inscription">Fecha de inscripción: {new Date(fechaInscripcion).toLocaleDateString()}</p>
+      <p className="cardActInscrita-scholar-hours">Horas beca: {horasBecas}</p>
+      <button className="cardActInscrita-cancel-button" onClick={onCancelar}>
         Cancelar inscripción
       </button>
     </div>
@@ -22,7 +22,10 @@ const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, i
 };
 
 const ActividadesInscritas = () => {
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const localStorageUser = localStorage.getItem('user');
+  const user = JSON.parse(localStorageUser);
+
   const [actividades, setActividades] = useState([]);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
