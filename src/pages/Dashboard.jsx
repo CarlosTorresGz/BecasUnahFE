@@ -7,6 +7,7 @@ import { ProfileBecario } from './ProfileBecario';
 import { MiBeca } from './MiBeca';
 import ActividadesDisponibles from './ActividadesDisponibles';
 import AdminActividades from './AdminActividades';
+import ActividadesInscritas from './ActividadesInscritas';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Report } from './Report';
@@ -17,8 +18,8 @@ import { dashboardPropTypes } from "../util/propTypes";
 import SeguimientoBeca from './SeguimientoBeca';
 
 //Data de las actividades
-import fetchAllData from '../services/ActividadesAdminAPI'
-import fetchParcialData from '../services/ActividadesBecarioAPI'
+import fetchAllData from '../services/ActividadesAdminAPI';
+import fetchParcialData from '../services/ActividadesBecarioAPI';
 
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();
@@ -45,7 +46,7 @@ export const Dashboard = ({ userType }) => {
         },
         {
           label: 'Inscritas',
-          onClick: () => setActiveComponent('Actividades Disponibles'),
+          onClick: () => setActiveComponent('Actividades Inscritas'),
           icon: <MdAssignment className="panel-izq-button-icono" />
         },
         {
@@ -163,8 +164,10 @@ export const Dashboard = ({ userType }) => {
                 return userType === 'becario'
                   ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
                   : <AdminActividades data={dataFetch.actividades} />;
+              case 'Actividades Inscritas':
+                return <ActividadesInscritas actividades={dataFetchBecarios.actividades} />;
               case 'Lista de Asistencia':
-                return <ListadoAsistencia data={dataFetch.actividades} />
+                return <ListadoAsistencia data={dataFetch.actividades} />;
               case 'Bienvenido ':
                 return <ProfileBecario setActiveComponent={setActiveComponent} />;
               case 'Mi Beca':
@@ -173,7 +176,7 @@ export const Dashboard = ({ userType }) => {
               case 'Reportes Recibidos':
                 return <Report userType={userType} />;
               case 'Revisión de Becas':
-                return <SeguimientoBeca />
+                return <SeguimientoBeca />;
               case 'Nueva Actividad':
                 return <AgregarActividad data={dataFetch.actividades} />;
               default:
