@@ -7,7 +7,7 @@
   padding: 20px;
 }
 
-.card {
+.cardActInscrita {
   width: 300px;
   height: auto; /* Ajusta automáticamente la altura según el contenido */
   min-height: 400px; /* Hace la tarjeta más alta */
@@ -22,37 +22,37 @@
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
-.card:hover {
+.cardActInscrita:hover {
   transform: scale(1.05); /* Aumentar tamaño ligeramente */
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
   background-color: #1a73e8; /* Cambiar a azul más brillante al pasar el mouse */
 }
 
-.card-image {
+.cardActInscrita-image {
   width: 90%;
   height: auto;
   margin: 10px auto; /* Espaciado arriba y centrado horizontal */
   border-radius: 8px;
 }
 
-.card-title {
+.cardActInscrita-title {
   font-size: 1.2rem;
   font-weight: bold;
   color: #ffffff; /* Texto blanco */
   margin: 10px 0;
 }
 
-.card-date-activity,
-.card-date-inscription,
-.card-scholar-hours,
-.card-location,
-.card-organizer {
+.cardActInscrita-date-activity,
+.cardActInscrita-date-inscription,
+.cardActInscrita-scholar-hours,
+.cardActInscrita-location,
+.cardActInscrita-organizer {
   font-size: 0.9rem;
   color: #e0e0e0; /* Texto gris claro */
   margin: 5px 0 15px; /* Espaciado adicional entre el texto y el botón */
 }
 
-.card-cancel-button {
+.cardActInscrita-cancel-button {
   position: absolute;
   bottom: 10px; /* Fijado cerca de la parte inferior */
   left: 50%;
@@ -67,7 +67,7 @@
   transition: background-color 0.3s;
 }
 
-.card-cancel-button:hover {
+.cardActInscrita-cancel-button:hover {
   background-color: #990000;
 }
 

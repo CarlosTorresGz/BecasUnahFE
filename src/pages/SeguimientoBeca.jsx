@@ -5,7 +5,7 @@ import { InfoItem } from '../components/InformacionItem';
 import generatePDF from '../util/reportSeguimientoGenerator';
 import { toast } from 'sonner';
 import { uploadPDFAzure } from '../util/uploadPDFAzure';
-import { sendEmail } from '../services/sendEmail';
+//import { sendEmail } from '../services/sendEmail';
 import { sendEmailACS } from '../services/sendEmailACS';
 import { informacionSeguimientoBecaAPI, setStateBeca, saveReport } from '../services/informacionSeguimientoBecaAPI.JS';
 import { MdSearch } from "react-icons/md";
@@ -274,9 +274,10 @@ export const SeguimientoBeca = () => {
     };
 
     const handleNewStateBeca = (e) => {
-        let index = e.target.selectedIndex;
-        setNewStateBeca(e.target.options[index].text);
-        setIdNewStateBeca(index);
+        const estadoId = e.target.value ;
+        const estadoTexto = e.target.options[e.target.selectedIndex].text;
+        setNewStateBeca(estadoTexto);
+        setIdNewStateBeca(estadoId);
         setMostrarModalConfirmacion(true);
     }
 

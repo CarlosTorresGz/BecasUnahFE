@@ -1,10 +1,9 @@
 import apiUrl from "../config";
 
 export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
-    console.log('no_cuenta: ', no_cuenta)
     try {
-        //const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
-        const response = await fetch(`http://localhost:7072/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
+        const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
+        //const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -12,7 +11,6 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
         });
 
         const result = await response.json();
-        console.log('result: ', result)
         if (response.ok) {
             return { state: true, body: result };
         } else {
@@ -28,8 +26,8 @@ export const setStateBeca = async ({no_cuenta, estado_beca_id}) => {
     console.log('no_cuenta: ', no_cuenta)
     console.log('estado_beca_id: ', estado_beca_id)
     try {
-        //const response = await fetch(`${apiUrl}/api/setStateBeca?`, {
-        const response = await fetch(`http://localhost:7072/api/putStateBeca`, {
+        const response = await fetch(`${apiUrl}/api/putStateBeca?`, {
+        //const response = await fetch(`http://localhost:7071/api/putStateBeca`, {
         method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -54,21 +52,9 @@ export const setStateBeca = async ({no_cuenta, estado_beca_id}) => {
 }
 
 export const saveReport = async ({ no_cuenta, nombre_estado_anterior, empleado_id, nombre_reporte, fecha_reporte, estado_nuevo_beca_id, motivo_cambio_estado_beca, total_horas, observaciones, enlace }) => {
-    console.log('Datos de la Reporte:')
-    console.log('no_cuenta: ', no_cuenta)
-    console.log('nombre_estado_anterior: ', nombre_estado_anterior)
-    console.log('empleado_id: ', empleado_id)
-    console.log('nombre_reporte: ', nombre_reporte)
-    console.log('fecha_reporte: ', fecha_reporte)
-    console.log('estado_nuevo_beca_id: ', estado_nuevo_beca_id)
-    console.log('motivo_cambio_estado_beca: ', motivo_cambio_estado_beca)
-    console.log('total_horas: ', total_horas)
-    console.log('observaciones: ', observaciones)
-    console.log('enlace: ', enlace)
-
     try {
-        //const response = await fetch(`${apiUrl}/api/reporteSeguimiento?`, {
-        const response = await fetch(`http://localhost:7072/api/reporteSeguimiento`, {
+        const response = await fetch(`${apiUrl}/api/reporteSeguimiento?`, {
+        //const response = await fetch(`http://localhost:7071/api/reporteSeguimiento`, {
         method: "POST",
             headers: {
                 'Content-Type': 'application/json',

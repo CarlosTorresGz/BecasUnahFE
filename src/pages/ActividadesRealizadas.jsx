@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../styles/ActividadesRealizadas.css';
 import fetchData from "../services/ActividadesRealizadas"; // Importamos fetchData
-import { useAuth } from '../context/AuthContext';
+//import { useAuth } from '../context/AuthContext';
 
 const ActividadesRealizadas = () => {
-    const { user } = useAuth();
+    //const { user } = useAuth();
+    const localStorageUser = localStorage.getItem('user');
+    const user = JSON.parse(localStorageUser);
+
     const mesActual = new Date().getMonth() + 1;
     const mesAnterior = mesActual === 1 ? 12 : mesActual - 1;
 
