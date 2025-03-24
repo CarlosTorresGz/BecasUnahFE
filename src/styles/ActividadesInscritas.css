@@ -44,7 +44,9 @@
 
 .card-date-activity,
 .card-date-inscription,
-.card-scholar-hours {
+.card-scholar-hours,
+.card-location,
+.card-organizer {
   font-size: 0.9rem;
   color: #e0e0e0; /* Texto gris claro */
   margin: 5px 0 15px; /* Espaciado adicional entre el texto y el botón */

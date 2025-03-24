@@ -2,21 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../styles/ActividadesRealizadas.css';
+import fetchData from "../services/ActividadesRealizadas"; // Importamos fetchData
+import { useAuth } from '../context/AuthContext';
 
-const ActividadesRealizadas = ({ actividades }) => {
+const ActividadesRealizadas = () => {
+    const { user } = useAuth();
     const mesActual = new Date().getMonth() + 1;
     const mesAnterior = mesActual === 1 ? 12 : mesActual - 1;
 
     const [mesSeleccionado, setMesSeleccionado] = useState(mesAnterior);
     const [actividadesMesActual, setActividadesMesActual] = useState([]);
     const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);
+    const [actividades, setActividades] = useState([]); // Nuevo estado para almacenar las actividades
 
     useEffect(() => {
-        const actividadesMes = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
-        const otrasActividades = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
+        
+        // Usamos fetchData para obtener las actividades desde el servidor
+        const obtenerActividades = async () => {
+            try {
+                const data = await fetchData(user.no_cuenta); // Suponiendo que fetchData obtiene un objeto con la propiedad "actividades"
+                setActividades(data.actividades); // Accedemos a "actividades" dentro de la respuesta
+            } catch (error) {
+                console.error("Error al obtener actividades:", error);
+            }
+        };
 
-        setActividadesMesActual(actividadesMes);
-        setActividadesOtrosMeses(otrasActividades);
+        obtenerActividades();
+    }, []);
+
+    useEffect(() => {
+        if (actividades.length > 0) {
+            const actividadesMes = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
+            const otrasActividades = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
+
+            setActividadesMesActual(actividadesMes);
+            setActividadesOtrosMeses(otrasActividades);
+        }
     }, [actividades, mesSeleccionado]);
 
     const totalHorasMesActual = actividadesMesActual.reduce((total, act) => total + act.numero_horas, 0);

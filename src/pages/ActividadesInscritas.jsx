@@ -1,15 +1,18 @@
-import React, { useState } from "react";
-import imgVOAE from "../img/VOAE2.jpg"; // Ruta de la imagen
+import React, { useState, useEffect } from "react";
 import "../styles/ActividadesInscritas.css";
+import ActividadesInscritasData from "../services/ActividadesInscritasBecario";
+import { useAuth } from '../context/AuthContext';
 
-const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, onCancelar, deshabilitarHover }) => {
+const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, imagen, organizador, ubicacion, onCancelar, deshabilitarHover }) => {
   return (
     <div className={`card ${deshabilitarHover ? "deshabilitar-hover" : ""}`}>
-      <img className="card-image" src={imgVOAE} alt={nombre} />
+      <img className="card-image" src={imagen} alt={nombre} />
       <h2 className="card-title">{nombre}</h2>
-      <p className="card-date-activity">Fecha de la actividad: {fechaActividad}</p>
-      <p className="card-date-inscription">Fecha de inscripción: {fechaInscripcion}</p>
-      <p className="card-scholar-hours">Horas becas: {horasBecas}</p>
+      <p className="card-organizer">Organizador: {organizador}</p>
+      <p className="card-location">Ubicación: {ubicacion}</p>
+      <p className="card-date-activity">Fecha de la actividad: {new Date(fechaActividad).toLocaleDateString()}</p>
+      <p className="card-date-inscription">Fecha de inscripción: {new Date(fechaInscripcion).toLocaleDateString()}</p>
+      <p className="card-scholar-hours">Horas beca: {horasBecas}</p>
       <button className="card-cancel-button" onClick={onCancelar}>
         Cancelar inscripción
       </button>
@@ -18,76 +21,70 @@ const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, o
 };
 
 const ActividadesInscritas = () => {
-  const [actividades, setActividades] = useState([
-    {
-      id: 1,
-      nombre: "Taller de Primeros Auxilios",
-      fechaActividad: "2025-09-13",
-      fechaInscripcion: "2025-09-01",
-      horasBecas: "2 horas",
-    },
-    {
-      id: 2,
-      nombre: "Charla sobre Energías Renovables",
-      fechaActividad: "2025-03-24",
-      fechaInscripcion: "2025-03-01",
-      horasBecas: "3 horas",
-    },
-    {
-      id: 3,
-      nombre: "Jornada de Limpieza",
-      fechaActividad: "2024-03-28",
-      fechaInscripcion: "2024-03-10",
-      horasBecas: "4 horas",
-    },
-    {
-      id: 4,
-      nombre: "Taller de Desarrollo Personal",
-      fechaActividad: "2025-05-10",
-      fechaInscripcion: "2025-04-20",
-      horasBecas: "5 horas",
-    },
-  ]);
-
+  const { user } = useAuth();
+  const [actividades, setActividades] = useState([]);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
   const [mensajeExito, setMensajeExito] = useState("");
 
-  // Función para activar el cuadro de confirmación
+  useEffect(() => {
+    const loadActividades = async () => {
+      try {
+        if (user?.no_cuenta) {
+          const ActividadesIncrito = await ActividadesInscritasData(user.no_cuenta);
+          console.log("Respuesta de la API:", ActividadesIncrito);
+          setActividades(ActividadesIncrito.actividades);
+        }
+      } catch (error) {
+        console.error("Error al cargar las actividades:", error);
+      }
+    };
+
+    loadActividades();
+  }, []);
+
   const handleCancelarClick = (actividad) => {
-    setActividadConfirmacion(actividad); // Guarda la actividad seleccionada
-    setMostrarConfirmacion(true); // Muestra el cuadro de confirmación
+    setActividadConfirmacion(actividad);
+    setMostrarConfirmacion(true);
   };
 
-  // Función para confirmar y eliminar la actividad
   const handleConfirmar = () => {
     setActividades((prevActividades) =>
-      prevActividades.filter((actividad) => actividad.id !== actividadConfirmacion.id)
+      prevActividades.filter((actividad) => actividad.nombre_actividad !== actividadConfirmacion.nombre_actividad)
     );
-    setActividadConfirmacion(null); // Limpia la actividad seleccionada
-    setMostrarConfirmacion(false); // Oculta el cuadro de confirmación
+    setActividadConfirmacion(null);
+    setMostrarConfirmacion(false);
     setMensajeExito("¡Actividad cancelada con éxito!");
-    setTimeout(() => setMensajeExito(""), 3000); // Oculta el mensaje de éxito después de 3 segundos
+    setTimeout(() => setMensajeExito(""), 3000);
   };
 
-  // Función para cancelar el cuadro de confirmación
   const handleCancelar = () => {
     setActividadConfirmacion(null);
-    setMostrarConfirmacion(false); // Oculta el cuadro de confirmación
+    setMostrarConfirmacion(false);
   };
 
   return (
     <div className="vista">
-      <div className={`cards-container ${mostrarConfirmacion ? "deshabilitar-hover" : ""}`}>
-        {actividades.map((actividad) => (
-          <ActividadCard
-            key={actividad.id}
-            {...actividad}
-            deshabilitarHover={mostrarConfirmacion}
-            onCancelar={() => handleCancelarClick(actividad)}
-          />
-        ))}
-      </div>
+      {actividades.length === 0 ? (  // Condición para cuando no hay actividades
+        <p>No tienes actividades inscritas.</p>
+      ) : (
+        <div className={`cards-container ${mostrarConfirmacion ? "deshabilitar-hover" : ""}`}>
+          {actividades.map((actividad, index) => (
+            <ActividadCard
+              key={index}
+              nombre={actividad.nombre_actividad}
+              fechaActividad={actividad.fecha_actividad}
+              fechaInscripcion={actividad.fecha_inscripcion}
+              horasBecas={actividad.numero_horas}
+              imagen={actividad.imagen}
+              organizador={actividad.organizador}
+              ubicacion={actividad.ubicacion}
+              deshabilitarHover={mostrarConfirmacion}
+              onCancelar={() => handleCancelarClick(actividad)}
+            />
+          ))}
+        </div>
+      )}
 
       {mostrarConfirmacion && (
         <div className="confirmacion-global">
