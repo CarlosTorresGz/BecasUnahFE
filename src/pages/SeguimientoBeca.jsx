@@ -5,15 +5,17 @@ import { InfoItem } from '../components/InformacionItem';
 import generatePDF from '../util/reportSeguimientoGenerator';
 import { toast } from 'sonner';
 import { uploadPDFAzure } from '../util/uploadPDFAzure';
-//import { sendEmail } from '../services/sendEmail';
 import { sendEmailACS } from '../services/sendEmailACS';
 import { informacionSeguimientoBecaAPI, setStateBeca, saveReport } from '../services/informacionSeguimientoBecaAPI.JS';
 import { MdSearch } from "react-icons/md";
 import { ActividadesRealizadas } from '../services/ActividadesRealizadas';
-import { useAuth } from '../context/AuthContext';
+//import { useAuth } from '../context/AuthContext';
 
 export const SeguimientoBeca = () => {
-    const { user } = useAuth();
+    //const { user } = useAuth();
+    const localStorageUser = localStorage.getItem('user');
+    const user = JSON.parse(localStorageUser);
+
     const date = new Date();
     const [activeTab, setActiveTab] = useState('generalInformation');
     const [loading, setLoading] = useState(false);
@@ -37,12 +39,15 @@ export const SeguimientoBeca = () => {
 
     const ModalConfirmacion = () => {
         const handleConfirmar = async () => {
+            const estadoAnterior = dataSeguimiento.estado_beca; // Guarda el valor antes de cambiarlo
+            setOldStateBeca(estadoAnterior);
+
             const result = await setStateBeca({ no_cuenta: dataSeguimiento.no_cuenta, estado_beca_id: idNewStateBeca });
-            console.log('result change beca state: ', result)
-            if (result.state) {
-                setOldStateBeca(dataSeguimiento.estado_beca);
+            
+            if (result.state) {                
                 setDataSeguimiento((prev) => ({ ...prev, estado_beca: newStateBeca }));
                 setIdNewStateBeca('');
+                setNewStateBeca('');
                 setMostrarModalConfirmacion(false);
                 toast.success("Estado actualizado con éxito.");
             } else {
@@ -201,34 +206,30 @@ export const SeguimientoBeca = () => {
     };
 
     const handleCreateAndSaveReport = async (dataSeguimiento, oldStateBeca, actividadesFiltradas, newStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo) => {
-        console.log('actividadesFiltradas: ', actividadesFiltradas);
         const fecha_reporte = new Date().toISOString().slice(0, 19).replace("T", " ");
-
         try {
             console.log("Generando Reporte...");
             //creamos el pdf
-            const pdfBlob = generatePDF(dataSeguimiento, actividadesFiltradas, newStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo);
+            const pdfBlob = generatePDF(dataSeguimiento, actividadesFiltradas, oldStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo);
             //Guardamos el PDF en Azure Storage
-            const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo);
+            const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo, anioPeriodo);
             console.log('pdfURL: ', pdfURL);
 
             //Guardar el reporte en la base de datos...
             const nuevoReporte = {
-                no_cuenta: dataSeguimiento.no_cuenta, //correcto
-                nombre_estado_anterior: idNewStateBeca ? oldStateBeca : dataSeguimiento.estado_beca, //correcto
-                empleado_id: user.empleado_id.trim(), //correcto
-                nombre_reporte: `Reporte Seguimiento Academico ${selectedPeriodo} ${anioPeriodo}`, //correcto
-                fecha_reporte: fecha_reporte, //correcto
-                estado_nuevo_beca_id: idNewStateBeca ? idNewStateBeca : null, //correcto
+                no_cuenta: dataSeguimiento.no_cuenta,
+                nombre_estado_anterior: oldStateBeca ? oldStateBeca : dataSeguimiento.estado_beca,
+                empleado_id: user.empleado_id.trim(),
+                nombre_reporte: `Reporte Seguimiento Academico ${selectedPeriodo} ${anioPeriodo}`,
+                fecha_reporte: fecha_reporte,
+                estado_nuevo_beca_id: idNewStateBeca ? idNewStateBeca : null,
                 motivo_cambio_estado_beca: observacionCambioEstado,
-                total_horas: totalHoras, //correcto
+                total_horas: totalHoras,
                 observaciones: observacion,
-                enlace: pdfURL //correcto
+                enlace: pdfURL
             };
-            console.log('nuevoReporte: ', nuevoReporte);
 
             const resultSaveReport = await saveReport(nuevoReporte);
-            console.log('resultSaveReport: ', resultSaveReport)
 
             if (resultSaveReport.state) {
                 toast.success("Reporte guardado con éxito.");
@@ -253,18 +254,16 @@ export const SeguimientoBeca = () => {
                     setObservacion('');
                     setOldStateBeca('');
                     setNewStateBeca('');
-                    setAnioPeriodo('');
-                    setSelectedPeriodo('');
                     setDataSeguimiento(null);
                     setActividadesRealizadas([]);
+                    setActividadesFiltradas([]);
                     setSearchNoCuenta('');
                 } else {
                     toast.error("Hubo un error al generar o enviar el reporte.");
                     setIsSendingEmail(false);
                 }
             } else {
-                toast.error("Hubo un error al guardar el reporte.");
-                console.error("Hubo un error al guardar el reporte:", resultSaveReport.body);
+                toast.error(`${resultSaveReport.body.error}`);
             }
 
         } catch (error) {
@@ -272,6 +271,10 @@ export const SeguimientoBeca = () => {
             toast.error("Hubo un error al generar o enviar el reporte.");
         }
     };
+
+    useEffect(() => {
+        console.log(`Desde useEffect, El estado nuevo es: ${idNewStateBeca} - ${newStateBeca}`);
+    }, [idNewStateBeca, newStateBeca]); 
 
     const handleNewStateBeca = (e) => {
         const estadoId = e.target.value ;
