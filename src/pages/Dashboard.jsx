@@ -17,6 +17,8 @@ import ListadoAsistencia from './ListadoAsistencia';
 import { dashboardPropTypes } from "../util/propTypes";
 import SeguimientoBeca from './SeguimientoBeca';
 import ActividadesRealizadas from './ActividadesRealizadas';
+import { MdHelpOutline } from 'react-icons/md';
+import FAQComponent from './FrequentlyAskedQuestions';
 
 //Data de las actividades
 import fetchAllData from '../services/ActividadesAdminAPI';
@@ -136,6 +138,17 @@ export const Dashboard = ({ userType }) => {
       ],
     },
     {
+      title: 'FAQ',
+      icon: <MdHelpOutline className="panel-izq-button-icono" />,  // Usamos un ícono de ayuda
+      clasification: [
+        {
+          label: 'Preguntas Frecuentes',
+          onClick: () => navigate('/FAQ' ),
+          icon: <MdHelpOutline className="panel-izq-button-icono" />,
+        },
+      ],
+    },
+    {
       title: 'Cerrar Sesión',
       icon: <MdLogout className="panel-izq-button-icono" />,
       clasification: [
@@ -182,6 +195,7 @@ export const Dashboard = ({ userType }) => {
                 return <SeguimientoBeca />;
               case 'Nueva Actividad':
                 return <AgregarActividad data={dataFetch.actividades} />;
+               
               default:
                 return userType === 'becario'
                   ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
