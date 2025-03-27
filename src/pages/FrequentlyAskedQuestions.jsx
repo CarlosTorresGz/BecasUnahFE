@@ -6,9 +6,12 @@ import crearPreguntas from '../services/CrearPreguntas'; // Asegúrate de que la
 import { useAuth } from '../context/AuthContext';
 import '../styles/FrequentlyAskedQuestions.css';
 import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
 
-
-const FAQComponent = ({ isAdmin }) => {
+const FAQComponent = () => {
+    const location = useLocation();
+  const isAdmin = location.state?.param;
+    console.log("esto valos isAdmin",isAdmin)
     const [data, setData] = useState([]);
     const [originalData, setOriginalData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -149,7 +152,7 @@ const FAQComponent = ({ isAdmin }) => {
             </InputGroup>
 
             {/* Botón para agregar pregunta */}
-            {!isAdmin && !addingNew && (
+            {isAdmin && !addingNew && (
                 <Button variant="primary" className="mb-3" onClick={() => setAddingNew(true)}>
                     Agregar Pregunta
                 </Button>
@@ -209,7 +212,7 @@ const FAQComponent = ({ isAdmin }) => {
                                 ) : (
                                     <div>
                                         <p>{item.respuesta}</p>
-                                        {!isAdmin && (
+                                        {isAdmin && (
                                             <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>
                                                 Editar
                                             </Button>
