@@ -143,7 +143,7 @@ export const Dashboard = ({ userType }) => {
       clasification: [
         {
           label: 'Preguntas Frecuentes',
-          onClick: () => navigate('/FAQ' ),
+          onClick: () => navigate('/FAQ', { state: { param: true } }),
           icon: <MdHelpOutline className="panel-izq-button-icono" />,
         },
       ],
