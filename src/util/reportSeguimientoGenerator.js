@@ -2,7 +2,6 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const generatePDF = (dataSeguimiento, actividadesFiltradas, oldStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo) => {
-    console.log('actividadesFiltradas: ', actividadesFiltradas)
     let lastY = 50;
     let totalHoras = 0;
 
@@ -83,6 +82,14 @@ const generatePDF = (dataSeguimiento, actividadesFiltradas, oldStateBeca, observ
             tableActividadesRows.push(listData);
         });
         tableActividadesRows.push(['', '', 'Total de Horas', totalHoras]);
+    } else {
+        const listData = [
+            {
+                content: 'No hay actividades.',
+                colSpan: 4
+            }
+        ];
+        tableActividadesRows.push(listData);
     }
     
 
@@ -262,7 +269,7 @@ const generatePDF = (dataSeguimiento, actividadesFiltradas, oldStateBeca, observ
     autoTable(doc, {
         head: [],
         body: [[observacion]],
-        startY: lastY,
+        startY: lastY + 10,
         theme: "grid",
         styles: {
             fontSize: 10,
