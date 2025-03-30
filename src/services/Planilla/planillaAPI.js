@@ -1,8 +1,8 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
-export const fetchPersonById = async ({ person_id }) => {
+export const fetchPlanillas = async ({ becario_id }) => {
     try {
-        const response = await fetch(`${apiUrl}/api/person/${person_id}`, {
+        const response = await fetch(`${apiUrl}/api/planilla/${becario_id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -12,13 +12,12 @@ export const fetchPersonById = async ({ person_id }) => {
         const data = await response.json();
 
         if (!data.status) {
-            return { state: false, body: data.person };
+            return { state: false, body: data.planilla };
         }
 
-        return { state: true, body: data.person }
+        return { state: true, body: data.planilla }
     } catch (error) {
         console.error('Error:', error);
         return { state: false, body: error };
     }
-
 }

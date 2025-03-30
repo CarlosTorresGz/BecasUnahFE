@@ -39,8 +39,7 @@ export const dashboardPropTypes = {
 };
 
 export const loginPropTypes = {
-    number: PropTypes.string.isRequired,
-    placeHolder: PropTypes.string.isRequired,
+    userType: PropTypes.string.isRequired,
 };
 
 export const inputFieldPropTypes = {

@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
-import { fetchBecaById, fetchStateBecaById } from '../services/becaAPI';
+import { useAuth } from '../context/AuthContext';
+import { useState, useEffect, useCallback } from 'react';
+import { fetchBecaById, fetchStateBecaById } from '../services/PerfilBecario/becaAPI';
 import { InfoItem } from '../components/InformacionItem';
 import { FaCircle } from "react-icons/fa";
 import '../styles/MiBeca.css'
 import { SpinnerLoading } from '../components/SpinnerLoading';
-import { fetchPlanillas } from '../services/planillaAPI.JS';
+import { fetchPlanillas } from '../services/Planilla/planillaAPI';
 
 export const MiBeca = () => {
+    const { user } = useAuth() || JSON.parse(localStorage.getItem('user'));;
     const [beca, setBeca] = useState(null);
     const [estadoBeca, setEstadoBeca] = useState(null);
     const [planillas, setPlanillas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [fechaInicioBeca, setFechaInicioBeca] = useState(null);
 
     const assignColorToCobroStatus = estadoEntregaPago => {
         if (estadoEntregaPago.estado_entrega === "Disponible") {
@@ -24,44 +25,32 @@ export const MiBeca = () => {
         }
     };
 
-    const getData = async () => {
-        const userLocal = JSON.parse(localStorage.getItem('user'));
-        const becaId = userLocal ? userLocal.beca_id : null;
-        const estadoBecaId = userLocal ? userLocal.estado_beca_id : null;
-        const becarioId = userLocal ? userLocal.becario_id : null;
+    const formatCurrency = (amount) =>
+        amount ? `L. ${parseFloat(amount).toFixed(2)}` : 'ND';
 
-        if (!userLocal) {
-            console.error('No se encontró user en localStorage');
-            setError('No se encontró la información del usuario.');
-            setLoading(false);
-            return;
-        }
+    const getData = useCallback( async () => {
+        setLoading(true);
+        setError(null);
 
         try {
-            const becaData = await fetchBecaById({ beca_id: becaId });
-            const planillaData = await fetchPlanillas({ becario_id: becarioId });
+            const [becaResult, planillaResult, becaEstadoResult] = await Promise.all([
+                fetchBecaById({ beca_id: user.beca_id }),
+                fetchPlanillas({ becario_id: user.becario_id.trim() }),
+                fetchStateBecaById({ estado_beca_id: user.estado_beca_id })
+            ]);
 
-            if (becaData.state) {
-                setBeca(becaData.body);
-                setFechaInicioBeca(userLocal ? userLocal.fecha_inicio_beca : null)
-                if (estadoBecaId) {
-                    const becaEstadoData = await fetchStateBecaById({ estado_beca_id: estadoBecaId });
-                    console.log('estadoBeca: ', becaEstadoData)
-                    if (becaEstadoData.state) {
-                        setEstadoBeca(becaEstadoData.body)
-                    }
-                }
-            }
-            if (planillaData.state) {
-                setPlanillas(planillaData.body);
+            if (becaResult.state && planillaResult.state && becaEstadoResult.state) {
+                setBeca(becaResult.body);
+                setEstadoBeca(becaEstadoResult.body);
+                setPlanillas(planillaResult.body);
             }
         } catch (error) {
-            console.error('Error al obtener los datos de la persona:', error);
+            console.error('Error al obtener los datos de la beca:', error);
             setError(error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.beca_id, user?.becario_id, user?.estado_beca_id]);
 
     useEffect(() => {
         getData();
@@ -77,9 +66,9 @@ export const MiBeca = () => {
             <div className='mi-beca'>
                 <div className='mi-beca-informacion'>
                     <h1>Información General</h1>
-                    <InfoItem label='Tipo de Beca:' value={beca.nombre_beca} />
-                    <InfoItem label='Monto:' value={beca.monto ? `L. ${beca.monto.toFixed(2)}` : 'ND'} />
-                    <InfoItem label='Fecha de Inicio:' value={fechaInicioBeca} />
+                    <InfoItem label='Tipo de Beca:' value={beca?.nombre_beca || 'No disponible'} />
+                    <InfoItem label='Monto:' value={formatCurrency(beca?.monto) || 'ND'} />
+                    <InfoItem label='Fecha de Inicio:' value={user.fecha_inicio_beca} />
                     <InfoItem label='Estado:' value={estadoBeca} />
                 </div>
                 <div className='mi-beca-calendario'>
@@ -87,35 +76,39 @@ export const MiBeca = () => {
                     <table className="table">
                         <thead className='table-calendar-head'>
                             <tr>
-                                <th scope="col" style={{width: '30%'}}>Mes</th>
-                                <th scope="col" style={{width: '30%'}}>Monto</th>
-                                <th scope="col" style={{width: '40%'}}>Cobrado</th>
+                                <th scope="col" style={{ width: '30%' }}>Mes</th>
+                                <th scope="col" style={{ width: '30%' }}>Monto</th>
+                                <th scope="col" style={{ width: '40%' }}>Cobrado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {planillas.map(pago => (
-                                <tr key={pago.planilla_id}>
-                                    <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
-                                    <td>{beca.monto ? `L. ${beca.monto.toFixed(2)}` : 'ND'}</td>
-                                    <td className={assignColorToCobroStatus(pago)}>{pago.estado_entrega}</td>
-                                </tr>
+                            {planillas.length > 0 ? (
+                                planillas.map(pago => (
+                                    <tr key={pago.planilla_id}>
+                                        <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
+                                        <td>{formatCurrency(beca?.monto)}</td>
+                                        <td className={assignColorToCobroStatus(pago)}>{pago.estado_entrega}</td>
+                                    </tr>
 
-                            ))}
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="3" className="text-center">No hay datos de pagos disponibles</td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                     <div className='table-description'>
-                        <div>
-                            <FaCircle style={{ color: 'gray' }} />
-                            <span>No se Presento</span>
-                        </div>
-                        <div>
-                            <FaCircle style={{ color: '#FFC107' }} />
-                            <span>Disponible</span>
-                        </div>
-                        <div>
-                            <FaCircle style={{ color: '#28A745' }} />
-                            <span>Entregado</span>
-                        </div>
+                        {[
+                            { color: 'gray', label: 'No se Presentó' },
+                            { color: '#FFC107', label: 'Disponible' },
+                            { color: '#28A745', label: 'Entregado' }
+                        ].map((item, index) => (
+                            <div key={index}>
+                                <FaCircle style={{ color: item.color }} />
+                                <span>{item.label}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

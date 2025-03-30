@@ -21,7 +21,6 @@ export const deletePictureAzure = async (blobName) => {
         //Validar si la imagen existe antes de intentar eliminarla
         const exists = await blockBlobClient.exists();
         if (!exists) {
-            console.warn(`⚠️ Advertencia: La imagen '${blobName}' no existe en Azure Storage.`);
             return false;
         }
 
@@ -30,7 +29,6 @@ export const deletePictureAzure = async (blobName) => {
         }
 
         await blockBlobClient.delete(options);
-        console.log(`✅ Imagen eliminada con éxito: ${blobName}`);
         return true;
     } catch (error) {
         console.error(`❌ Error al eliminar la imagen: ${error.message}`);

@@ -1,11 +1,18 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 export const handleDelete = async ({ empleado_id, actividad_id }) => {
   try {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        console.warn('No se encontró token JWT');
+        return { state: false, body: 'Autenticación requerida' };
+    }
+
     const response = await fetch(`${apiUrl}/api/DeleteActivity?`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ empleado_id, actividad_id })
     });
@@ -16,7 +23,6 @@ export const handleDelete = async ({ empleado_id, actividad_id }) => {
 
     return { state: true }
   } catch (error) {
-    console.error('Error al eliminar actividad:', error);
     return { state: false, body: error }
   }
 };

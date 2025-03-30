@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../styles/ActividadesRealizadas.css';
-import fetchData from "../services/ActividadesRealizadas"; // Importamos fetchData
+import fetchData from "../services/ActividadesBecario/ActividadesRealizadas"; // Importamos fetchData
 //import { useAuth } from '../context/AuthContext';
 
 const ActividadesRealizadas = () => {
@@ -18,13 +18,11 @@ const ActividadesRealizadas = () => {
     const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);
     const [actividades, setActividades] = useState([]); // Nuevo estado para almacenar las actividades
 
-    useEffect(() => {
-        
-        // Usamos fetchData para obtener las actividades desde el servidor
+    useEffect(() => {        
         const obtenerActividades = async () => {
             try {
-                const data = await fetchData(user.no_cuenta); // Suponiendo que fetchData obtiene un objeto con la propiedad "actividades"
-                setActividades(data.actividades); // Accedemos a "actividades" dentro de la respuesta
+                const data = await fetchData(user.no_cuenta);
+                setActividades(data.actividades);
             } catch (error) {
                 console.error("Error al obtener actividades:", error);
             }

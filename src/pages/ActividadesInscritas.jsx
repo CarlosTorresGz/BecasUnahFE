@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "../styles/ActividadesInscritas.css";
-import ActividadesInscritasData from "../services/ActividadesInscritasBecario";
-//import { useAuth } from '../context/AuthContext';
-import ActividadesCancelarInscripcion from "../services/ActividadesCancelarInscripcion";
+import ActividadesInscritasData from "../services/ActividadesBecario/ActividadesInscritasBecario";
+import { useAuth } from '../context/AuthContext';
+import ActividadesCancelarInscripcion from "../services/ActividadesBecario/ActividadesCancelarInscripcion";
 
 const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, imagen, organizador, ubicacion, onCancelar, deshabilitarHover }) => {
   return (
@@ -22,31 +22,31 @@ const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, i
 };
 
 const ActividadesInscritas = () => {
-  //const { user } = useAuth();
-  const localStorageUser = localStorage.getItem('user');
-  const user = JSON.parse(localStorageUser);
-
+  const { user } = useAuth() || JSON.parse(localStorage.getItem('user'));
   const [actividades, setActividades] = useState([]);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
   const [mensajeExito, setMensajeExito] = useState("");
   const [mensajeError, setMensajeError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadActividades = async () => {
       try {
-        if (user?.no_cuenta) {
-          const ActividadesIncrito = await ActividadesInscritasData(user.no_cuenta);
-          console.log("Respuesta de la API:", ActividadesIncrito);
-          setActividades(ActividadesIncrito.actividades);
+        setLoading(true);
+        if (user.no_cuenta) {
+          const response = await ActividadesInscritasData({ no_cuenta: user.no_cuenta });
+          setActividades(response.actividades);
         }
       } catch (error) {
         console.error("Error al cargar las actividades:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     loadActividades();
-  }, [user?.no_cuenta]);  // Recargar cuando cambia el usuario
+  }, [user?.no_cuenta]);
 
   const handleCancelarClick = (actividad) => {
     setActividadConfirmacion(actividad);
@@ -63,14 +63,14 @@ const ActividadesInscritas = () => {
   const handleConfirmar = async () => {
     try {
       // Llamada al servicio para cancelar la inscripción en la base de datos
-      console.log("actividad Id es: ",actividadConfirmacion.actividad_id)
+      console.log("actividad Id es: ", actividadConfirmacion.actividad_id)
       await ActividadesCancelarInscripcion(actividadConfirmacion.actividad_id, user.becario_id);
-      
+
       // Eliminar la actividad de la lista local si la cancelación fue exitosa
       setActividades((prevActividades) =>
         prevActividades.filter((actividad) => actividad.nombre_actividad !== actividadConfirmacion.nombre_actividad)
       );
-      
+
       setActividadConfirmacion(null);
       setMostrarConfirmacion(false);
       setMensajeExito("¡Actividad cancelada con éxito!");
@@ -83,47 +83,51 @@ const ActividadesInscritas = () => {
   };
 
   return (
-    <div className="vista">
-      {actividades.length === 0 ? (  // Condición para cuando no hay actividades
-        <p>No tienes actividades inscritas.</p>
-      ) : (
-        <div className={`cards-container ${mostrarConfirmacion ? "deshabilitar-hover" : ""}`}>
-          {actividades.map((actividad, index) => (
-            <ActividadCard
-              key={index}
-              nombre={actividad.nombre_actividad}
-              fechaActividad={actividad.fecha_actividad}
-              fechaInscripcion={actividad.fecha_inscripcion}
-              horasBecas={actividad.numero_horas}
-              imagen={actividad.imagen}
-              organizador={actividad.organizador}
-              ubicacion={actividad.ubicacion}
-              deshabilitarHover={mostrarConfirmacion}
-              onCancelar={() => handleCancelarClick(actividad)}
-            />
-          ))}
-        </div>
-      )}
+    (!loading) ? (
+      <div className="vista">
+        {actividades.length === 0 ? (  // Condición para cuando no hay actividades
+          <p>No tienes actividades inscritas.</p>
+        ) : (
+          <div className={`cards-container ${mostrarConfirmacion ? "deshabilitar-hover" : ""}`}>
+            {actividades.map((actividad, index) => (
+              <ActividadCard
+                key={index}
+                nombre={actividad.nombre_actividad}
+                fechaActividad={actividad.fecha_actividad}
+                fechaInscripcion={actividad.fecha_inscripcion}
+                horasBecas={actividad.numero_horas}
+                imagen={actividad.imagen}
+                organizador={actividad.organizador}
+                ubicacion={actividad.ubicacion}
+                deshabilitarHover={mostrarConfirmacion}
+                onCancelar={() => handleCancelarClick(actividad)}
+              />
+            ))}
+          </div>
+        )}
 
-      {mostrarConfirmacion && (
-        <div className="confirmacion-global">
-          <div className="confirmacion">
-            <p>¿Estás seguro de cancelar la actividad inscrita: <strong>{actividadConfirmacion.nombre_actividad}</strong>?</p>
-            <div className="confirmacion-botones">
-              <button className="confirm-button" onClick={handleConfirmar}>
-                Sí
-              </button>
-              <button className="cancel-button" onClick={handleCancelar}>
-                No
-              </button>
+        {mostrarConfirmacion && (
+          <div className="confirmacion-global">
+            <div className="confirmacion">
+              <p>¿Estás seguro de cancelar la actividad inscrita: <strong>{actividadConfirmacion.nombre_actividad}</strong>?</p>
+              <div className="confirmacion-botones">
+                <button className="confirm-button" onClick={handleConfirmar}>
+                  Sí
+                </button>
+                <button className="cancel-button" onClick={handleCancelar}>
+                  No
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {mensajeExito && <div className="mensaje-exito">{mensajeExito}</div>}
-      {mensajeError && <div className="mensaje-error">{mensajeError}</div>} {/* Mostrar mensaje de error */}
-    </div>
+        {mensajeExito && <div className="mensaje-exito">{mensajeExito}</div>}
+        {mensajeError && <div className="mensaje-error">{mensajeError}</div>} {/* Mostrar mensaje de error */}
+      </div>
+    ) : (
+      <div className="colorful"></div>
+    )
   );
 };
 

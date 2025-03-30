@@ -2,10 +2,17 @@ import apiUrl from "../config";
 
 export const fetchParticipantesActividadById = async ({ actividad_id }) => {
     try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            console.warn('No se encontró token JWT');
+            return { state: false, body: 'Autenticación requerida' };
+        }
+
         const response = await fetch(`${apiUrl}/api/participantsActivity/${actividad_id}`, {
             method: "GET",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
 

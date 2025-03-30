@@ -1,4 +1,4 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 export const ActividadesCancelarInscripcion = async (actividad_id,becario_id) => {
     try {

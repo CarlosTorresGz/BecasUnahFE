@@ -1,8 +1,8 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
-const fetchData = async () => {
+const fetchParcialData = async () => {
     try {        
-        const response = await fetch(`${apiUrl}/api/faq?`, {
+        const response = await fetch(`${apiUrl}/api/getBecarioActivity?`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -19,4 +19,5 @@ const fetchData = async () => {
     }
 
 }
-export default fetchData;
+
+export default fetchParcialData;

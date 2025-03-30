@@ -23,8 +23,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/" element={<MainLayout />} >
             <Route index element={<MainContent />} />
             <Route path="/comunicados" element={<Comunicados />} /> {/* Nueva ruta */}
-            <Route path="/login" element={<LoginApp />} />
-            <Route path="/login/employee" element={<LoginApp number="No. Empleado" />} />
+            <Route path="/login" element={<LoginApp userType={'becario'} />} />
+            <Route path="/login/employee" element={<LoginApp userType={'admin'}/>} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/FAQ" element={<FAQComponent />} />
             <Route path="/tipo-becas" element={<TipoBecas />} />

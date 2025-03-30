@@ -1,11 +1,18 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 const updateActividad = async (actividad) => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        console.warn('No se encontró token JWT');
+        return { state: false, body: 'Autenticación requerida' };
+    }
+
     try {
         const response = await fetch(`${apiUrl}/api/putActivityAvailable?`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(actividad),
         });
@@ -14,11 +21,9 @@ const updateActividad = async (actividad) => {
         console.log(data);
 
         if (response.ok) {
-            console.log('Actividad Actualizada:', data);
-            return data; // Regresar la respuesta de la API
+            return { state: true, body: data.message };
         } else {
-            console.error('Error al Guardar actividad Actualizada:', data);
-            return null; // O manejar el error según sea necesario
+            return { state: false, body: `ERORR: ${data.message}` };;
         }
     } catch (error) {
         console.error('Error al conectar con la API:', error);

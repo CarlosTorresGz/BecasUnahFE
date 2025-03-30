@@ -1,7 +1,7 @@
 import apiUrl from "../config";
 
-export const iniciarSesionBecario = async ({noCuenta, password}) => {
-    try {        
+export const iniciarSesionBecario = async ({ noCuenta, password }) => {
+    try {
         const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
             method: "POST",
             headers: {
@@ -11,11 +11,12 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
         });
 
         const data = await response.json();
-        
+        localStorage.setItem('jwtToken', data.token);
+
         if (!data.status) {
-            return { state: false, becario: {descripcion: "Error en la autenticación"} };
+            return { state: false, becario: { descripcion: "Error en la autenticación" } };
         }
-        
+
         return { state: true, data }
     } catch (error) {
         console.error('Error:', error);
@@ -24,8 +25,8 @@ export const iniciarSesionBecario = async ({noCuenta, password}) => {
 
 }
 
-export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
-    try {        
+export const iniciarSesionEmployee = async ({ noEmpleado, password }) => {
+    try {
         const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
             method: "POST",
             headers: {
@@ -35,11 +36,12 @@ export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
         });
 
         const data = await response.json();
+        localStorage.setItem('jwtToken', data.token);
         
         if (!data.status) {
-            return { state: false, employee: {descripcion: "Error en la autenticación"} };
+            return { state: false, employee: { descripcion: "Error en la autenticación" } };
         }
-        
+
         return { state: true, data }
     } catch (error) {
         console.error('Error:', error);
@@ -48,8 +50,8 @@ export const iniciarSesionEmployee = async ({noEmpleado, password}) => {
 
 }
 
-export const changePassword = async ({email, newPass}) => {
-    try {        
+export const changePassword = async ({ email, newPass }) => {
+    try {
         const response = await fetch(`${apiUrl}/api/auth/changePassword`, {
             method: "POST",
             headers: {
@@ -59,11 +61,11 @@ export const changePassword = async ({email, newPass}) => {
         });
 
         const data = await response.json();
-        
+
         if (!data.status) {
             return { state: false, body: data.body };
         }
-        
+
         return { state: true, body: data.body }
     } catch (error) {
         console.error('Error:', error);

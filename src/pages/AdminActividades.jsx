@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
-import updateActividad from '../services/updateActividad';
+import updateActividad from '../services/ActividadesAdministrador/updateActividad';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
-import { handleDelete } from '../services/deleteActividad';
+import { handleDelete } from '../services/ActividadesAdministrador/deleteActividad';
 import { uploadImageToAzure } from '../util/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
 import { activityPropTypes } from "../util/propTypes";
-import fetchAllData from '../services/ActividadesAdminAPI';
+import fetchAllData from '../services/ActividadesAdministrador/ActividadesAdminAPI';
 import { deletePictureAzure } from '../util/deletePictureAzure';
 
 const formatDate = (dateString) => {
@@ -64,8 +64,7 @@ const AdminActividades = () => {
                 const dataFetch = await fetchAllData();
                 setActividades(dataFetch.actividades);
             } catch (error) {
-                console.log('error: ', error)
-                toast.error('Error al cargar las actividades.');
+                toast.error(`Error al cargar las actividades: ${error}`);
             }
         };
         loadActividades();
@@ -87,11 +86,8 @@ const AdminActividades = () => {
         //Eliminar imagen
         const cleanUrl = urlImagen.split('?')[0];
         const blobName = decodeURIComponent(cleanUrl.split('/').pop());
-        console.log(blobName);
 
-        const deleteImagen = await deletePictureAzure(blobName);
-        console.log('deleteImagen: ', deleteImagen)
-
+        await deletePictureAzure(blobName);
         const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
 
         if (deleteActividad.state) {
@@ -114,8 +110,9 @@ const AdminActividades = () => {
         actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
 
         const response = await updateActividad(actividadEditada);
-        if (response) {
-            toast.success('Actividad actualizada con éxito!');
+        console.log('response: ', response);
+        if (response.state) {
+            toast.success(`${response.body}`);
             setActividadSeleccionada(null);
 
             const actividadesActualizadas = actividades.map((actividad) =>
