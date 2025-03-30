@@ -5,20 +5,18 @@ import { InfoItem } from '../components/InformacionItem';
 import generatePDF from '../util/reportSeguimientoGenerator';
 import { toast } from 'sonner';
 import { uploadPDFAzure } from '../util/uploadPDFAzure';
-import { sendEmailACS } from '../services/sendEmailACS';
-import { informacionSeguimientoBecaAPI, setStateBeca, saveReport } from '../services/informacionSeguimientoBecaAPI.JS';
+import { sendEmailACS } from '../services/ReporteSeguimiento/sendEmailACS';
+import { informacionSeguimientoBecaAPI, setStateBeca, saveReport } from '../services/ReporteSeguimiento/informacionSeguimientoBecaAPI';
 import { MdSearch } from "react-icons/md";
-import { ActividadesRealizadas } from '../services/ActividadesRealizadas';
-//import { useAuth } from '../context/AuthContext';
+import { ActividadesRealizadas } from '../services/ActividadesBecario/ActividadesRealizadas';
+import { useAuth } from '../context/AuthContext';
 
 export const SeguimientoBeca = () => {
-    //const { user } = useAuth();
     const localStorageUser = localStorage.getItem('user');
-    const user = JSON.parse(localStorageUser);
+    const { user } = useAuth() || JSON.parse(localStorageUser);
 
     const date = new Date();
     const [activeTab, setActiveTab] = useState('generalInformation');
-    const [loading, setLoading] = useState(false);
     const [isSendingEmail, setIsSendingEmail] = useState(false);
     const [startMonth, setStartMonth] = useState();
     const [finishMonth, setFinishMonth] = useState('');
@@ -43,8 +41,8 @@ export const SeguimientoBeca = () => {
             setOldStateBeca(estadoAnterior);
 
             const result = await setStateBeca({ no_cuenta: dataSeguimiento.no_cuenta, estado_beca_id: idNewStateBeca });
-            
-            if (result.state) {                
+
+            if (result.state) {
                 setDataSeguimiento((prev) => ({ ...prev, estado_beca: newStateBeca }));
                 setIdNewStateBeca('');
                 setNewStateBeca('');
@@ -77,30 +75,33 @@ export const SeguimientoBeca = () => {
     };
 
     const getData = async () => {
-        setLoading(true);
-        try {
-            setActiveTab('generalInformation');
-            setActividadesRealizadas([]);
-            const result = await informacionSeguimientoBecaAPI({ no_cuenta: searchNoCuenta });
-            console.log('result informacion: ', result)
-            if (result.state) {
-                setDataSeguimiento(result.body);
-                let nombre = result.body.nombre.split(' ');
-                let apellido = result.body.apellido.split(' ');
-                setNombreBecarioCorto(`${nombre[0]} ${apellido[0]}`);
+        if (searchNoCuenta) {
+            try {
+                setActiveTab('generalInformation');
+                setActividadesRealizadas([]);
+                const result = await informacionSeguimientoBecaAPI({ no_cuenta: searchNoCuenta });
+                if (result.state) {
+                    setDataSeguimiento(result.body);
+                    let nombre = result.body.nombre.split(' ');
+                    let apellido = result.body.apellido.split(' ');
+                    setNombreBecarioCorto(`${nombre[0]} ${apellido[0]}`);
 
-                const fechaInicioBeca = new Date(result.body.fecha_inicio_beca).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                setDataSeguimiento((prev) => ({ ...prev, fecha_inicio_beca: fechaInicioBeca }));
+                    const fechaInicioBeca = new Date(result.body.fecha_inicio_beca).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                    setDataSeguimiento((prev) => ({ ...prev, fecha_inicio_beca: fechaInicioBeca }));
 
-                toast.success("Datos obtenidos con éxito");
-            } else {
-                toast.error("Hubo un error al obtener la información del seguimiento.");
+                    toast.success("Datos obtenidos con éxito");
+                } else {
+                    setDataSeguimiento('');
+                    setActividadesFiltradas([]);
+                    toast.warning(`ERROR: ${result.body}`);
+                }
+            } catch (error) {
+                toast.info(`No se encontraron resultados. ${error}`);
             }
-        } catch (error) {
-            console.error('Error al obtener los datos:', error);
-            toast.info('No se encontraron resultados.')
-        } finally {
-            setLoading(false);
+        } else {
+            setDataSeguimiento('');
+            setActividadesFiltradas([]);
+            toast.warning("Ingrese un número de cuenta para buscar a un becario.");
         }
     };
 
@@ -162,7 +163,6 @@ export const SeguimientoBeca = () => {
             setTotalHoras(0);
             toast.error("Hubo un error al obtener la actividad.");
         }
-
     };
 
     //Determinar el periodo anterior
@@ -271,13 +271,9 @@ export const SeguimientoBeca = () => {
             toast.error("Hubo un error al generar o enviar el reporte.");
         }
     };
-
-    useEffect(() => {
-        console.log(`Desde useEffect, El estado nuevo es: ${idNewStateBeca} - ${newStateBeca}`);
-    }, [idNewStateBeca, newStateBeca]); 
-
+    
     const handleNewStateBeca = (e) => {
-        const estadoId = e.target.value ;
+        const estadoId = e.target.value;
         const estadoTexto = e.target.options[e.target.selectedIndex].text;
         setNewStateBeca(estadoTexto);
         setIdNewStateBeca(estadoId);

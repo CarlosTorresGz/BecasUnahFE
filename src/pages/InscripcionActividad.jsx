@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import "../styles/Inscripcion.css";
-import inscripcionActividad from "../services/inscripcionActividadAPI";
+import inscripcionActividad from "../services/ActividadesBecario/inscripcionActividadAPI";
 import { toast } from 'sonner';
 import { activityInscriptionPropTypes } from "../util/propTypes";
-import { fetchPersonById } from '../services/personAPI';
+import { fetchPersonById } from '../services/PerfilBecario/personAPI';
 
 const FormularioInscripcion = ({ actividad, onClose }) => {
     const [persona, setPersona] = useState(null);

@@ -1,4 +1,4 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 export const fetchCareerById = async ({ career_id }) => {
     try {

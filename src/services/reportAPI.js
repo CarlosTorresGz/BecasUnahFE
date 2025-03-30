@@ -20,12 +20,20 @@ export const fetchReport = async ({ no_cuenta }) => {
     }
 }
 
+
 export const fetchBecarioInfoReport = async ({ no_cuenta }) => {
     try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            console.warn('No se encontró token JWT');
+            return { state: false, body: 'Autenticación requerida' };
+        }
+
         const response = await fetch(`${apiUrl}/api/report/infoBecario/${no_cuenta}`, {
             method: "GET",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         });
 

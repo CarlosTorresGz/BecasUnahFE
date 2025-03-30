@@ -1,12 +1,18 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
     try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            console.warn('No se encontró token JWT');
+            return { state: false, body: 'Autenticación requerida' };
+        }
+
         const response = await fetch(`${apiUrl}/api/sendEmailACS?`, {
-        //const response = await fetch(`http://localhost:7071/api/sendEmailACS`, { //Para Desarrollo
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 to: email,
@@ -23,7 +29,7 @@ export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
         });
 
         const result = await response.json();
-        console.log('result: ', result)
+
         if (response.ok) {
             console.log("Correo enviado correctamente.");
             return true;

@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, InputGroup, Modal } from 'react-bootstrap';
-import fetchData from '../services/faqAPI';
-import updatePregunta from '../services/UpdatePreguntasFrecuentas';
-import crearPreguntas from '../services/CrearPreguntas'; // Asegúrate de que la ruta sea correcta
-import { useAuth } from '../context/AuthContext';
+import fetchData from '../services/FAQ/faqAPI';
+import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentas';
+import crearPreguntas from '../services/FAQ/CrearPreguntas'; // Asegúrate de que la ruta sea correcta
 import '../styles/FrequentlyAskedQuestions.css';
 import { toast } from 'sonner';
 import { useLocation } from 'react-router-dom';
 
 const FAQComponent = () => {
     const location = useLocation();
-  const isAdmin = location.state?.param;
-    console.log("esto valos isAdmin",isAdmin)
+    const isAdmin = location.state?.param;
+    //console.log("esto valos isAdmin", isAdmin)
+
     const [data, setData] = useState([]);
     const [originalData, setOriginalData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -25,18 +25,12 @@ const FAQComponent = () => {
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedPreguntaId, setSelectedPreguntaId] = useState(null); // Guardar el pregunta_id seleccionado
     const [mensaje, setMensaje] = useState(""); // Para mostrar mensajes de éxito o error al agregar
-    
-    //console.log("USER",user.no_empleado)
+
     const getData = async () => {
         try {
             const result = await fetchData();
             const preguntas = result.preguntas;
-
-            // Verifica que cada pregunta tiene un `pregunta_id`
-            preguntas.forEach((item, index) => {
-                console.log(`Pregunta ${index}:`, item.pregunta_id); // Verifica si el ID está presente
-            });
-
+            
             if (Array.isArray(preguntas)) {
                 setData(preguntas);
                 setOriginalData(preguntas);
@@ -90,8 +84,6 @@ const FAQComponent = () => {
             console.error("Error: pregunta_id no es un número válido.");
             return;
         }
-
-        //console.log(preguntaId); // Verifica que es el ID correcto
 
         const success = await updatePregunta(preguntaId, editedQuestion, editedAnswer);
 

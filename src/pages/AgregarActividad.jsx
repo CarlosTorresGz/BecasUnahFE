@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
 import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../util/uploadPictureAzure';
-import saveActivities from '../services/saveActivities';
+import saveActivities from '../services/ActividadesAdministrador/saveActivities';
 import { toast } from 'sonner';
 import { activityPropTypes } from "../util/propTypes";
 
@@ -21,9 +21,7 @@ const AgregarActividad = ({ data }) => {
   const [fecha, setFecha] = useState();
 
   const today = new Date();
-  // Restar un día por defecto le quita un dia si hora de otro pais
   today.setDate(today.getDate() - 1);
-  // Convertir a formato YYYY-MM-DD
   const previousDay = today.toISOString().split("T")[0];
 
   useEffect(() => {
@@ -81,23 +79,31 @@ const AgregarActividad = ({ data }) => {
       organizador: organizador
     };
 
-    await saveActivities(nuevaActividad);
-    setActividades((prevActividades) => [...prevActividades, nuevaActividad]);
+    const result = await saveActivities(nuevaActividad);
+    console.log('result frontend: ', result);
+    if (result.state) {
+      setActividades((prevActividades) => [...prevActividades, nuevaActividad]);
 
-    setMensajeExito(true);
-    setNombre('');
-    setDescripcion('');
-    setFecha('');
-    setHorasBeca('');
-    setUbicacion('');
-    setFoto(null);
-    setOrganizador('');
+      setMensajeExito(true);
+      setNombre('');
+      setDescripcion('');
+      setFecha('');
+      setHorasBeca('');
+      setUbicacion('');
+      setFoto(null);
+      setOrganizador('');
 
-    setTimeout(() => {
-      setMensajeExito(false);
-    }, 3000);
+      setTimeout(() => {
+        setMensajeExito(false);
+      }, 3000);
 
-    setMostrarConfirmacion(false); // Cerrar la confirmación
+      setMostrarConfirmacion(false);
+      //toast.success(result.body.message);
+
+    } else {
+      toast.error(result.body);
+    }
+
   };
 
   const cancelarGuardar = () => {

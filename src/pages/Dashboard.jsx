@@ -21,8 +21,8 @@ import { MdHelpOutline } from 'react-icons/md';
 import FAQComponent from './FrequentlyAskedQuestions';
 
 //Data de las actividades
-import fetchAllData from '../services/ActividadesAdminAPI';
-import fetchParcialData from '../services/ActividadesBecarioAPI';
+import fetchAllData from '../services/ActividadesAdministrador/ActividadesAdminAPI';
+import fetchParcialData from '../services/ActividadesBecario/ActividadesBecarioAPI';
 
 const dataFetch = await fetchAllData();
 const dataFetchBecarios = await fetchParcialData();

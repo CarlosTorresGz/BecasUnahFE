@@ -1,8 +1,8 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
-const fetchAllData = async () => {
+const fetchData = async () => {
     try {        
-        const response = await fetch(`${apiUrl}/api/activities?`, {
+        const response = await fetch(`${apiUrl}/api/faq?`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -19,5 +19,4 @@ const fetchAllData = async () => {
     }
 
 }
-
-export default fetchAllData;
+export default fetchData;

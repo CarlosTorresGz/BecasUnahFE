@@ -1,4 +1,4 @@
-import apiUrl from "../config";
+import apiUrl from "../../config";
 
 export const fetchBecaById = async ({ beca_id }) => {
     try {
