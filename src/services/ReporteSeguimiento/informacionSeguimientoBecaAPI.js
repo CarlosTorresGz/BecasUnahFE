@@ -9,8 +9,8 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
             return { state: false, body: 'Autenticación requerida' };
         }
         
-        //const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
-        const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
+        const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
+        //const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
