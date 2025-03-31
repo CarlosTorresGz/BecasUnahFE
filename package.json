@@ -17,6 +17,7 @@
     "becasunahfrontend": "file:",
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
