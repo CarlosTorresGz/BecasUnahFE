@@ -8,15 +8,18 @@ import { InfoItem } from '../components/InformacionItem';
 import { SpinnerLoading } from '../components/SpinnerLoading';
 import { profilePropTypes } from "../util/propTypes";
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+import { formatDate } from '../util/formatDate';
 
-export const ProfileBecario = ({ setActiveComponent }) => {
-    const { logout, user } = useAuth();
+export const ProfileBecario = () => {
+    const { logout, getUser, loadingUser } = useAuth();
     const navigate = useNavigate();
     const [persona, setPersona] = useState(null);
     const [carrera, setCarrera] = useState(null)
-    const [loading, setLoading] = useState(true);
+    const [loadingProfile, setLoadingProfile] = useState(true);
     const [error, setError] = useState(null);
-    const dataProfileBecario = user || JSON.parse(localStorage.getItem('user'));
+    const fechaActual = new Date();
+    const user = getUser();
 
     const cerrarSesion = useCallback(() => {
         logout();
@@ -25,17 +28,17 @@ export const ProfileBecario = ({ setActiveComponent }) => {
     }, [logout, navigate]);
 
     const getData = useCallback(async () => {
-        if (!dataProfileBecario?.persona_id || !dataProfileBecario?.carrera_id) {
-            setLoading(false);
+        if (!user?.persona_id || !user?.carrera_id) {
+            setLoadingProfile(false);
             return;
         }
 
-        setLoading(true);
+        setLoadingProfile(true);
         setError(null);
         try {
             const [personResult, careerResult] = await Promise.all([
-                fetchPersonById({ person_id: dataProfileBecario.persona_id }),
-                fetchCareerById({ career_id: dataProfileBecario.carrera_id })
+                fetchPersonById({ person_id: user.persona_id }),
+                fetchCareerById({ career_id: user.carrera_id })
             ]);
 
             if (personResult.state && careerResult.state) {
@@ -46,17 +49,17 @@ export const ProfileBecario = ({ setActiveComponent }) => {
             console.error('Error al obtener los datos de la persona:', error);
             setError(error);
         } finally {
-            setLoading(false);
+            setLoadingProfile(false);
         }
-    }, [dataProfileBecario?.persona_id, dataProfileBecario?.carrera_id]);
+    }, [user?.persona_id, user?.carrera_id]);
 
     useEffect(() => {
-        if (dataProfileBecario?.persona_id && dataProfileBecario?.carrera_id) {
+        if (user?.persona_id && user?.carrera_id) {
             getData();
         } else {
-            setLoading(false);
+            setLoadingProfile(false);
         }
-    }, [getData]);
+    }, [getData, user?.carrera_id, user?.persona_id]);
 
     if (error) {
         return <div>Error al cargar los datos. Por favor, intenta de nuevo más tarde.</div>;
@@ -69,7 +72,7 @@ export const ProfileBecario = ({ setActiveComponent }) => {
         : "Usuario";
 
     return (
-        (loading) ? (
+        (loadingProfile) ? (
             <SpinnerLoading />
         ) : (
             <div className="profile-becario">
@@ -83,17 +86,17 @@ export const ProfileBecario = ({ setActiveComponent }) => {
                 </div>
                 <div className="profile-becario-content">
                     <div className="profile-becario-info">
-                        <InfoItem label='No. Cuenta:' value={dataProfileBecario.no_cuenta || 'No disponible'} />
+                        <InfoItem label='No. Cuenta:' value={user.no_cuenta || 'No disponible'} />
                         <InfoItem label='Correo Institucional:' value={persona.correo_institucional || 'No disponible'} />
                         <InfoItem label='Carrera:' value={carrera} />
-                        <InfoItem label='Último acceso al sistema:' value={dataProfileBecario.ultimoAcceso} />
+                        <InfoItem label='Último acceso al sistema:' value={!loadingUser ? formatDate(new Date (user.ultimoAcceso)) : formatDate(new Date(fechaActual.toLocaleDateString('es-Es')))} />
                         <div className="profile-becario-action">
-                            <button
-                                className='profile-becario-buttom-blue'
-                                onClick={() => {
-                                    setActiveComponent('Mi Beca')
-                                }}
-                            > Mi Beca</button>
+                            <Link to='/dashboard/becario/mi-beca'>
+                                <button
+                                    className='profile-becario-buttom-blue'
+                                > Mi Beca</button>
+                            </Link>
+
                             <button className='profile-becario-buttom-red' onClick={cerrarSesion}> Cerrar Sesión</button>
                         </div>
                     </div>

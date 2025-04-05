@@ -18,7 +18,6 @@ const saveActivities = async (actividad) => {
         });
 
         const data = await response.json();
-
         if (response.ok) {
             return { state: true, body: data };
         } else {

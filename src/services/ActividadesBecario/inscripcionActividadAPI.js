@@ -13,10 +13,8 @@ const inscripcionActividad = async ({actividadId, noCuenta}) => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log('inscripcionActividad actualizada:', data);
             return { state: true, body: data.message };
         } else {
-            console.error('Error al inscripcion Actividad:', data);
             return { state: false, body: data.error };
         }
     } catch (error) {

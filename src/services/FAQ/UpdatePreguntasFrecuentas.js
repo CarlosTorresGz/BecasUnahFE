@@ -18,13 +18,11 @@ const updatePregunta = async (pregunta_id,pregunta,respuesta) => {
         });
 
         const data = await response.json();
-        //console.log(data);
 
         if (response.ok) {
-            //console.log('Actividad Actualizada:', data);
-            return response.ok; // Regresar la respuesta de la API
+            return { success: true, message: data.message}; // Regresar la respuesta de la API
         } else {            
-            return { success: false, errorMessage: data.message || "Hubo un error al editar, campos obligatorios" }; // O manejar el error según sea necesario
+            return { success: false, errorMessage: data.message ? data.message : data.error };
         }
     } catch (error) {
         return { success: false, errorMessage: "Error de conexión con la API: ", error };

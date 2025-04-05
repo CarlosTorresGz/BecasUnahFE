@@ -2,12 +2,14 @@ import { useState } from 'react';
 import '../styles/ActividadesDisponibles.css';
 import FormularioInscripcion from '../pages/InscripcionActividad';
 import CardActivity from '../components/CardActivity';
-import { activityPropTypes } from "../util/propTypes";
+import { useDashboard } from '../context/DashboardContext';
+import SpinnerLoading from '../components/SpinnerLoading';
 
-const ActividadesDisponibles = ({ data }) => {
+const ActividadesDisponibles = () => {
+    const { userType, dataFetchBecarios, loading } = useDashboard();
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    const userRole = localStorage.getItem('userRole');
+    const userRole = userType;
 
     const handleCardClick = (actividad) => {
         setActividadSeleccionada(actividad);
@@ -32,6 +34,8 @@ const ActividadesDisponibles = ({ data }) => {
         );
     }
 
+    if ( loading) return <SpinnerLoading />;
+
     return (
         <div className="actividades-container">
             {actividadSeleccionada ? (
@@ -54,7 +58,7 @@ const ActividadesDisponibles = ({ data }) => {
             ) : (
                 // Vista normal
                 <CardActivity
-                    data={data}
+                    data={dataFetchBecarios.actividades.data}
                     userType={userRole? userRole : 'becario'}
                     onClick={handleCardClick}
                 />
@@ -68,5 +72,4 @@ const ActividadesDisponibles = ({ data }) => {
 
 };
 
-ActividadesDisponibles.propTypes = activityPropTypes;
 export default ActividadesDisponibles;

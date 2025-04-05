@@ -12,7 +12,7 @@ export const DropdownMenu = ({ optionDropdownMenu }) => {
 
       <Dropdown.Menu>
         {optionDropdownMenu.map((option, index) => (          
-            option.clasification.map((categoria, i) => (
+            option.submenu.map((categoria, i) => (
               index === 0 ? (
                 <Dropdown.Item key={i} onClick={categoria.onClick}>{option.title} {categoria.label}</Dropdown.Item>
               ) : (

@@ -18,20 +18,6 @@ export const cardActivityPropTypes = {
     onClick: PropTypes.func,
 };
 
-export const activityPropTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        actividad_id: PropTypes.string.isRequired,
-        imagen: PropTypes.string.isRequired,
-        nombre_actividad: PropTypes.string.isRequired,
-        descripcion: PropTypes.string.isRequired,
-        organizador: PropTypes.string.isRequired,
-        ubicacion: PropTypes.string.isRequired,
-        fecha_actividad: PropTypes.string.isRequired,
-        numero_horas: PropTypes.number.isRequired,
-        estado_actividad: PropTypes.string.isRequired,
-    })).isRequired,
-};
-
 export const dashboardPropTypes = {
     userType: PropTypes.string.isRequired,
     optionSidebar: PropTypes.array.isRequired,
@@ -94,4 +80,9 @@ export const searchBarPropTypes = {
     searchTerm: PropTypes.string.isRequired,
     setSearchTerm: PropTypes.func.isRequired,
     onSearch: PropTypes.func
+};
+
+export const dashboardContextPropTypes = {
+    children: PropTypes.node.isRequired,
+    userType: PropTypes.string.isRequired,
 };

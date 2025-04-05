@@ -1,7 +1,7 @@
 import apiUrl from "../../config";
 
 
-export const ActividadesRealizadas = async (no_cuenta) => {
+export const ActividadesRealizadas = async ({no_cuenta}) => {
     try {
         if (!no_cuenta) {
             throw new Error("Número de cuenta no encontrado");

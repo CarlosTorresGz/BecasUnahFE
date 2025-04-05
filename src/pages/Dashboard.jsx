@@ -1,210 +1,56 @@
 import '../styles/Dashboard.css';
-import { useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { DropdownMenu } from '../components/DropdownMenuDashboard';
-import { MdEventAvailable, MdCheckCircle, MdDescription, MdSchool, MdPerson, MdEventNote, MdAddTask, MdChecklist, MdHistory, MdLogout, MdSummarize, MdPeopleAlt, MdAssignmentTurnedIn, MdAssignment, MdReceiptLong } from "react-icons/md";
-import { ProfileBecario } from './ProfileBecario';
-import { MiBeca } from './MiBeca';
-import ActividadesDisponibles from './ActividadesDisponibles';
-import AdminActividades from './AdminActividades';
-import ActividadesInscritas from './ActividadesInscritas';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { Report } from './Report';
-import AgregarActividad from './AgregarActividad';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import 'animate.css';
-import ListadoAsistencia from './ListadoAsistencia';
 import { dashboardPropTypes } from "../util/propTypes";
-import SeguimientoBeca from './SeguimientoBeca';
-import ActividadesRealizadas from './ActividadesRealizadas';
-import { MdHelpOutline } from 'react-icons/md';
-import FAQComponent from './FrequentlyAskedQuestions';
-
-//Data de las actividades
-import fetchAllData from '../services/ActividadesAdministrador/ActividadesAdminAPI';
-import fetchParcialData from '../services/ActividadesBecario/ActividadesBecarioAPI';
-
-const dataFetch = await fetchAllData();
-const dataFetchBecarios = await fetchParcialData();
+import { getSidebarOptions } from '../data/SidebarOptions/index';
 
 export const Dashboard = ({ userType }) => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [activeComponent, setActiveComponent] = useState(null);
-  const { logout } = useAuth();
 
-  const cerrarSesion = () => {
-    logout();
-    navigate('/');
+  const optionSidebar = getSidebarOptions(userType, (path) => {
+    const prefix = userType === 'admin' ? 'administrador' : 'becario';
+    navigate(`/dashboard/${prefix}/${path}`);
+  });
+
+  const getActiveComponent = () => {
+    const path = location.pathname.split('/').pop();
+    const map = {
+      'actividades-disponibles': 'Actividades Disponibles',
+      'actividades-inscritas': 'Actividades Inscritas',
+      'actividades-realizadas': 'Actividades Realizadas',
+      'mi-beca': 'Mi Beca',
+      'mi-perfil': 'Mi Perfil',
+      'recibidos': 'Reportes Recibidos',
+      'actividades': 'Actividades Disponibles',
+      'nueva-actividad': 'Nueva Actividad',
+      'lista-asistencia': 'Lista de Asistencia',
+      'seguimiento-beca': 'Seguimiento de Becas',
+      'planilla': 'Planilla',
+      'faq': 'Preguntas Frecuentes',
+      'enviados': 'Reportes Enviados',
+    };
+    return map[path] || "Plataforma Avanzada de Control de Horas PASEE";
   };
 
-  const optionBecario = [
-    {
-      title: 'Actividades',
-      icon: <MdAssignmentTurnedIn className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Disponibles',
-          onClick: () => setActiveComponent('Actividades Disponibles'),
-          icon: <MdEventAvailable className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Inscritas',
-          onClick: () => setActiveComponent('Actividades Inscritas'),
-          icon: <MdAssignment className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Realizadas',
-          onClick: () => setActiveComponent('Actividades Realizadas'),
-          icon: <MdCheckCircle className="panel-izq-button-icono" />
-        },
-      ],
-    },
-    {
-      title: 'Reportes',
-      icon: <MdReceiptLong className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Reportes Recibidos',
-          onClick: () => setActiveComponent('Reportes Recibidos'),
-          icon: <MdDescription className="panel-izq-button-icono" />
-        },
-      ],
-    },
-    {
-      title: 'Perfil',
-      icon: <MdPerson className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Mi Beca',
-          onClick: () => setActiveComponent('Mi Beca'),
-          icon: <MdSchool className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Mi Perfil',
-          onClick: () => setActiveComponent('Bienvenido '),
-          icon: <MdPerson className="panel-izq-button-icono" />
-        },
-      ],
-    },
-  ];
-
-  const optionAdmin = [
-    {
-      title: 'Actividades',
-      icon: <MdEventNote className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Actividades Disponibles',
-          onClick: () => setActiveComponent('Actividades Disponibles'),
-          icon: <MdEventNote className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Nueva Actividad',
-          onClick: () => setActiveComponent('Nueva Actividad'),
-          icon: <MdAddTask className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Lista de Asistencia',
-          onClick: () => setActiveComponent('Lista de Asistencia'),
-          icon: <MdChecklist className="panel-izq-button-icono" />
-        },
-      ],
-    },
-    {
-      title: 'Reportes',
-      icon: <MdSummarize className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Revisión de Becas',
-          onClick: () => setActiveComponent('Revisión de Becas'),
-          icon: <MdChecklist className="panel-izq-button-icono" />
-        },
-        {
-          label: 'Historial de Reportes',
-          onClick: () => setActiveComponent('Historial de Reportes'),
-          icon: <MdHistory className="panel-izq-button-icono" />
-        },
-      ],
-    },
-    {
-      title: 'Gestión de Becarios',
-      icon: <MdPeopleAlt className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Planilla',
-          onClick: () => setActiveComponent('Planilla'),
-          icon: <MdSummarize className="panel-izq-button-icono" />
-        },
-      ],
-    },
-    {
-      title: 'FAQ',
-      icon: <MdHelpOutline className="panel-izq-button-icono" />,  // Usamos un ícono de ayuda
-      clasification: [
-        {
-          label: 'Preguntas Frecuentes',
-          onClick: () => navigate('/FAQ', { state: { param: true } }),
-          icon: <MdHelpOutline className="panel-izq-button-icono" />,
-        },
-      ],
-    },
-    {
-      title: 'Cerrar Sesión',
-      icon: <MdLogout className="panel-izq-button-icono" />,
-      clasification: [
-        {
-          label: 'Cerrar Sesión',
-          onClick: cerrarSesion,
-          icon: <MdLogout className="panel-izq-button-icono" />
-        },
-      ],
-    }
-  ];
-
-  const optionSidebar = userType === 'becario' ? optionBecario : userType === 'admin' ? optionAdmin : [];
+  const activeComponent = getActiveComponent();
 
   return (
     <div className='content'>
       <div className='panel-superior'>
         <DropdownMenu optionDropdownMenu={optionSidebar} />
-        <h1 className='animate__animated animate__bounceIn'>{activeComponent ? activeComponent : "Plataforma Avanzada de Control de Horas PASEE"}</h1>
+        <h1 className='animate__animated animate__bounceIn'>{activeComponent}</h1>
       </div>
       <div className="principal">
         <Sidebar optionSidebar={optionSidebar} />
         <div className="panel-der" id='aquiContenido'>
-          {(() => {
-            switch (activeComponent) {
-              case 'Actividades Disponibles':
-                return userType === 'becario'
-                  ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                  : <AdminActividades data={dataFetch.actividades} />;
-              case 'Actividades Inscritas':
-                return <ActividadesInscritas actividades={dataFetchBecarios.actividades} />;
-              case 'Actividades Realizadas':
-                return <ActividadesRealizadas actividades={dataFetch.actividades} />;
-              case 'Lista de Asistencia':
-                return <ListadoAsistencia data={dataFetch.actividades} />;
-              case 'Bienvenido ':
-                return <ProfileBecario setActiveComponent={setActiveComponent} />;
-              case 'Mi Beca':
-                return <MiBeca />;
-              case 'Historial de Reportes':
-              case 'Reportes Recibidos':
-                return <Report userType={userType} />;
-              case 'Revisión de Becas':
-                return <SeguimientoBeca />;
-              case 'Nueva Actividad':
-                return <AgregarActividad data={dataFetch.actividades} />;
-               
-              default:
-                return userType === 'becario'
-                  ? <ActividadesDisponibles data={dataFetchBecarios.actividades} />
-                  : <AdminActividades />;
-            }
-          })()}
+          <Outlet />
         </div>
       </div>
     </div>
+
   );
 };
 

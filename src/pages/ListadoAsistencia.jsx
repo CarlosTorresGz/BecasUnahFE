@@ -1,32 +1,41 @@
 import { useState, useEffect } from "react";
-import { Card, Table, Button, ListGroup, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Card, Table, Button, ListGroup, Form, Row, Col } from "react-bootstrap";
 import "../styles/ListadoAsistencia.css"
 import generatePDF from "../util/listGenerator";
 import { fetchParticipantesActividadById, actualizarAsistencia } from "../services/participantesActividadAPI";
 import { toast } from "sonner";
 import { MdSearch } from "react-icons/md";
-import { activityPropTypes } from "../util/propTypes";
+import { useDashboard } from "../context/DashboardContext";
+import SearchBar from "../components/SearchBar";
 
-const ListadoAsistencia = ({ data }) => {
-    const [actividadSeleccionada, setActividadSeleccionada] = useState(data[0].actividad_id);
+const ListadoAsistencia = () => {
+    const { dataFetch } = useDashboard();
+    const [actividadSeleccionada, setActividadSeleccionada] = useState(dataFetch.actividades.data[0].actividad_id);
     const [participantesActividad, setParticipantesActividad] = useState([]);
+    const [numeroParticipantes, setNumeroParticipantes] = useState(0);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState("");
-    const [nombreActividad, setNombreActividad] = useState(data[0].nombre_actividad);
+    const [nombreActividad, setNombreActividad] = useState(dataFetch.actividades.data[0].nombre_actividad);
     const [loading, setLoading] = useState(false);
+
+    const estadoDeActivididad = ( actividad_id) => {
+        return dataFetch.actividades.data.find(
+            estado => estado.actividad_id === actividad_id).estado_actividad;
+    }
 
     const obtenerParticipantesActividad = async (actividad_id, nombre_actividad) => {
         setActividadSeleccionada(actividad_id);
         setNombreActividad(nombre_actividad);
         setLoading(true);
         const response = await fetchParticipantesActividadById({ actividad_id });
-
         if (response.state) {
             setParticipantesActividad(response.body);
+            setNumeroParticipantes(response.body.length);
             setLoading(false);
         } else {
             setParticipantesActividad([]);
             setError(response.body.error);
+            setNumeroParticipantes(0);
             setLoading(false);
         }
     }
@@ -70,24 +79,13 @@ const ListadoAsistencia = ({ data }) => {
                     <Card>
                         <Card.Body>
                             <Card.Title>Actividades</Card.Title>
-                            <InputGroup className="mb-3">
-                                <Form.Control
-                                    placeholder="Buscar"
-                                    aria-label="Buscar"
-                                    aria-describedby="basic-addon2"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                                <Button variant="outline-secondary" id="button-addon2">
-                                    <MdSearch />
-                                </Button>
-                            </InputGroup>
+                            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} text={<MdSearch />} />
                             <div className="scrollable-card">
-                                {data.filter(item =>
+                                {dataFetch.actividades.data.filter(item =>
                                     item.nombre_actividad.toLowerCase().includes(searchTerm.trim().toLowerCase())
                                 ).length > 0 ? (
                                     <ListGroup>
-                                        {data.filter(item =>
+                                        {dataFetch.actividades.data.filter(item =>
                                             item.nombre_actividad.toLowerCase().includes(searchTerm.trim().toLowerCase())
                                         )
                                             .filter(actividadEstado =>
@@ -118,6 +116,8 @@ const ListadoAsistencia = ({ data }) => {
                     <Card>
                         <Card.Body>
                             <Card.Title>{`Lista de Asistencia: ${nombreActividad}`}</Card.Title>
+                            <span>{`Estado de la Actividad: ${estadoDeActivididad(actividadSeleccionada)}`}</span><br />
+                            <span>{`No. de participantes: ${numeroParticipantes}`}</span>
                             {!loading ? (
                                 <div className="scrollable-card">
                                     <Table striped bordered hover>
@@ -160,7 +160,7 @@ const ListadoAsistencia = ({ data }) => {
 
                         </Card.Body>
                     </Card>
-                    <Button variant="primary" className="button-asistencia mt-3" onClick={() => generatePDF(participantesActividad, data.find(a => a.actividad_id === actividadSeleccionada).nombre_actividad)}>
+                    <Button variant="primary" className="button-asistencia mt-3" onClick={() => generatePDF(participantesActividad, dataFetch.actividades.data.find(a => a.actividad_id === actividadSeleccionada).nombre_actividad)}>
                         Descargar Lista
                     </Button>
                 </Col>
@@ -169,5 +169,4 @@ const ListadoAsistencia = ({ data }) => {
     );
 };
 
-ListadoAsistencia.propTypes = activityPropTypes;
 export default ListadoAsistencia;

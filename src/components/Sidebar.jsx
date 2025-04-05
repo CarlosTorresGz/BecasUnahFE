@@ -9,12 +9,7 @@ export const Sidebar = ({ optionSidebar }) => {
     const [expandedCategory, setExpandedCategory] = useState({});
 
     const handleNavigation = () => {
-        setExpanded(!expanded); // Cierra el menú principal
-        /*
-        if (expandedCategory) { // Si las subcategorias estas abiertas las cierra
-            setExpandedCategory(!expandedCategory);
-        }
-        */
+        setExpanded(!expanded);
         setExpandedCategory({});
     };
 
@@ -41,7 +36,7 @@ export const Sidebar = ({ optionSidebar }) => {
                     </div>
                     {expandedCategory[index] && (
                         <div className='panel-izq-category-clasification'>
-                            {option.clasification.map((clasification, i) => (
+                            {option.submenu.map((clasification, i) => (
                                 <button className="panel-izq-button" key={i} onClick={clasification.onClick} title={clasification.label}>
                                     {clasification.icon}
                                     {expanded && <span className="panel-izq-button-text">{clasification.label}</span>}

@@ -1,14 +1,16 @@
 import '../styles/Report.css';
 import { useState, useEffect } from 'react';
-import { Form, Button, InputGroup } from 'react-bootstrap';
 import { fetchReport, fetchBecarioInfoReport } from '../services/reportAPI';
 import TableReport from '../components/TableReport';
 import { toast } from 'sonner';
 import { dashboardPropTypes } from "../util/propTypes";
 import SpinnerLoading from '../components/SpinnerLoading';
+import { useDashboard } from '../context/DashboardContext';
+import SearchBar from '../components/SearchBar';
 
-export const Report = ({ userType }) => {
-    const [loading, setLoading] = useState(false);
+export const Report = () => {
+    const { userType, dataFetchBecarios, loading } = useDashboard();
+    const [loadingReport, setLoadingReport] = useState(false);
     const [error, setError] = useState(null);
     const [noCuenta, setNoCuenta] = useState('');
     const [data, setData] = useState([]);
@@ -16,25 +18,14 @@ export const Report = ({ userType }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        const userLocal = JSON.parse(localStorage.getItem('user'));
-
-        if (!userLocal) {
-            console.error('No se encontró user en localStorage');
-            setError('No se encontró la información del usuario.');
-            //setLoading(false);
-            return;
-        }
-
         if (userType === 'becario') {
-            setNoCuenta(userLocal.no_cuenta || '');
+            if(!loading) {
+                setData(dataFetchBecarios.reportes.data);
+            }    
         }
 
-    }, [userType]);
-
-    useEffect(() => {
-        //if (!noCuenta) return;
         const getData = async () => {
-            setLoading(true);
+            setLoadingReport(true);
             try {
                 const result = await fetchReport({ no_cuenta: noCuenta });
                 if (result.state) {
@@ -65,7 +56,7 @@ export const Report = ({ userType }) => {
                         nombre_centro_estudio: ''
                     });
                     setSearchTerm('')
-                    if(searchTerm) toast.info('No se encontraron resultados.')
+                    if (searchTerm) toast.info('No se encontraron resultados.')
                 }
 
             } catch (error) {
@@ -73,13 +64,13 @@ export const Report = ({ userType }) => {
                 setError(error.message || 'Error al obtener los datos.');
                 toast.error('No se encontraron resultados.')
             } finally {
-                setLoading(false);
+                setLoadingReport(false);
             }
         };
 
-        if(searchTerm || noCuenta) getData();
+        if (searchTerm || noCuenta) getData();
 
-    }, [noCuenta, userType]);
+    }, [dataFetchBecarios, noCuenta, userType]);
 
     const handleSearch = () => {
         if (!searchTerm.trim()) {
@@ -95,23 +86,13 @@ export const Report = ({ userType }) => {
 
     return (
         <div className="report">
-            {loading ? (
+            {loadingReport ? (
                 <SpinnerLoading />
             ) : userType === 'becario' ? (
                 <TableReport data={data} />
             ) : (
                 <div>
-                    <InputGroup className="mb-3">
-                        <Form.Control
-                            placeholder="Ingrese el número de cuenta del becario"
-                            aria-label="Buscar"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <Button variant="outline-secondary" id="button-addon2" onClick={handleSearch}>
-                            Buscar
-                        </Button>
-                    </InputGroup>
+                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} placeholder="Ingrese el número de cuenta del becario" onSearch={handleSearch} />
                     {dataBecario && (
                         <div style={{ margin: '25px 0' }}>
                             <h1 className='informacion-general'>Información General</h1>

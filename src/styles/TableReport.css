@@ -1,7 +1,12 @@
+.table-report {
+    margin: 10px;
+}
+
 .table-report h1 {
     color: var(--primary-text-color);
     font-weight: bold;
     text-align: center;
+    margin: 10px 0px;
 }
 
 .table {

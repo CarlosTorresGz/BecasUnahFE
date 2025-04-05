@@ -10,11 +10,11 @@ import { informacionSeguimientoBecaAPI, setStateBeca, saveReport } from '../serv
 import { MdSearch } from "react-icons/md";
 import { ActividadesRealizadas } from '../services/ActividadesBecario/ActividadesRealizadas';
 import { useAuth } from '../context/AuthContext';
+import { useDashboard } from '../context/DashboardContext';
 
 export const SeguimientoBeca = () => {
-    const localStorageUser = localStorage.getItem('user');
-    const { user } = useAuth() || JSON.parse(localStorageUser);
-
+    const { getUser } = useAuth();
+    const { refreshReport, refreshBecaEstado } = useDashboard();
     const date = new Date();
     const [activeTab, setActiveTab] = useState('generalInformation');
     const [isSendingEmail, setIsSendingEmail] = useState(false);
@@ -23,7 +23,7 @@ export const SeguimientoBeca = () => {
     const [nombreBecarioCorto, setNombreBecarioCorto] = useState('');
     const [mostrarModalConfirmacion, setMostrarModalConfirmacion] = useState(false);
     const [dataSeguimiento, setDataSeguimiento] = useState();
-    const [actividadesRealizadas, setActividadesRealizadas] = useState([]); //se guarda las actividades realizadas
+    const [, setActividadesRealizadas] = useState([]); //se guarda las actividades realizadas
     const [actividadesFiltradas, setActividadesFiltradas] = useState([]); //se guarda la actividad filtrada
     const [searchNoCuenta, setSearchNoCuenta] = useState('');
     const [selectedPeriodo, setSelectedPeriodo] = useState('I Periodo');
@@ -35,6 +35,7 @@ export const SeguimientoBeca = () => {
     const [observacion, setObservacion] = useState('Ninguna.'); //alguna observacion extra
     const [totalHoras, setTotalHoras] = useState(0);
 
+    let user = getUser();
     const ModalConfirmacion = () => {
         const handleConfirmar = async () => {
             const estadoAnterior = dataSeguimiento.estado_beca; // Guarda el valor antes de cambiarlo
@@ -44,7 +45,7 @@ export const SeguimientoBeca = () => {
 
             if (result.state) {
                 setDataSeguimiento((prev) => ({ ...prev, estado_beca: newStateBeca }));
-                setIdNewStateBeca('');
+                refreshBecaEstado({estado_beca_id: idNewStateBeca});
                 setNewStateBeca('');
                 setMostrarModalConfirmacion(false);
                 toast.success("Estado actualizado con éxito.");
@@ -107,8 +108,7 @@ export const SeguimientoBeca = () => {
 
     const handleSearch = async () => {
         try {
-            const resultActivity = await ActividadesRealizadas(searchNoCuenta, startMonth, finishMonth);
-            console.log('resultActivity: ', resultActivity);
+            const resultActivity = await ActividadesRealizadas({no_cuenta:searchNoCuenta}, startMonth, finishMonth);
 
             if (resultActivity && Array.isArray(resultActivity.actividades) && resultActivity.actividades.length > 0) {
                 setActividadesRealizadas(resultActivity.actividades);
@@ -119,14 +119,12 @@ export const SeguimientoBeca = () => {
                 fin.setMonth(fin.getMonth() + 1); // Moverse al siguiente mes y restar 1 día para obtener el último día del mes seleccionado
                 fin.setDate(fin.getDate() - 1);
 
-                // Filtrar actividades dentro del rango seleccionado
                 const actividadesFiltradas = resultActivity.actividades.filter((actividad) => {
                     const fechaActividad = new Date(actividad.fecha_actividad);
                     return fechaActividad >= inicio && fechaActividad <= fin;
                 });
 
                 if (actividadesFiltradas.length > 0) {
-                    // Formatear fechas antes de actualizar el estado
                     const actividadesFormateadas = actividadesFiltradas.map((actividad) => {
                         const fechaActividad = new Date(actividad.fecha_actividad);
                         return {
@@ -138,14 +136,12 @@ export const SeguimientoBeca = () => {
                             }),
                         };
                     });
-                    console.log('actividadesFormateadas: ', actividadesFormateadas)
                     setActividadesFiltradas(actividadesFormateadas);
 
                     // Calcular total de horas solo con las actividades filtradas
                     const total = actividadesFiltradas.reduce((acc, actividad) => acc + actividad.numero_horas, 0);
                     setTotalHoras(total);
 
-                    console.log('Actividades filtradas y actualizadas:', actividadesFormateadas);
                     toast.info("Se obtuvieron actividades dentro del rango seleccionado.");
                 } else {
                     setActividadesRealizadas([]);
@@ -214,7 +210,6 @@ export const SeguimientoBeca = () => {
             //Guardamos el PDF en Azure Storage
             const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo, anioPeriodo);
             console.log('pdfURL: ', pdfURL);
-
             //Guardar el reporte en la base de datos...
             const nuevoReporte = {
                 no_cuenta: dataSeguimiento.no_cuenta,
@@ -249,11 +244,14 @@ export const SeguimientoBeca = () => {
                 if (resultSenEmail) {
                     toast.success("Reporte generado, guardado y enviado con éxito!!!");
                     setIsSendingEmail(false);
+                    refreshReport({no_cuenta: dataSeguimiento.no_cuenta});
+
                     setActiveTab('generalInformation');
                     setObservacionCambioEstado('');
                     setObservacion('');
                     setOldStateBeca('');
                     setNewStateBeca('');
+                    setIdNewStateBeca('');
                     setDataSeguimiento(null);
                     setActividadesRealizadas([]);
                     setActividadesFiltradas([]);
