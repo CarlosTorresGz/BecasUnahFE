@@ -44,6 +44,10 @@
     margin-top: 15px;
 }
 
+.profile-becario-action a {
+    text-decoration: none;
+}
+
 .profile-becario-buttom-blue {
     display: flex;
     align-items: center;

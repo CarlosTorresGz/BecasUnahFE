@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../styles/ActividadesInscritas.css";
-import ActividadesInscritasData from "../services/ActividadesBecario/ActividadesInscritasBecario";
 import { useAuth } from '../context/AuthContext';
 import ActividadesCancelarInscripcion from "../services/ActividadesBecario/ActividadesCancelarInscripcion";
+import { useDashboard } from '../context/DashboardContext';
+import SpinnerLoading from '../components/SpinnerLoading';
 
 const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, imagen, organizador, ubicacion, onCancelar, deshabilitarHover }) => {
   return (
@@ -22,31 +23,13 @@ const ActividadCard = ({ nombre, fechaActividad, fechaInscripcion, horasBecas, i
 };
 
 const ActividadesInscritas = () => {
-  const { user } = useAuth() || JSON.parse(localStorage.getItem('user'));
-  const [actividades, setActividades] = useState([]);
+  const { getUser } = useAuth();
+  const { loading, dataFetchBecarios, refreshActInscritas } = useDashboard();
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [actividadConfirmacion, setActividadConfirmacion] = useState(null);
   const [mensajeExito, setMensajeExito] = useState("");
   const [mensajeError, setMensajeError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const loadActividades = async () => {
-      try {
-        setLoading(true);
-        if (user.no_cuenta) {
-          const response = await ActividadesInscritasData({ no_cuenta: user.no_cuenta });
-          setActividades(response.actividades);
-        }
-      } catch (error) {
-        console.error("Error al cargar las actividades:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadActividades();
-  }, [user?.no_cuenta]);
+  let user = getUser();
 
   const handleCancelarClick = (actividad) => {
     setActividadConfirmacion(actividad);
@@ -54,27 +37,21 @@ const ActividadesInscritas = () => {
   };
 
   const handleCancelar = () => {
-
     setActividadConfirmacion(null);
     setMostrarConfirmacion(false);
-    setMensajeError(""); // Limpiar mensaje de error si se cierra la confirmación
+    setMensajeError("");
   };
 
   const handleConfirmar = async () => {
     try {
-      // Llamada al servicio para cancelar la inscripción en la base de datos
-      console.log("actividad Id es: ", actividadConfirmacion.actividad_id)
       await ActividadesCancelarInscripcion(actividadConfirmacion.actividad_id, user.becario_id);
 
-      // Eliminar la actividad de la lista local si la cancelación fue exitosa
-      setActividades((prevActividades) =>
-        prevActividades.filter((actividad) => actividad.nombre_actividad !== actividadConfirmacion.nombre_actividad)
-      );
-
+      refreshActInscritas();
       setActividadConfirmacion(null);
       setMostrarConfirmacion(false);
       setMensajeExito("¡Actividad cancelada con éxito!");
-      setTimeout(() => setMensajeExito(""), 3000); // Mensaje de éxito por 3 segundos
+      setTimeout(() => setMensajeExito(""), 3000);
+      
     } catch (error) {
       console.error("Error al cancelar la inscripción:", error);
       setMensajeError("Hubo un error al cancelar la inscripción.");
@@ -82,14 +59,16 @@ const ActividadesInscritas = () => {
     }
   };
 
+  if (loading) return <SpinnerLoading />;
+
   return (
     (!loading) ? (
       <div className="vista">
-        {actividades.length === 0 ? (  // Condición para cuando no hay actividades
-          <p>No tienes actividades inscritas.</p>
+        {dataFetchBecarios.inscritas.data.length === 0 ? (
+          <p>No hay actividades inscritas.</p>
         ) : (
           <div className={`cards-container ${mostrarConfirmacion ? "deshabilitar-hover" : ""}`}>
-            {actividades.map((actividad, index) => (
+            {dataFetchBecarios.inscritas.data.map((actividad, index) => (
               <ActividadCard
                 key={index}
                 nombre={actividad.nombre_actividad}

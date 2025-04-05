@@ -1,7 +1,6 @@
 import apiUrl from "../../config";
 
 export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
-    console.log('no cuenta recibido: ', no_cuenta); 
     try {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
@@ -10,7 +9,6 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
         }
         
         const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
-        //const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -19,7 +17,7 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
         });
 
         const result = await response.json();
-        console.log('result: ', result);
+        
         if (response.ok) {
             return { state: true, body: result };
         } else {

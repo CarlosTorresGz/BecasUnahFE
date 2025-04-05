@@ -1,17 +1,54 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import obtenerUsuario from "../util/jwtDecoded";
 import { iniciarSesionBecario, iniciarSesionEmployee } from '../services/userAPI';
+import PropTypes from 'prop-types';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    AuthProvider.propTypes = {
+        children: PropTypes.node.isRequired,
+    };
+
     const [user, setUser] = useState(() => {
         const storedUser = obtenerUsuario();
         return storedUser ? storedUser : undefined;
     });
+    const [loadingUser, setLoadingUser] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Verificar autenticación al cargar el provider
+    useEffect(() => {
+        const verifyAuth = async () => {
+            try {
+                setLoadingUser(true);
+                const token = localStorage.getItem('jwtToken');
+
+                if (token) {
+                    const storedUser = obtenerUsuario();
+                    if (storedUser) {
+                        setUser({
+                            ...storedUser,
+                            ultimoAcceso: new Date().toISOString()
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error al verificar autenticación:', error);
+                setError(error.message);
+                logout();
+            } finally {
+                setLoadingUser(false);
+            }
+        };
+
+        verifyAuth();
+    }, []);
 
     const login = async ({ userType, username, password }) => {
         try {
+            setLoadingUser(true);
+            setError(null);
             let authResult = null;
 
             if (userType === 'becario') {
@@ -27,29 +64,19 @@ export const AuthProvider = ({ children }) => {
                 return false;
             }
 
-            const userData = obtenerUsuario();
-            if (!userData) {
-                console.error('No se pudieron obtener los datos del usuario');
-                return false;
-            }
-
-            const sessionData = {
-                ...userData,
-                becario_id: userData.becario_id ? userData.becario_id.trim() : userData.becario_id,
-                empleado_id: userData.empleado_id ? userData.empleado_id.trim() : userData.empleado_id,
-                ultimoAcceso: new Date().toISOString()
-            };
-
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userRole', userData.rol || userType);
-            localStorage.setItem('user', JSON.stringify(sessionData));
-            setUser(sessionData);
+            localStorage.setItem('userRole', userType);
+            localStorage.setItem('user', JSON.stringify(authResult.data));
+            setUser(authResult.data);
 
             return true;
 
         } catch (error) {
-            console.error('Error en el proceso de login:', error);
+            console.error('[Auth] Error en login:', error);
+            setError(error.message);
             return false;
+        } finally {
+            setLoadingUser(false);
         }
     };
 
@@ -63,8 +90,13 @@ export const AuthProvider = ({ children }) => {
 
     const checkAuth = () => {
         const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            return Promise.reject(new Error('No hay token de autenticación'));
+        try {
+            setLoadingUser(true);
+            if (!token) {
+                return Promise.reject(new Error('No hay token de autenticación'));
+            }
+        } finally {
+            setLoadingUser(false);
         }
         return Promise.resolve(token);
     };
@@ -77,8 +109,17 @@ export const AuthProvider = ({ children }) => {
         return Promise.resolve(role);
     };
 
+    const getUser = () => {
+        if (user) {
+            return user;
+        } else {
+            setUser(obtenerUsuario());
+            return user;
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, checkAuth, getPermissions }}>
+        <AuthContext.Provider value={{ getUser, login, logout, checkAuth, getPermissions, loadingUser, error }}>
             {children}
         </AuthContext.Provider>
     );

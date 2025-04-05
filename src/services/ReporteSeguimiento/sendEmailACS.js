@@ -31,7 +31,6 @@ export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
         const result = await response.json();
 
         if (response.ok) {
-            console.log("Correo enviado correctamente.");
             return true;
         } else {
             console.error(`Error al enviar el correo: ${result.error}`);

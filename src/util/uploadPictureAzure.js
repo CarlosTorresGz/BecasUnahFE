@@ -1,8 +1,8 @@
 import { BlobServiceClient, AnonymousCredential } from '@azure/storage-blob';
 
-const AZURE_STORAGE_ACCOUNT_NAME = 'storageprojectunah';
+const AZURE_STORAGE_ACCOUNT_NAME = 'storageproject25';
 const containerName = 'contenedorpictures';
-const sasToken = 'sp=racw&st=2025-02-24T19:51:49Z&se=2025-04-25T03:51:49Z&sv=2022-11-02&sr=c&sig=EM79r3Wzz%2FuTP9LBmy0eplE6rs7vhnzdaL84Hq2vBB4%3D';  // Reemplaza con tu token SAS
+const sasToken = 'sp=racwd&st=2025-04-04T01:01:54Z&se=2025-04-05T09:01:54Z&spr=https&sv=2024-11-04&sr=c&sig=iVZhmpN8cE%2FBO2HSVJpLZpyyxfXCHysCYeanzFsmMG0%3D';
 
 export const uploadImageToAzure = async (file, nombreActividad) => {
     const blobServiceClient = new BlobServiceClient(
@@ -19,8 +19,9 @@ export const uploadImageToAzure = async (file, nombreActividad) => {
                 blobContentType: file.type
             }
         });
-        console.log('url: ', blockBlobClient.url)
+        
         return blockBlobClient.url;
+
     } catch (error) {
         console.error('Error al subir la imagen:', error.message);
         throw error;

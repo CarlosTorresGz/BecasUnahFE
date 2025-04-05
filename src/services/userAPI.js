@@ -3,6 +3,7 @@ import apiUrl from "../config";
 export const iniciarSesionBecario = async ({ noCuenta, password }) => {
     try {
         const response = await fetch(`${apiUrl}/api/auth/loginBecario`, {
+        //const response = await fetch('http://localhost:7071/api/auth/loginBecario', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

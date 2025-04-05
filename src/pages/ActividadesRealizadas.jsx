@@ -2,47 +2,31 @@ import { useState, useEffect } from 'react';
 import { Table, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../styles/ActividadesRealizadas.css';
-import fetchData from "../services/ActividadesBecario/ActividadesRealizadas"; // Importamos fetchData
-//import { useAuth } from '../context/AuthContext';
+import { useDashboard } from '../context/DashboardContext';
+import SpinnerLoading from '../components/SpinnerLoading';
 
 const ActividadesRealizadas = () => {
-    //const { user } = useAuth();
-    const localStorageUser = localStorage.getItem('user');
-    const user = JSON.parse(localStorageUser);
-
+    const { dataFetchBecarios, loading } = useDashboard();
     const mesActual = new Date().getMonth() + 1;
     const mesAnterior = mesActual === 1 ? 12 : mesActual - 1;
-
     const [mesSeleccionado, setMesSeleccionado] = useState(mesAnterior);
     const [actividadesMesActual, setActividadesMesActual] = useState([]);
-    const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);
-    const [actividades, setActividades] = useState([]); // Nuevo estado para almacenar las actividades
-
-    useEffect(() => {        
-        const obtenerActividades = async () => {
-            try {
-                const data = await fetchData(user.no_cuenta);
-                setActividades(data.actividades);
-            } catch (error) {
-                console.error("Error al obtener actividades:", error);
-            }
-        };
-
-        obtenerActividades();
-    }, []);
+    const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);    
 
     useEffect(() => {
-        if (actividades.length > 0) {
-            const actividadesMes = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
-            const otrasActividades = actividades.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
-
+        if (dataFetchBecarios.realizadas.data.length > 0) {
+            const actividadesMes = dataFetchBecarios.realizadas.data.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
+            const otrasActividades = dataFetchBecarios.realizadas.data.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
             setActividadesMesActual(actividadesMes);
             setActividadesOtrosMeses(otrasActividades);
         }
-    }, [actividades, mesSeleccionado]);
+    }, [dataFetchBecarios.realizadas, mesSeleccionado, loading, mesActual]);
+
 
     const totalHorasMesActual = actividadesMesActual.reduce((total, act) => total + act.numero_horas, 0);
     const totalHorasOtrosMeses = actividadesOtrosMeses.reduce((total, act) => total + act.numero_horas, 0);
+
+    if (loading) return <SpinnerLoading />;
 
     return (
         <div className="actividades-realizadas-container">

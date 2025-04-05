@@ -40,6 +40,14 @@
     transform: scale(1.05);
 }
 
+.panel-izq-button:active {
+    background: var(--therciary-bg-color);
+}
+
+.panel-izq-button:focus {
+    background: var(--therciary-bg-color);
+}
+
 .panel-izq-button-icono {
     font-size: 24px;
 }

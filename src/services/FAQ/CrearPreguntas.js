@@ -18,14 +18,11 @@ const crearPreguntas = async (pregunta,respuesta) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (response.ok) {
-            console.log('Preg Actualizada:', data);
-            return response.ok; // Regresar la respuesta de la API
+            return { success: true, message: data.message};
         } else {
-            console.error('Error al Guardar actividad Actualizada:', data);
-            return { success: false, errorMessage: data.message || "Hubo un error al agregar la pregunta" }; // O manejar el error según sea necesario
+            return { success: false, errorMessage: data.message ? data.message : data.error };
         }
     } catch (error) {
         console.error('Error al conectar con la API:', error);

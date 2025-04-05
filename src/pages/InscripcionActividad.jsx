@@ -5,14 +5,17 @@ import inscripcionActividad from "../services/ActividadesBecario/inscripcionActi
 import { toast } from 'sonner';
 import { activityInscriptionPropTypes } from "../util/propTypes";
 import { fetchPersonById } from '../services/PerfilBecario/personAPI';
+import { useDashboard } from '../context/DashboardContext';
+import { useAuth } from '../context/AuthContext';
 
 const FormularioInscripcion = ({ actividad, onClose }) => {
+    const { refreshActInscritas } = useDashboard();
+    const { getUser } = useAuth();
     const [persona, setPersona] = useState(null);
-    const [noCuenta, setNoCuenta] = useState(null);
+    let user = getUser();
 
     const getData = async () => {
-        const userLocal = JSON.parse(localStorage.getItem('user'));
-        const persona_id = userLocal ? userLocal.persona_id : null;
+        const persona_id = user.persona_id;
 
         try {
             const result = await fetchPersonById({ person_id: persona_id });
@@ -20,7 +23,6 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
 
             if (result.state) {
                 setPersona(personData);
-                setNoCuenta(userLocal ? userLocal.no_cuenta : null);                
             }
         } catch (error) {
             console.error('Error al obtener los datos de la persona:', error);
@@ -34,11 +36,12 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await inscripcionActividad({ actividadId: actividad.actividad_id, noCuenta: noCuenta });
+        const response = await inscripcionActividad({ actividadId: actividad.actividad_id, noCuenta: user.no_cuenta });
 
         if (response.state) {
             toast.success(`${response.body}`);
             onClose();
+            refreshActInscritas();
         } else {
             toast.info(`${response.body}`);
         }
@@ -60,7 +63,7 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                     <Form.Control
                         type="text"
                         name="nombre"
-                        value={persona ? `${persona.primer_nombre} ${persona.segundo_nombre}` : ''}
+                        defaultValue={persona ? `${persona.primer_nombre} ${persona.segundo_nombre}` : ''}
                         readOnly={!!persona}
                     />
                 </Form.Group>
@@ -69,7 +72,7 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                     <Form.Control
                         type="text"
                         name="apellido"
-                        value={persona ? `${persona.primer_apellido} ${persona.segundo_apellido}` : ''}
+                        defaultValue={persona ? `${persona.primer_apellido} ${persona.segundo_apellido}` : ''}
                         readOnly={!!persona}
                     />
                 </Form.Group>
@@ -78,8 +81,8 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                     <Form.Control
                         type="text"
                         name="cuenta"
-                        value={noCuenta ? noCuenta : ''}
-                        readOnly={!!noCuenta}
+                        defaultValue={user ? user.no_cuenta : ''}
+                        readOnly={!!user}
                     />
                 </Form.Group>
                 <Form.Group controlId="email">
@@ -87,7 +90,7 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                     <Form.Control
                         type="email"
                         name="email"
-                        value={persona ? persona.correo_institucional : ''}
+                        defaultValue={persona ? persona.correo_institucional : ''}
                         readOnly={!!persona}
                     />
                 </Form.Group>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
 import updateActividad from '../services/ActividadesAdministrador/updateActividad';
@@ -7,75 +7,28 @@ import { useAuth } from '../context/AuthContext';
 import { handleDelete } from '../services/ActividadesAdministrador/deleteActividad';
 import { uploadImageToAzure } from '../util/uploadPictureAzure';
 import CardActivity from '../components/CardActivity';
-import { activityPropTypes } from "../util/propTypes";
-import fetchAllData from '../services/ActividadesAdministrador/ActividadesAdminAPI';
 import { deletePictureAzure } from '../util/deletePictureAzure';
-
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
-
-const convertirFecha = (fecha) => {
-    if (!fecha) return '';
-    const meses = {
-        Jan: '01',
-        Feb: '02',
-        Mar: '03',
-        Apr: '04',
-        May: '05',
-        Jun: '06',
-        Jul: '07',
-        Aug: '08',
-        Sep: '09',
-        Oct: '10',
-        Nov: '11',
-        Dec: '12',
-    };
-    const partes = fecha.split('-');
-    if (partes[1]?.length === 2) {
-        return fecha;
-    }
-    const [anio, mesTexto, dia] = partes;
-    const mes = meses[mesTexto];
-    if (!mes) return fecha;
-
-    return `${anio}-${mes}-${dia}`;
-};
+import { useDashboard } from '../context/DashboardContext';
+import SpinnerLoading from '../components/SpinnerLoading';
 
 const AdminActividades = () => {
-    const { user } = useAuth();
+    const { userType, dataFetch, loading, refreshData, error } = useDashboard();
+    const { getUser } = useAuth();
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
-    const [actividades, setActividades] = useState([]);
     const [actividadAEliminar, setActividadAEliminar] = useState(null);
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
-    const userRole = localStorage.getItem('userRole');
-    
+
+    let user = getUser();
     const today = new Date();
     today.setDate(today.getDate() - 1);
     const previousDay = today.toISOString().split("T")[0];
-
-    useEffect(() => {
-        const loadActividades = async () => {
-            try {
-                const dataFetch = await fetchAllData();
-                setActividades(dataFetch.actividades);
-            } catch (error) {
-                toast.error(`Error al cargar las actividades: ${error}`);
-            }
-        };
-        loadActividades();
-    }, []);
 
     const cancelDelete = () => {
         setActividadAEliminar(null);
     };
 
     const handleDeleteActivity = (id) => {
-        setActividadAEliminar(actividades.find(actividad => actividad.actividad_id === id));
+        setActividadAEliminar(dataFetch.actividades.data.find(actividad => actividad.actividad_id === id));
     };
 
     const confirmDelete = async () => {
@@ -91,12 +44,11 @@ const AdminActividades = () => {
         const deleteActividad = await handleDelete({ empleado_id: empleadoId, actividad_id: actividadId });
 
         if (deleteActividad.state) {
-            setActividades(actividades.filter(actividad => actividad.actividad_id !== actividadAEliminar.actividad_id));
             setMensajeConfirmacion(`La actividad "${actividadAEliminar.nombre_actividad}" ha sido eliminada correctamente.`);
             setActividadAEliminar(null);
 
             setTimeout(() => setMensajeConfirmacion(""), 6000);
-
+            refreshData();
         } else {
             toast.error('Error al eliminar la actividad.');
         }
@@ -107,21 +59,17 @@ const AdminActividades = () => {
     };
 
     const handleSave = async (actividadEditada) => {
-        actividadEditada.fecha_actividad = formatDate(actividadEditada.fecha_actividad);
-
-        const response = await updateActividad(actividadEditada);
-        console.log('response: ', response);
-        if (response.state) {
-            toast.success(`${response.body}`);
-            setActividadSeleccionada(null);
-
-            const actividadesActualizadas = actividades.map((actividad) =>
-                actividad.actividad_id === actividadEditada.actividad_id ? actividadEditada : actividad
-            );
-            setActividades(actividadesActualizadas);
-
-        } else {
-            toast.error('Hubo un error al actualizar la actividad.');
+        try {
+            const response = await updateActividad(actividadEditada);
+            if (response.state) {
+                toast.success(`${response.body}`);
+                setActividadSeleccionada(null);
+                await refreshData();
+            } else {
+                toast.error(`${response.body}`);
+            }
+        } catch (error) {
+            console.error('Error al obtener actividades:', error);
         }
     };
 
@@ -140,6 +88,9 @@ const AdminActividades = () => {
             }
         };
     };
+
+    if (loading) return <SpinnerLoading />;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="actividades-container">
@@ -172,7 +123,7 @@ const AdminActividades = () => {
                                 <strong>Fecha:</strong>
                                 <input
                                     type="date"
-                                    value={convertirFecha(actividadSeleccionada.fecha_actividad)}
+                                    value={actividadSeleccionada.fecha_actividad}
                                     min={previousDay}
                                     max={new Date(new Date(actividadSeleccionada.fecha_actividad).setFullYear(new Date(actividadSeleccionada.fecha_actividad).getFullYear() + 1))
                                         .toISOString()
@@ -230,8 +181,8 @@ const AdminActividades = () => {
                 </div>
             ) : (
                 <CardActivity
-                    data={actividades}
-                    userType={userRole ? userRole : 'admin'}
+                    data={dataFetch.actividades.data}
+                    userType={userType ? userType : 'admin'}
                     handleEdit={handleEdit}
                     handleDeleteActivity={handleDeleteActivity}
                 />
@@ -252,5 +203,4 @@ const AdminActividades = () => {
     );
 };
 
-AdminActividades.propTypes = activityPropTypes;
 export default AdminActividades;

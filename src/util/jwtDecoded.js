@@ -1,17 +1,22 @@
 import { jwtDecode } from "jwt-decode";
 
 const obtenerUsuario = () => {
-  const token = localStorage.getItem("jwtToken");
+  const tokenToDecode = localStorage.getItem("jwtToken");
 
-  if (token) {
-    try {
-      const decoded = jwtDecode(token);
-      return decoded;
-    } catch (error) {
-      console.error("Error al decodificar el token", error);
-    }
+  if (!tokenToDecode) return null;
+
+  try {
+    const decoded = jwtDecode(tokenToDecode);
+    return {
+      ...decoded,
+      ultimoAcceso: new Date().toISOString()
+    };
+    
+  } catch (error) {
+    console.error("Error decodificando token:", error);
+    localStorage.removeItem("jwtToken"); 
+    return null;
   }
-  return null;
 };
 
 export default obtenerUsuario;

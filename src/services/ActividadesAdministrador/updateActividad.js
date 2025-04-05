@@ -18,12 +18,11 @@ const updateActividad = async (actividad) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (response.ok) {
             return { state: true, body: data.message };
         } else {
-            return { state: false, body: `ERORR: ${data.message}` };;
+            return { state: false, body: `ERORR: ${data.message ? data.message : data.error}` };
         }
     } catch (error) {
         console.error('Error al conectar con la API:', error);

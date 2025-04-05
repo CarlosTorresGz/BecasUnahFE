@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../styles/AgregarActividad.css';
-import { MdCheckCircle } from "react-icons/md";
 import { uploadImageToAzure } from '../util/uploadPictureAzure';
 import saveActivities from '../services/ActividadesAdministrador/saveActivities';
 import { toast } from 'sonner';
-import { activityPropTypes } from "../util/propTypes";
+import { useDashboard } from '../context/DashboardContext';
+import { useAuth } from '../context/AuthContext';
 
-const AgregarActividad = ({ data }) => {
-  const [actividades, setActividades] = useState([]);
+const AgregarActividad = () => {
+  const { getUser } = useAuth();
+  const { dataFetch, refreshData } = useDashboard();
   const [error, setError] = useState('');
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -15,24 +16,19 @@ const AgregarActividad = ({ data }) => {
   const [ubicacion, setUbicacion] = useState('');
   const [foto, setFoto] = useState(null);
   const [organizador, setOrganizador] = useState('');
-  const [mensajeExito, setMensajeExito] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [fecha, setFecha] = useState();
+
+  let user = getUser();
 
   const today = new Date();
   today.setDate(today.getDate() - 1);
   const previousDay = today.toISOString().split("T")[0];
 
   useEffect(() => {
-    if (Array.isArray(data)) {
-      setActividades(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (Array.isArray(actividades)) {
-      const existeActividad = actividades.some(
+    if (Array.isArray(dataFetch.actividades.data)) {
+      const existeActividad = dataFetch.actividades.data.some(
         (actividad) => actividad.nombre_actividad.trim().toLowerCase() === nombre.trim().toLowerCase()
       );
       if (existeActividad) {
@@ -43,7 +39,7 @@ const AgregarActividad = ({ data }) => {
         setIsDisabled(false);
       }
     }
-  }, [nombre, actividades]);
+  }, [nombre, dataFetch.actividades]);
 
   const handleChangeImage = async (e) => {
     const file = e.target.files[0];
@@ -76,15 +72,13 @@ const AgregarActividad = ({ data }) => {
       ubicacion: ubicacion,
       imagen: foto,
       estado_actividad: 'Disponible',
-      organizador: organizador
+      organizador: organizador,
+      centro_id: parseInt(user.centro_id)
     };
 
     const result = await saveActivities(nuevaActividad);
-    console.log('result frontend: ', result);
     if (result.state) {
-      setActividades((prevActividades) => [...prevActividades, nuevaActividad]);
-
-      setMensajeExito(true);
+      refreshData();
       setNombre('');
       setDescripcion('');
       setFecha('');
@@ -92,13 +86,9 @@ const AgregarActividad = ({ data }) => {
       setUbicacion('');
       setFoto(null);
       setOrganizador('');
-
-      setTimeout(() => {
-        setMensajeExito(false);
-      }, 3000);
-
       setMostrarConfirmacion(false);
-      //toast.success(result.body.message);
+      
+      toast.success(result.body.message);
 
     } else {
       toast.error(result.body);
@@ -107,19 +97,12 @@ const AgregarActividad = ({ data }) => {
   };
 
   const cancelarGuardar = () => {
-    setMostrarConfirmacion(false); // Cerrar la confirmación sin guardar
+    setMostrarConfirmacion(false);
   };
 
   return (
     <div className="agregar-actividad">
       <h2>Agregar Nueva Actividad</h2>
-      {mensajeExito && (
-        <div className="notificacion-exito">
-          <MdCheckCircle className="icono" />
-          <p>Actividad guardada con éxito</p>
-        </div>
-      )}
-
       {mostrarConfirmacion && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -188,7 +171,8 @@ const AgregarActividad = ({ data }) => {
             required
           />
         </div>
-        <div className="form-group">
+        {/*Pendiente: Habria que deshabilitador el boton si el nombre de la actividad esta vacio */}
+        <div className={`form-group ${!nombre ? "disabled" : ""}`}> 
           <label htmlFor="foto">Foto</label>
           <input
             type="file"
@@ -215,5 +199,4 @@ const AgregarActividad = ({ data }) => {
   );
 };
 
-AgregarActividad.propTypes = activityPropTypes;
 export default AgregarActividad;
