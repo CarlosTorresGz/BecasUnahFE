@@ -94,10 +94,10 @@ const FormularioInscripcion = ({ actividad, onClose }) => {
                         readOnly={!!persona}
                     />
                 </Form.Group>
-                <Button type="submit" variant="primary" className="w-20 m-3 boton-guardar">
+                <Button type="submit" variant="primary" className="w-20 boton-guardar">
                     Inscribirse
                 </Button>
-                <Button type="button" variant="secondary" className="w-20 m-3 boton-cancelar" onClick={onClose}>Volver</Button>
+                <Button type="button" variant="secondary" className="w-20 boton-cancelar" onClick={onClose}>Volver</Button>
             </Form>
         </div>
     );

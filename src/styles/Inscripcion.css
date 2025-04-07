@@ -22,6 +22,11 @@
   padding: 20px; 
 }
 
+.form-main button{
+  margin: 10px;
+  margin-bottom: 0;
+}
+
 .text-center {
   text-align: center;
 }
@@ -43,8 +48,6 @@
 }
 
 .form-control {
-  margin-top: 2%;
-  margin-bottom: 2%;
   color: var(--fourth-text-color);
   font-weight: 450;
 }
