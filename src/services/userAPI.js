@@ -29,7 +29,9 @@ export const iniciarSesionBecario = async ({ noCuenta, password }) => {
 export const iniciarSesionEmployee = async ({ noEmpleado, password }) => {
     try {
         const response = await fetch(`${apiUrl}/api/auth/loginEmployee`, {
+        //const response = await fetch('http://localhost:7071/api/auth/loginEmployee', {
             method: "POST",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
             },

@@ -1,4 +1,5 @@
 import apiUrl from "../config";
+import { handleTokenRefresh } from "./Auth/handleTokenRefresh";
 
 export const fetchParticipantesActividadById = async ({ actividad_id }) => {
     try {
@@ -10,11 +11,18 @@ export const fetchParticipantesActividadById = async ({ actividad_id }) => {
 
         const response = await fetch(`${apiUrl}/api/participantsActivity/${actividad_id}`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         });
+
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(fetchParticipantesActividadById, { actividad_id });
+            }
+        }
 
         const data = await response.json();
 

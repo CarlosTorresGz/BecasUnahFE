@@ -1,4 +1,5 @@
 import apiUrl from "../../config";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 const crearPreguntas = async (pregunta,respuesta) => {
     try {
@@ -10,12 +11,19 @@ const crearPreguntas = async (pregunta,respuesta) => {
 
         const response = await fetch(`${apiUrl}/api/postFaq?`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({pregunta,respuesta}),
         });
+
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(crearPreguntas, {pregunta, respuesta});
+            }
+        }
 
         const data = await response.json();
 
