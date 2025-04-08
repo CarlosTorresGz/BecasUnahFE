@@ -3,7 +3,7 @@ import { Accordion, Form, Button, Modal } from 'react-bootstrap';
 import fetchData from '../services/FAQ/faqAPI';
 import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentes';
 import crearPreguntas from '../services/FAQ/CrearPreguntas';
-import handleDelete from '../services/FAQ/handleDelete'; // Asegúrate de que la ruta sea correcta
+import handleDelete from '../services/FAQ/handleDelete';
 import '../styles/FrequentlyAskedQuestions.css';
 import { toast } from 'sonner';
 import SearchBar from '../components/SearchBar';
@@ -24,6 +24,8 @@ const FAQComponent = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedPreguntaId, setSelectedPreguntaId] = useState(null);
+    const [faqToDelete, setFaqToDelete] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const isAdmin = getUser() ? getUser().rol : false;
 
@@ -59,6 +61,10 @@ const FAQComponent = () => {
         }
     };
 
+    useEffect(() => {
+        handleSearch();
+    }, [searchTerm]);
+
     const handleEdit = (index, pregunta, respuesta, preguntaId) => {
         setEditingIndex(index);
         setEditedQuestion(pregunta);
@@ -81,11 +87,6 @@ const FAQComponent = () => {
 
         const preguntaId = selectedPreguntaId;
 
-        if (isNaN(preguntaId)) {
-            console.error("Error: pregunta_id no es un número válido.");
-            return;
-        }
-
         const success = await updatePregunta(preguntaId, editedQuestion, editedAnswer);
         if (success.success) {
             const updatedData = [...data];
@@ -106,10 +107,6 @@ const FAQComponent = () => {
         setAddingNew(false);
     };
 
-    useEffect(() => {
-        handleSearch();
-    }, [searchTerm]);
-
     const handleAddNewQuestion = async () => {
         const success = await crearPreguntas(newQuestion, newAnswer);
         if (success.success) {
@@ -117,79 +114,62 @@ const FAQComponent = () => {
             setOriginalData([...originalData, { pregunta: newQuestion, respuesta: newAnswer }]);
             setNewQuestion("");
             setNewAnswer("");
-            toast.success('Pregunta agregada con exito');
+            toast.success('Pregunta agregada con éxito');
             setAddingNew(false);
         } else {
-            console.error('Error al agregar pregunta: ', success.errorMessage);
             toast.error(success.errorMessage);
         }
     };
 
-    const handleDeletePregunta = async (pregunta_id, index) => {
-        const user = getUser(); // Obtenemos info del usuario actual
-        if (!user || !user.empleado_id) {
-          toast.error("No se encontró información del usuario.");
-          return;
-        }
-      
-        // Confirmación simple
-        const confirm = window.confirm("¿Estás seguro que deseas eliminar esta pregunta?");
-        if (!confirm) return;
-      
-        // Llamamos a la API
-        const result = await handleDelete({
-          empleado_id: user.empleado_id,
-          pregunta_id
-        });
-      
+    const handleShowDeleteModal = (faq) => {
+        setFaqToDelete(faq);
+        setShowDeleteModal(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setFaqToDelete(null);
+        setShowDeleteModal(false);
+    };
+
+    const confirmDelete = async () => {
+        if (!faqToDelete) return;
+
+        const empleado_id = getUser()?.empleado_id;
+        const pregunta_id = faqToDelete.pregunta_id;
+
+        const result = await handleDelete({ empleado_id, pregunta_id });
+
         if (result.state) {
-          // Si se eliminó correctamente, actualizamos la lista
-          const updatedData = [...data];
-          updatedData.splice(index, 1); // quitamos esa pregunta
-          setData(updatedData);
-          setOriginalData(updatedData);
-          toast.success("Pregunta eliminada correctamente.");
+            const updatedList = data.filter((item) => item.pregunta_id !== pregunta_id);
+            setData(updatedList);
+            setOriginalData(updatedList);
+            toast.success('Pregunta eliminada con éxito');
         } else {
-          toast.error("Hubo un error al eliminar la pregunta.");
-          console.error(result.body);
+            toast.error(result.body?.message || 'Error al eliminar la pregunta');
         }
-      };
+
+        handleCloseDeleteModal();
+    };
 
     return (
         <div className='faq-section'>
-            {!isAdmin ? <h1>Preguntas Frecuentes</h1> : ''}
+            {!isAdmin && <h1>Preguntas Frecuentes</h1>}
             <SearchBar text={<MdSearch />} placeholder='Buscar' searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             {isAdmin && !addingNew && (
                 <div className="mb-2 mt-3">
-                    <Button variant="primary" className="mb-3" onClick={() => setAddingNew(true)}>
-                        Agregar Pregunta
-                    </Button>
+                    <Button variant="primary" onClick={() => setAddingNew(true)}>Agregar Pregunta</Button>
                 </div>
             )}
             {addingNew && (
                 <div className="mt-3">
-                    <Form.Control
-                        placeholder="Nueva Pregunta"
-                        value={newQuestion}
-                        onChange={(e) => setNewQuestion(e.target.value)}
-                    />
-                    <Form.Control
-                        style={{ minHeight: '150px' }}
-                        as="textarea"
-                        placeholder="Nueva Respuesta"
-                        className="mt-2 min"
-                        value={newAnswer}
-                        onChange={(e) => setNewAnswer(e.target.value)}
-                    />
+                    <Form.Control placeholder="Nueva Pregunta" value={newQuestion} onChange={(e) => setNewQuestion(e.target.value)} />
+                    <Form.Control as="textarea" placeholder="Nueva Respuesta" className="mt-2" style={{ minHeight: '150px' }} value={newAnswer} onChange={(e) => setNewAnswer(e.target.value)} />
                     <div className="mt-2 mb-2">
                         <Button variant="success" onClick={handleAddNewQuestion}>Guardar Nueva Pregunta</Button>
-                        <Button variant="danger" className="ms-2" onClick={handleCancel}>
-                            Cancelar
-                        </Button>
+                        <Button variant="danger" className="ms-2" onClick={handleCancel}>Cancelar</Button>
                     </div>
                 </div>
             )}
-
             {data.length > 0 ? (
                 <Accordion defaultActiveKey="0">
                     {data.map((item, index) => (
@@ -197,41 +177,24 @@ const FAQComponent = () => {
                             <Accordion.Header>{item.pregunta}</Accordion.Header>
                             <Accordion.Body>
                                 {editingIndex === index ? (
-                                    <div>
-                                        <Form.Control
-                                            value={editedQuestion}
-                                            onChange={(e) => setEditedQuestion(e.target.value)}
-                                        />
-                                        <Form.Control
-                                            style={{ minHeight: '150px' }}
-                                            value={editedAnswer}
-                                            onChange={(e) => setEditedAnswer(e.target.value)}
-                                            as="textarea"
-                                            className="mt-2"
-                                        />
+                                    <>
+                                        <Form.Control value={editedQuestion} onChange={(e) => setEditedQuestion(e.target.value)} />
+                                        <Form.Control as="textarea" className="mt-2" style={{ minHeight: '150px' }} value={editedAnswer} onChange={(e) => setEditedAnswer(e.target.value)} />
                                         <div className="mt-2">
-                                            <Button variant="success" onClick={() => handleOpenConfirmModal(index)}>
-                                                Guardar
-                                            </Button>
-                                            <Button variant="danger" className="ms-2" onClick={handleCancel}>
-                                                Cancelar
-                                            </Button>
+                                            <Button variant="success" onClick={() => handleOpenConfirmModal(index)}>Guardar</Button>
+                                            <Button variant="danger" className="ms-2" onClick={handleCancel}>Cancelar</Button>
                                         </div>
-                                    </div>
+                                    </>
                                 ) : (
-                                    <div>
+                                    <>
                                         <p>{item.respuesta}</p>
                                         {isAdmin && (
                                             <>
-                                                <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>
-                                                    Editar
-                                                </Button>
-                                                <Button variant="danger" className="ms-2" onClick={() => handleDeletePregunta(item.pregunta_id, index)}>
-                                                    Eliminar
-                                                </Button>
+                                                <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>Editar</Button>
+                                                <Button variant="danger" className="ms-2" onClick={() => handleShowDeleteModal(item)}>Eliminar</Button>
                                             </>
                                         )}
-                                    </div>
+                                    </>
                                 )}
                             </Accordion.Body>
                         </Accordion.Item>
@@ -241,20 +204,29 @@ const FAQComponent = () => {
                 <p className="no-results">No se encontraron resultados</p>
             )}
 
+            {/* Modal Confirmación Edición */}
             <Modal show={showConfirmModal} onHide={handleCloseConfirmModal} centered size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmar actualización</Modal.Title>
                 </Modal.Header>
+                <Modal.Body>¿Estás seguro de que deseas guardar los cambios en la pregunta?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleCloseConfirmModal}>Cancelar</Button>
+                    <Button variant="success" onClick={handleSaveConfirmed}>Confirmar</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Modal Confirmación Eliminación */}
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>¿Eliminar Pregunta?</Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
-                    ¿Estás seguro de que deseas guardar los cambios en la pregunta?
+                    ¿Estás seguro de que deseas eliminar esta pregunta? Esta acción no se puede deshacer.
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" onClick={handleCloseConfirmModal}>
-                        Cancelar
-                    </Button>
-                    <Button variant="success" onClick={handleSaveConfirmed}>
-                        Confirmar
-                    </Button>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>Cancelar</Button>
+                    <Button variant="danger" onClick={confirmDelete}>Sí, eliminar</Button>
                 </Modal.Footer>
             </Modal>
         </div>

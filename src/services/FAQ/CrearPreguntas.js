@@ -11,7 +11,7 @@ const crearPreguntas = async (pregunta,respuesta) => {
 
         const response = await fetch(`${apiUrl}/api/postFaq?`, {
             method: 'POST',
-            credentials: 'include',
+            //credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
