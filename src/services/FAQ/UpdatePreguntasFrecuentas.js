@@ -1,4 +1,5 @@
 import apiUrl from "../../config";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 const updatePregunta = async (pregunta_id,pregunta,respuesta) => {
     try {
@@ -10,6 +11,7 @@ const updatePregunta = async (pregunta_id,pregunta,respuesta) => {
 
         const response = await fetch(`${apiUrl}/api/putFaq?`, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -17,10 +19,16 @@ const updatePregunta = async (pregunta_id,pregunta,respuesta) => {
             body: JSON.stringify({pregunta_id,pregunta,respuesta}),
         });
 
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(updatePregunta, {pregunta_id, pregunta, respuesta});
+            }
+        }
+
         const data = await response.json();
 
         if (response.ok) {
-            return { success: true, message: data.message}; // Regresar la respuesta de la API
+            return { success: true, message: data.message};
         } else {            
             return { success: false, errorMessage: data.message ? data.message : data.error };
         }

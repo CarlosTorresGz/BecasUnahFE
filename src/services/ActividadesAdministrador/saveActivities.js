@@ -1,4 +1,5 @@
 import apiUrl from "../../config";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 const saveActivities = async (actividad) => {
     const token = localStorage.getItem('jwtToken');
@@ -10,12 +11,19 @@ const saveActivities = async (actividad) => {
     try {
         const response = await fetch(`${apiUrl}/api/actividad/?`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(actividad),
         });
+
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(saveActivities, actividad);
+            }
+        }
 
         const data = await response.json();
         if (response.ok) {

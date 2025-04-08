@@ -1,4 +1,5 @@
 import apiUrl from "../../config";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 const updateActividad = async (actividad) => {
     const token = localStorage.getItem('jwtToken');
@@ -10,12 +11,19 @@ const updateActividad = async (actividad) => {
     try {
         const response = await fetch(`${apiUrl}/api/putActivityAvailable?`, {
             method: 'PUT',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(actividad),
         });
+
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(updateActividad, actividad);
+            }
+        }
 
         const data = await response.json();
 

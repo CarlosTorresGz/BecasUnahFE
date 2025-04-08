@@ -1,4 +1,5 @@
 import apiUrl from "../../config";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
     try {
@@ -10,6 +11,7 @@ export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
 
         const response = await fetch(`${apiUrl}/api/sendEmailACS?`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -28,6 +30,11 @@ export const sendEmailACS = async ({ email, pdfURL, name, periodo, anio }) => {
             }),
         });
 
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(sendEmailACS, { email, pdfURL, name, periodo, anio });
+            }
+        }
         const result = await response.json();
 
         if (response.ok) {

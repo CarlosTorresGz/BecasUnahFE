@@ -1,23 +1,32 @@
 import apiUrl from "../../config";
+import {handleTokenRefresh} from "../Auth/handleTokenRefresh";
 
-export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
+export const informacionSeguimientoBecaAPI = async ({ no_cuenta }) => {
     try {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
             console.warn('No se encontró token JWT');
             return { state: false, body: 'Autenticación requerida' };
         }
-        
+
         const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
+        //const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
             },
         });
 
+        if (response.status === 401) {
+            if (response.status === 401) {
+                return await handleTokenRefresh(informacionSeguimientoBecaAPI, { no_cuenta });
+            }
+        }
+
         const result = await response.json();
-        
+
         if (response.ok) {
             return { state: true, body: result };
         } else {
@@ -28,7 +37,7 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta}) => {
     }
 }
 
-export const setStateBeca = async ({no_cuenta, estado_beca_id}) => {
+export const setStateBeca = async ({ no_cuenta, estado_beca_id }) => {
     try {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
@@ -37,7 +46,8 @@ export const setStateBeca = async ({no_cuenta, estado_beca_id}) => {
         }
 
         const response = await fetch(`${apiUrl}/api/putStateBeca?`, {
-        method: "PUT",
+            method: "PUT",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -47,6 +57,12 @@ export const setStateBeca = async ({no_cuenta, estado_beca_id}) => {
                 estado_beca_id: estado_beca_id
             }),
         });
+
+        if (response.status === 401) { // Token expirado
+            if (response.status === 401) { // Si el token está expirado
+                return await handleTokenRefresh(setStateBeca, { no_cuenta, estado_beca_id });
+            }
+        }
 
         const result = await response.json();
         if (response.ok) {
@@ -68,7 +84,8 @@ export const saveReport = async ({ no_cuenta, nombre_estado_anterior, empleado_i
         }
 
         const response = await fetch(`${apiUrl}/api/reporteSeguimiento?`, {
-        method: "POST",
+            method: "POST",
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -87,6 +104,12 @@ export const saveReport = async ({ no_cuenta, nombre_estado_anterior, empleado_i
             }),
         });
 
+        if (response.status === 401) { // Token expirado
+            if (response.status === 401) { // Si el token está expirado
+                return await handleTokenRefresh(saveReport, { no_cuenta, nombre_estado_anterior, empleado_id, nombre_reporte, fecha_reporte, estado_nuevo_beca_id, motivo_cambio_estado_beca, total_horas, observaciones, enlace });
+            }
+        }
+
         const result = await response.json();
 
         if (response.ok) {
@@ -95,6 +118,6 @@ export const saveReport = async ({ no_cuenta, nombre_estado_anterior, empleado_i
             return { state: false, body: result };
         }
     } catch (error) {
-        return { state: false, body: `Error al crear reporte3: ${error}` };
+        return { state: false, body: `Error al crear reporte: ${error}` };
     }
 }
