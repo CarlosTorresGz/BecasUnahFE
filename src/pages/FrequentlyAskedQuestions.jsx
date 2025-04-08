@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button, Modal } from 'react-bootstrap';
 import fetchData from '../services/FAQ/faqAPI';
-import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentas';
-import crearPreguntas from '../services/FAQ/CrearPreguntas'; // Asegúrate de que la ruta sea correcta
+import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentes';
+import crearPreguntas from '../services/FAQ/CrearPreguntas';
+import eliminarPregunta from '../services/FAQ/EliminarPregunta'; // Asegúrate de que la ruta sea correcta
 import '../styles/FrequentlyAskedQuestions.css';
 import { toast } from 'sonner';
 import SearchBar from '../components/SearchBar';
@@ -62,7 +63,7 @@ const FAQComponent = () => {
         setEditingIndex(index);
         setEditedQuestion(pregunta);
         setEditedAnswer(respuesta);
-        setSelectedPreguntaId(preguntaId); // Guardar el pregunta_id seleccionado
+        setSelectedPreguntaId(preguntaId);
     };
 
     const handleOpenConfirmModal = (index) => {
@@ -78,7 +79,7 @@ const FAQComponent = () => {
     const handleSaveConfirmed = async () => {
         if (selectedIndex === null || selectedPreguntaId === null) return;
 
-        const preguntaId = selectedPreguntaId; // Usamos el pregunta_id almacenado
+        const preguntaId = selectedPreguntaId;
 
         if (isNaN(preguntaId)) {
             console.error("Error: pregunta_id no es un número válido.");
@@ -88,7 +89,7 @@ const FAQComponent = () => {
         const success = await updatePregunta(preguntaId, editedQuestion, editedAnswer);
         if (success.success) {
             const updatedData = [...data];
-            updatedData[selectedIndex] = { pregunta: editedQuestion, respuesta: editedAnswer, pregunta_id: preguntaId }; // Asegura que el ID se mantenga
+            updatedData[selectedIndex] = { pregunta: editedQuestion, respuesta: editedAnswer, pregunta_id: preguntaId };
             setData(updatedData);
             setOriginalData(updatedData);
             setEditingIndex(null);
@@ -112,13 +113,11 @@ const FAQComponent = () => {
     const handleAddNewQuestion = async () => {
         const success = await crearPreguntas(newQuestion, newAnswer);
         if (success.success) {
-            // Si la creación fue exitosa, actualizamos la lista de preguntas
             setData([...data, { pregunta: newQuestion, respuesta: newAnswer }]);
             setOriginalData([...originalData, { pregunta: newQuestion, respuesta: newAnswer }]);
             setNewQuestion("");
             setNewAnswer("");
             toast.success('Pregunta agregada con exito');
-
             setAddingNew(false);
         } else {
             console.error('Error al agregar pregunta: ', success.errorMessage);
@@ -126,11 +125,30 @@ const FAQComponent = () => {
         }
     };
 
+    const handleDelete = async (preguntaId) => {
+        const confirm = window.confirm("¿Estás seguro de que deseas eliminar esta pregunta?");
+        if (confirm) {
+            try {
+                const success = await eliminarPregunta(preguntaId);
+                if (success.success) {
+                    const updatedData = data.filter(item => item.pregunta_id !== preguntaId);
+                    setData(updatedData);
+                    setOriginalData(updatedData);
+                    toast.success('Pregunta eliminada con éxito');
+                } else {
+                    toast.error(success.errorMessage);
+                }
+            } catch (error) {
+                console.error("Error al eliminar pregunta: ", error);
+                toast.error("Hubo un error al eliminar la pregunta.");
+            }
+        }
+    };
+
     return (
         <div className='faq-section'>
             {!isAdmin ? <h1>Preguntas Frecuentes</h1> : ''}
             <SearchBar text={<MdSearch />} placeholder='Buscar' searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            {/* Botón para agregar pregunta */}
             {isAdmin && !addingNew && (
                 <div className="mb-2 mt-3">
                     <Button variant="primary" className="mb-3" onClick={() => setAddingNew(true)}>
@@ -138,7 +156,6 @@ const FAQComponent = () => {
                     </Button>
                 </div>
             )}
-            {/* Formulario para agregar una nueva pregunta */}
             {addingNew && (
                 <div className="mt-3">
                     <Form.Control
@@ -195,9 +212,14 @@ const FAQComponent = () => {
                                     <div>
                                         <p>{item.respuesta}</p>
                                         {isAdmin && (
-                                            <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>
-                                                Editar
-                                            </Button>
+                                            <>
+                                                <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>
+                                                    Editar
+                                                </Button>
+                                                <Button variant="danger" className="ms-2" onClick={() => handleDelete(item.pregunta_id)}>
+                                                    Eliminar
+                                                </Button>
+                                            </>
                                         )}
                                     </div>
                                 )}
@@ -209,7 +231,6 @@ const FAQComponent = () => {
                 <p className="no-results">No se encontraron resultados</p>
             )}
 
-            {/* Modal de Confirmación */}
             <Modal show={showConfirmModal} onHide={handleCloseConfirmModal} centered size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmar actualización</Modal.Title>
