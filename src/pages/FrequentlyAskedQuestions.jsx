@@ -3,7 +3,7 @@ import { Accordion, Form, Button, Modal } from 'react-bootstrap';
 import fetchData from '../services/FAQ/faqAPI';
 import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentes';
 import crearPreguntas from '../services/FAQ/CrearPreguntas';
-import eliminarPregunta from '../services/FAQ/EliminarPregunta'; // Asegúrate de que la ruta sea correcta
+import handleDelete from '../services/FAQ/handleDelete'; // Asegúrate de que la ruta sea correcta
 import '../styles/FrequentlyAskedQuestions.css';
 import { toast } from 'sonner';
 import SearchBar from '../components/SearchBar';
@@ -125,25 +125,35 @@ const FAQComponent = () => {
         }
     };
 
-    const handleDelete = async (preguntaId) => {
-        const confirm = window.confirm("¿Estás seguro de que deseas eliminar esta pregunta?");
-        if (confirm) {
-            try {
-                const success = await eliminarPregunta(preguntaId);
-                if (success.success) {
-                    const updatedData = data.filter(item => item.pregunta_id !== preguntaId);
-                    setData(updatedData);
-                    setOriginalData(updatedData);
-                    toast.success('Pregunta eliminada con éxito');
-                } else {
-                    toast.error(success.errorMessage);
-                }
-            } catch (error) {
-                console.error("Error al eliminar pregunta: ", error);
-                toast.error("Hubo un error al eliminar la pregunta.");
-            }
+    const handleDeletePregunta = async (pregunta_id, index) => {
+        const user = getUser(); // Obtenemos info del usuario actual
+        if (!user || !user.empleado_id) {
+          toast.error("No se encontró información del usuario.");
+          return;
         }
-    };
+      
+        // Confirmación simple
+        const confirm = window.confirm("¿Estás seguro que deseas eliminar esta pregunta?");
+        if (!confirm) return;
+      
+        // Llamamos a la API
+        const result = await handleDelete({
+          empleado_id: user.empleado_id,
+          pregunta_id
+        });
+      
+        if (result.state) {
+          // Si se eliminó correctamente, actualizamos la lista
+          const updatedData = [...data];
+          updatedData.splice(index, 1); // quitamos esa pregunta
+          setData(updatedData);
+          setOriginalData(updatedData);
+          toast.success("Pregunta eliminada correctamente.");
+        } else {
+          toast.error("Hubo un error al eliminar la pregunta.");
+          console.error(result.body);
+        }
+      };
 
     return (
         <div className='faq-section'>
@@ -216,7 +226,7 @@ const FAQComponent = () => {
                                                 <Button variant="warning" onClick={() => handleEdit(index, item.pregunta, item.respuesta, item.pregunta_id)}>
                                                     Editar
                                                 </Button>
-                                                <Button variant="danger" className="ms-2" onClick={() => handleDelete(item.pregunta_id)}>
+                                                <Button variant="danger" className="ms-2" onClick={() => handleDeletePregunta(item.pregunta_id, index)}>
                                                     Eliminar
                                                 </Button>
                                             </>

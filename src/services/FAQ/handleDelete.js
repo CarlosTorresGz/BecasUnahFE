@@ -14,7 +14,7 @@ export const handleDelete = async ({ empleado_id, pregunta_id }) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ empleado_id, actividad_id })
+      body: JSON.stringify({ empleado_id, pregunta_id })
     });
 
     if (!response.ok) {
@@ -26,3 +26,5 @@ export const handleDelete = async ({ empleado_id, pregunta_id }) => {
     return { state: false, body: error }
   }
 };
+
+export default handleDelete;
