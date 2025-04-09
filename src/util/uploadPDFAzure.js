@@ -2,7 +2,7 @@ import { BlobServiceClient, AnonymousCredential } from '@azure/storage-blob';
 
 const AZURE_STORAGE_ACCOUNT_NAME = 'storageproject25';
 const containerName = 'contenedorreportes';
-const sasToken = 'sp=racwd&st=2025-04-04T21:11:06Z&se=2025-04-06T05:11:06Z&spr=https&sv=2024-11-04&sr=c&sig=ifdhMGpU9dgozQAuJe72JhehDICpGbgNohJTbHeyvLY%3D';
+const sasToken = 'sp=r&st=2025-04-09T01:42:36Z&se=2025-06-09T05:59:36Z&sv=2024-11-04&sr=c&sig=c2AwE%2FJ%2Fn9ry3gz%2BMfoePv3vD5Ku20OOpAdyCoAf%2B3E%3D';
 
 export const uploadPDFAzure = async (pdfBlob, noCuenta, periodo, anioPeriodo) => {
     const blobServiceClient = new BlobServiceClient(
