@@ -10,7 +10,6 @@ import MainContent from './pages/MainContent';
 import { LoginApp } from './pages/LoginApp';
 import ChangePassword from './pages/ChangePassword';
 import FAQComponent from './pages/FrequentlyAskedQuestions';
-import Planillas from './pages/Planillas';
 import TipoBecas from './pages/TipoBecas';
 import Comunicados from './pages/Comunicados';
 //Admin
@@ -19,6 +18,7 @@ import AgregarActividad from './pages/AgregarActividad';
 import ListadoAsistencia from './pages/ListadoAsistencia';
 import { Report } from './pages/Report';
 import SeguimientoBeca from './pages/SeguimientoBeca';
+import Planillas from './pages/Planillas'
 //Becario
 import ActividadesDisponibles from './pages/ActividadesDisponibles';
 import ActividadesInscritas from './pages/ActividadesInscritas';
@@ -43,7 +43,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/login" element={<LoginApp userType={'becario'} />} />
             <Route path="/login/employee" element={<LoginApp userType={'admin'} />} />
             <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/FAQ" element={<Planillas />} />
+            <Route path="/FAQ" element={<FAQComponent />} />
             <Route path="/tipo-becas" element={<TipoBecas />} />
           </Route>
 
@@ -72,7 +72,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="nueva-actividad" element={<AgregarActividad />} />
             <Route path='lista-asistencia' element={<ListadoAsistencia />} />
             <Route path='seguimiento-beca' element={<SeguimientoBeca />} />
-            {/*<Route path='planilla' element={<Planilla />} />*/}
+            <Route path='planilla' element={<Planillas />} />
             <Route path='faq' element={<FAQComponent />} />
             <Route path="reportes/enviados" element={<Report />} />
           </Route>

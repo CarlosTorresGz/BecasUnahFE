@@ -190,7 +190,7 @@ const AdminActividades = () => {
 
             {actividadAEliminar && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <div className="modal-contenes">
                         <h3>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
                         <div className="modal-buttons">
                             <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
