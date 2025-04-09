@@ -86,3 +86,12 @@ export const dashboardContextPropTypes = {
     children: PropTypes.node.isRequired,
     userType: PropTypes.string.isRequired,
 };
+
+export const ModalPropTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    type: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};

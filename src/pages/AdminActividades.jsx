@@ -10,6 +10,7 @@ import CardActivity from '../components/CardActivity';
 import { deletePictureAzure } from '../util/deletePictureAzure';
 import { useDashboard } from '../context/DashboardContext';
 import SpinnerLoading from '../components/SpinnerLoading';
+import Modal from '../components/Modal';
 
 const AdminActividades = () => {
     const { userType, dataFetch, loading, refreshData, error } = useDashboard();
@@ -189,6 +190,7 @@ const AdminActividades = () => {
             )}
 
             {actividadAEliminar && (
+<<<<<<< HEAD
                 <div className="modal-overlay">
                     <div className="modal-contenes">
                         <h3>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
@@ -198,6 +200,18 @@ const AdminActividades = () => {
                         </div>
                     </div>
                 </div>
+=======
+                <>
+                    <Modal
+                        isOpen={actividadAEliminar}
+                        title="¿Eliminar Actividad?"
+                        onConfirm={confirmDelete}
+                        onCancel={cancelDelete}
+                    >
+                        <p>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</p>
+                    </Modal>
+                </>
+>>>>>>> fd19b80c4deff1f0b0b18dd8ef518408805e6b59
             )}
         </div>
     );

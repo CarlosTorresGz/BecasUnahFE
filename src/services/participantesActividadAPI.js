@@ -40,10 +40,17 @@ export const fetchParticipantesActividadById = async ({ actividad_id }) => {
 
 export const actualizarAsistencia = async ({ actividadId, noCuenta }) => {
     try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+            console.warn('No se encontró token JWT');
+            return { state: false, body: 'Autenticación requerida' };
+        }
+
         const response = await fetch(`${apiUrl}/api/updateattendanceactivity`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ actividad_id: actividadId, no_cuenta: noCuenta }),
         });

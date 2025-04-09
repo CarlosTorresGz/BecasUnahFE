@@ -2,7 +2,7 @@ import { BlobServiceClient } from '@azure/storage-blob';
 
 const AZURE_STORAGE_ACCOUNT_NAME = 'storageproject25';
 const containerName = 'contenedorpictures';
-const sasToken = 'sp=racwd&st=2025-04-04T01:01:54Z&se=2025-04-05T09:01:54Z&spr=https&sv=2024-11-04&sr=c&sig=iVZhmpN8cE%2FBO2HSVJpLZpyyxfXCHysCYeanzFsmMG0%3D';
+const sasToken = 'sp=racwd&st=2025-04-09T01:44:26Z&se=2025-06-09T05:59:26Z&sv=2024-11-04&sr=c&sig=0NWufvvg8W8a5pDE8Bh%2Bxcv00BHIqktrkM3GuPUWL0Q%3D';
 
 export const deletePictureAzure = async (blobName) => {
     if (!blobName) {

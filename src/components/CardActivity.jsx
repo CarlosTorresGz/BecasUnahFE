@@ -11,7 +11,7 @@ export const CardActivity = ({ data, userType, handleEdit, handleDeleteActivity,
                         <img src={actividad.imagen} alt={actividad.nombre_actividad} className="actividad-imagen" />
                         <div className="actividad-info">
                             <h3>{actividad.nombre_actividad}</h3>
-                            <p><strong>Organizador:</strong> {actividad.organizador}</p>
+                            <p style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "250px"}}><strong>Organizador:</strong> {actividad.organizador}</p>
                             <p><strong>Fecha:</strong> {actividad.fecha_actividad}</p>
                             {userType === 'admin' && (
                                 <p><strong>Estado de la Actividad: </strong> {actividad.estado_actividad}</p>
