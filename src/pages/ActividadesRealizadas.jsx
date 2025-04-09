@@ -11,7 +11,7 @@ const ActividadesRealizadas = () => {
     const mesAnterior = mesActual === 1 ? 12 : mesActual - 1;
     const [mesSeleccionado, setMesSeleccionado] = useState(mesAnterior);
     const [actividadesMesActual, setActividadesMesActual] = useState([]);
-    const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);    
+    const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);
 
     useEffect(() => {
         if (!loading && dataFetchBecarios.realizadas.data.length > 0) {
@@ -49,7 +49,7 @@ const ActividadesRealizadas = () => {
                             <tr key={index}>
                                 <td><img src={act.imagen} alt={act.nombre_actividad} className="imagen-actividad" /></td>
                                 <td>{act.nombre_actividad}</td>
-                                <td>{act.fecha_actividad}</td>
+                                <td>{new Date(act.fecha_actividad).toLocaleDateString('es-Es', { month: 'long', day: 'numeric', year: 'numeric' })}</td>
                                 <td>{act.numero_horas}</td>
                             </tr>
                         ))}
@@ -60,30 +60,6 @@ const ActividadesRealizadas = () => {
             <p className="total-horas-1">Total de horas en este mes: {totalHorasMesActual}</p>
 
             <h3 className="titulo-mes">{`Mes de ${new Date(2023, mesSeleccionado - 1).toLocaleString('default', { month: 'long' })}`}</h3>
-
-            {/* Tabla de actividades de otros meses */}
-            {actividadesOtrosMeses.length === 0 ? (
-                <p className="no-actividades-mes">No realizaste actividades en el mes seleccionado</p>
-            ) : (
-                <Table className="tabla-otros-meses">
-                    <thead>
-                        <tr>
-                            <th>Actividad</th>
-                            <th>Fecha</th>
-                            <th>Horas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {actividadesOtrosMeses.map((act, index) => (
-                            <tr key={index}>
-                                <td>{act.nombre_actividad}</td>
-                                <td>{act.fecha_actividad}</td>
-                                <td>{act.numero_horas}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            )}
 
             {/* Selector de mes */}
             <div className="selector-container">
@@ -104,6 +80,29 @@ const ActividadesRealizadas = () => {
                 <p className="total-horas-2">Total de horas en el mes seleccionado: {totalHorasOtrosMeses}</p>
             </div>
 
+            {/* Tabla de actividades de otros meses */}
+            {actividadesOtrosMeses.length === 0 ? (
+                <p className="no-actividades-mes">No realizaste actividades en el mes seleccionado</p>
+            ) : (
+                <Table className="tabla-otros-meses">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Fecha</th>
+                            <th>Horas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {actividadesOtrosMeses.map((act, index) => (
+                            <tr key={index}>
+                                <td>{act.nombre_actividad}</td>
+                                <td>{new Date(act.fecha_actividad).toLocaleDateString('es-Es', { month: 'long', day: 'numeric', year: 'numeric' })}</td>
+                                <td>{act.numero_horas}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
         </div>
     );
 };

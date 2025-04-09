@@ -4,8 +4,8 @@ export const handleDelete = async ({ empleado_id, pregunta_id }) => {
   try {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
-        console.warn('No se encontró token JWT');
-        return { state: false, body: 'Autenticación requerida' };
+      console.warn('No se encontró token JWT');
+      return { state: false, body: 'Autenticación requerida' };
     }
 
     const response = await fetch(`${apiUrl}/api/DeleteFAQ?`, {
