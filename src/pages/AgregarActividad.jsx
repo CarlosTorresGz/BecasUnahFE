@@ -5,6 +5,7 @@ import saveActivities from '../services/ActividadesAdministrador/saveActivities'
 import { toast } from 'sonner';
 import { useDashboard } from '../context/DashboardContext';
 import { useAuth } from '../context/AuthContext';
+import Modal from '../components/Modal';
 
 const AgregarActividad = () => {
   const { getUser } = useAuth();
@@ -87,7 +88,7 @@ const AgregarActividad = () => {
       setFoto(null);
       setOrganizador('');
       setMostrarConfirmacion(false);
-      
+
       toast.success(result.body.message);
 
     } else {
@@ -102,17 +103,17 @@ const AgregarActividad = () => {
 
   return (
     <div className="agregar-actividad">
-      <h2>Agregar Nueva Actividad</h2>
+      <h2 className='agregar-actividad-title'>Agregar Nueva Actividad</h2>
       {mostrarConfirmacion && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>¿Estás seguro de que deseas guardar la actividad?</h3>
-            <div className="modal-buttons">
-              <button className="boton-guardar" onClick={confirmarGuardar}>Sí, guardar</button>
-              <button className="boton-cancelar" onClick={cancelarGuardar}>Cancelar</button>
-            </div>
-          </div>
-        </div>
+        <Modal
+          isOpen={mostrarConfirmacion}
+          type="save"
+          title="Confirmar nueva actividad"
+          onConfirm={confirmarGuardar}
+          onCancel={cancelarGuardar}
+        >
+          <p>{`¿Estás seguro de que deseas guardar la siguiente actividad: `}<strong>{nombre}</strong>?</p>
+        </Modal>
       )}
 
       <form onSubmit={handleSubmit}>
@@ -172,7 +173,7 @@ const AgregarActividad = () => {
           />
         </div>
         {/*Pendiente: Habria que deshabilitador el boton si el nombre de la actividad esta vacio */}
-        <div className={`form-group ${!nombre ? "disabled" : ""}`}> 
+        <div className={`form-group ${!nombre ? "disabled" : ""}`}>
           <label htmlFor="foto">Foto</label>
           <input
             type="file"
