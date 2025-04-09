@@ -95,3 +95,9 @@ export const ModalPropTypes = {
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 };
+
+export const UploadFilePropTypes = {
+    handleChangeImage: PropTypes.func.isRequired,
+    imagen: PropTypes.string.isRequired,
+    nombreActividad: PropTypes.string.isRequired,
+};

@@ -11,6 +11,7 @@ import { deletePictureAzure } from '../util/deletePictureAzure';
 import { useDashboard } from '../context/DashboardContext';
 import SpinnerLoading from '../components/SpinnerLoading';
 import Modal from '../components/Modal';
+import UploadFile from '../components/UploadFile';
 
 const AdminActividades = () => {
     const { userType, dataFetch, loading, refreshData, error } = useDashboard();
@@ -19,6 +20,8 @@ const AdminActividades = () => {
     const [actividadAEliminar, setActividadAEliminar] = useState(null);
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
 
+    console.log('actividadSeleccionada', actividadSeleccionada);
+    console.log('dataFetch', dataFetch);
     let user = getUser();
     const today = new Date();
     today.setDate(today.getDate() - 1);
@@ -103,14 +106,14 @@ const AdminActividades = () => {
             {actividadSeleccionada ? (
                 <div className="actividad-expandida">
                     <div className='informacion-actividad'>
-                        <div className="actividad-izquierda">
-                            <img src={actividadSeleccionada.imagen} alt={actividadSeleccionada.nombre_actividad} className="actividad-imagen-exp" />
-                            <label className="form-label">
-                                <strong>Cambiar imagen:</strong>
-                                <input type="file" onChange={handleChangeImage} className="form-input" />
-                            </label>
+                        <div className="actividad-izquierda-admin">
+                            <UploadFile
+                                handleChangeImage={handleChangeImage}
+                                imagen={actividadSeleccionada.imagen}
+                                nombreActividad={actividadSeleccionada.nombre_actividad}
+                            />
                         </div>
-                        <div className="actividad-derecha">
+                        <div className="actividad-derecha-admin">
                             <label className="form-label">
                                 <strong>Nombre:</strong>
                                 <input
@@ -124,7 +127,7 @@ const AdminActividades = () => {
                                 <strong>Fecha:</strong>
                                 <input
                                     type="date"
-                                    value={actividadSeleccionada.fecha_actividad}
+                                    value={new Date(actividadSeleccionada.fecha_actividad).toISOString().split("T")[0]}
                                     min={previousDay}
                                     max={new Date(new Date(actividadSeleccionada.fecha_actividad).setFullYear(new Date(actividadSeleccionada.fecha_actividad).getFullYear() + 1))
                                         .toISOString()
