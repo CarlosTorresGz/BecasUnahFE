@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Container, Row, Col, Modal } from "react-bootstrap";
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt } from "react-icons/fa";
 import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
 import { useAuth } from "../context/AuthContext";
+import Modal from "../components/Modal";
 
 const PlanillasPagoBecarios = () => {
   const { user } = useAuth();
   const [planillas, setPlanillas] = useState([]);
   const [becariosActivos, setBecariosActivos] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [planillaNueva, setPlanillaNueva] = useState(false)
   const generarPDF = useGenerarPDF();
 
   useEffect(() => {
@@ -57,6 +58,10 @@ const PlanillasPagoBecarios = () => {
     setBecariosActivos(datosFicticiosBecarios);
   }, []);
 
+  const cancelGenerate = () => {
+    setPlanillaNueva(false);
+  };
+
   const generarNuevaPlanilla = () => {
     const hoy = new Date();
     const opciones = { month: 'long', year: 'numeric' };
@@ -86,7 +91,7 @@ const PlanillasPagoBecarios = () => {
     };
 
     setPlanillas(prev => [nuevaPlanilla, ...prev]);
-    setShowModal(false);
+    setPlanillaNueva(false);
   };
 
 
@@ -106,7 +111,7 @@ const PlanillasPagoBecarios = () => {
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 planillas-container">
         <h1>Planillas de pago corrientes</h1>
-        <Button variant="primary" onClick={() => setShowModal(true)} disabled={becariosActivos.length === 0}>
+        <Button variant="primary" onClick={() => setPlanillaNueva(true)} disabled={becariosActivos.length === 0}>
           <FaPlusCircle className="me-2" /> Nueva Planilla
         </Button>
       </div>
@@ -121,7 +126,7 @@ const PlanillasPagoBecarios = () => {
               <Col md={6} lg={4} key={planilla.id} className="mb-4">
                 <Card style={{ border: 'none', backgroundColor }}>
                   <Card.Body>
-                    <Card.Text className="title">{planilla.titulo}</Card.Text>
+                    <Card.Text className="titulou">{planilla.titulo}</Card.Text>
                     <Card.Text className="text-muted">
                       Planilla de pago correspondiente para el mes de {obtenerMes(planilla.fecha)}
                     </Card.Text>
@@ -150,22 +155,17 @@ const PlanillasPagoBecarios = () => {
         </Row>
       )}
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} className="custom-modal" centered>
-        <Modal.Header className="modal-header">
-          <Modal.Title>Confirmar Nueva Planilla</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-content">
-          ¿Estás seguro de que deseas generar una nueva planilla de pago para el mes actual?
-        </Modal.Body>
-        <Modal.Footer className="modal-footer">
-          <Button variant="danger" onClick={() => setShowModal(false)}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={generarNuevaPlanilla}>
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {planillaNueva && (
+        <Modal
+          isOpen={planillaNueva}
+          title="Confirmar Nueva Planilla"
+          onConfirm={generarNuevaPlanilla}
+          onCancel={cancelGenerate}
+        >
+          <p>¿Estás seguro de que deseas generar una nueva planilla de pago para el mes actual?</p>
+        </Modal>
+      )}
+
     </Container>
   );
 };
