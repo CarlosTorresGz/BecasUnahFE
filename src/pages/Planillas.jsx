@@ -58,17 +58,37 @@ const PlanillasPagoBecarios = () => {
   }, []);
 
   const generarNuevaPlanilla = () => {
-    console.log({ user });
+    const hoy = new Date();
+    const opciones = { month: 'long', year: 'numeric' };
+    const mesAnio = hoy.toLocaleDateString('es-ES', opciones);
+    const mesCapitalizado = mesAnio.charAt(0).toUpperCase() + mesAnio.slice(1);
+
+    // Contar cuántas planillas hay ya con este mes y año
+    const cantidadExistente = planillas.filter(p => {
+      const fechaPlanilla = new Date(p.fecha);
+      return (
+        fechaPlanilla.getMonth() === hoy.getMonth() &&
+        fechaPlanilla.getFullYear() === hoy.getFullYear()
+      );
+    }).length;
+
+    const tituloBase = `Planilla ${mesCapitalizado}`;
+    const tituloFinal = cantidadExistente > 0
+      ? `${tituloBase} (${cantidadExistente + 1})`
+      : tituloBase;
+
     const nuevaPlanilla = {
-      id: planillas.length + 1,
-      titulo: `Planilla Abril 2025`,
-      fecha: new Date().toISOString(),
+      id: `PLN-${hoy.getFullYear()}${String(hoy.getMonth() + 1).padStart(2, '0')}-${planillas.length + 1}`,
+      titulo: tituloFinal,
+      fecha: hoy.toISOString(),
       vistas: 0,
       administrador: user ? user.noEmpleado : "Desconocido"
     };
+
     setPlanillas(prev => [nuevaPlanilla, ...prev]);
     setShowModal(false);
   };
+
 
   const formatearFecha = (fechaStr) => {
     const fecha = new Date(fechaStr);
