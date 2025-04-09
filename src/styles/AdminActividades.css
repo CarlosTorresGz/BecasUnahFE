@@ -4,7 +4,7 @@
 
 .boton-cancelar {
     width: 120px;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
     border-radius: 0.5rem;
     padding: 10px;
@@ -23,7 +23,7 @@
 
 .boton-guardar {
     width: 120px;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
     border-radius: 0.5rem;
     padding: 10px;
@@ -134,60 +134,6 @@ strong {
     background-color: var(--primary-bg-color);
     font-weight: 600;
     color: var(--secondary-text-color);
-}
-
-/* Modales */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    width: 40%;
-    background: var(--secondary-bg-color);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content h3 {
-    color: var(--primary-text-color);
-    font-size: 25px;
-}
-
-.modal-buttons {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;    
-    align-items: center;
-    gap: 15px;
-}
-
-.boton-confirmar {
-    width: 120px;
-    height: 50px;
-    font-size: 16px;
-    border-radius: 0.5rem;
-    padding: 10px;
-    background-color: var(--error-bg-color);
-    color: var(--secondary-text-color);
-    border: none;
-    cursor: pointer;
-}
-
-.boton-confirmar:hover {
-    background-color: var(--secondary-bg-color);
-    font-weight: bold;
-    color: var(--error-text-color);
-    border: 1px solid var(--error-bg-color);
 }
 
 .notificacion-exito {

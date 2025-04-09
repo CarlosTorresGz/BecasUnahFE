@@ -1,0 +1,68 @@
+/* Modal overlay */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    width: 40%;
+    background: var(--secondary-bg-color);
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal header */
+.modal-header {
+    background-color: #003b74;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Modal body */
+.modal-body {
+    padding: 1rem 1.5rem;
+    color: #28272C;
+}
+
+/* Modal footer */
+.modal-footer {
+    padding: 1rem 1.5rem;
+    background-color: #f9fafb;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.boton-confirmar {
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: var(--error-bg-color);
+    color: var(--secondary-text-color);
+    border: none;
+    cursor: pointer;
+}
+
+.boton-confirmar:hover {
+    background-color: var(--secondary-bg-color);
+    font-weight: bold;
+    color: var(--error-text-color);
+    border: 1px solid var(--error-bg-color);
+}
