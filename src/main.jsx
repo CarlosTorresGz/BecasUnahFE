@@ -10,6 +10,7 @@ import MainContent from './pages/MainContent';
 import { LoginApp } from './pages/LoginApp';
 import ChangePassword from './pages/ChangePassword';
 import FAQComponent from './pages/FrequentlyAskedQuestions';
+import Planillas from './pages/Planillas';
 import TipoBecas from './pages/TipoBecas';
 import Comunicados from './pages/Comunicados';
 //Admin
@@ -26,6 +27,8 @@ import { MiBeca } from './pages/MiBeca';
 import { ProfileBecario } from './pages/ProfileBecario';
 import { DashboardProvider } from './context/DashboardContext';
 
+
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
@@ -40,7 +43,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/login" element={<LoginApp userType={'becario'} />} />
             <Route path="/login/employee" element={<LoginApp userType={'admin'} />} />
             <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/FAQ" element={<FAQComponent />} />
+            <Route path="/FAQ" element={<Planillas />} />
             <Route path="/tipo-becas" element={<TipoBecas />} />
           </Route>
 
