@@ -6,7 +6,7 @@ import '../styles/Planillas.css';
 import { useAuth } from "../context/AuthContext";
 import Modal from "../components/Modal";
 
-import fetchAllPlanilla from "../services/Planilla/Administracion/planillaAdmin";
+import {fetchAllPlanilla} from "../services/Planilla/Administracion/planillaAdmin";
 import { adaptarPlanillas } from "../services/Planilla/Administracion/planillaAdapter";
 
 const PlanillasPagoBecarios = () => {
