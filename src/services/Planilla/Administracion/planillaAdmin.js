@@ -1,6 +1,6 @@
 import apiUrl from "../../../config";
 
-const fetchAllPlanilla = async () => {
+export const fetchAllPlanilla = async () => {
     try {        
         const response = await fetch(`${apiUrl}/api/PlanillaAdministracion`, {
             method: "GET",
@@ -20,4 +20,3 @@ const fetchAllPlanilla = async () => {
 
 }
 
-export default fetchAllPlanilla;
