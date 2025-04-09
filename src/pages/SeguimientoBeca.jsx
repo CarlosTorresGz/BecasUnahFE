@@ -11,6 +11,7 @@ import { MdSearch } from "react-icons/md";
 import { ActividadesRealizadas } from '../services/ActividadesBecario/ActividadesRealizadas';
 import { useAuth } from '../context/AuthContext';
 import { useDashboard } from '../context/DashboardContext';
+import Modal from '../components/Modal';
 
 export const SeguimientoBeca = () => {
     const { getUser } = useAuth();
@@ -45,7 +46,7 @@ export const SeguimientoBeca = () => {
 
             if (result.state) {
                 setDataSeguimiento((prev) => ({ ...prev, estado_beca: newStateBeca }));
-                refreshBecaEstado({estado_beca_id: idNewStateBeca});
+                refreshBecaEstado({ estado_beca_id: idNewStateBeca });
                 setNewStateBeca('');
                 setMostrarModalConfirmacion(false);
                 toast.success("Estado actualizado con éxito.");
@@ -55,23 +56,15 @@ export const SeguimientoBeca = () => {
         };
 
         return (
-            <div className="modal-confirmacion-nuevo-estado">
-                <div className="modal-confirmacion-nuevo-estado-contenido">
-                    <h2>¿Estás seguro de cambiar el estado de la beca?</h2>
-                    <p>El estado de la beca pasara a <strong>{newStateBeca}</strong>.</p>
-                    <div className="confirmacion-nuevo-estado-botones">
-                        <button
-                            className='boton-cancelar'
-                            onClick={() => setMostrarModalConfirmacion(false)}
-                        >Cancelar
-                        </button>
-                        <button
-                            className='boton-guardar'
-                            onClick={handleConfirmar}
-                        >Confirmar</button>
-                    </div>
-                </div>
-            </div>
+            <Modal
+                isOpen={mostrarModalConfirmacion}
+                type="save"
+                title="¿Estás seguro de cambiar el estado de la beca?"
+                onConfirm={handleConfirmar}
+                onCancel={() => setMostrarModalConfirmacion(false)}
+            >
+                <p>El estado de la beca pasara a <strong>{newStateBeca}</strong>.</p>
+            </Modal>
         );
     };
 
@@ -108,7 +101,7 @@ export const SeguimientoBeca = () => {
 
     const handleSearch = async () => {
         try {
-            const resultActivity = await ActividadesRealizadas({no_cuenta:searchNoCuenta}, startMonth, finishMonth);
+            const resultActivity = await ActividadesRealizadas({ no_cuenta: searchNoCuenta }, startMonth, finishMonth);
 
             if (resultActivity && Array.isArray(resultActivity.actividades) && resultActivity.actividades.length > 0) {
                 setActividadesRealizadas(resultActivity.actividades);
@@ -244,7 +237,7 @@ export const SeguimientoBeca = () => {
                 if (resultSenEmail) {
                     toast.success("Reporte generado, guardado y enviado con éxito!!!");
                     setIsSendingEmail(false);
-                    refreshReport({no_cuenta: dataSeguimiento.no_cuenta});
+                    refreshReport({ no_cuenta: dataSeguimiento.no_cuenta });
 
                     setActiveTab('generalInformation');
                     setObservacionCambioEstado('');
@@ -269,7 +262,7 @@ export const SeguimientoBeca = () => {
             toast.error("Hubo un error al generar o enviar el reporte.");
         }
     };
-    
+
     const handleNewStateBeca = (e) => {
         const estadoId = e.target.value;
         const estadoTexto = e.target.options[e.target.selectedIndex].text;
@@ -280,8 +273,8 @@ export const SeguimientoBeca = () => {
 
     return (
         <div className="seguimiento-beca-container">
-            <h1>Reportes de Seguimiento Académico</h1>
-            <h2>Programa de Atención Socioeconómica y Estímulos Educativos (PASEE)</h2>
+            <h1 className="seguimiento-beca-container-h1">Reportes de Seguimiento Académico</h1>
+            <h2 className="seguimiento-beca-container-h2">Programa de Atención Socioeconómica y Estímulos Educativos (PASEE)</h2>
             <SearchBar searchTerm={searchNoCuenta} setSearchTerm={setSearchNoCuenta} onSearch={getData} />
             <div className='seguimiento-fecha'>
                 <strong>Fecha: </strong>

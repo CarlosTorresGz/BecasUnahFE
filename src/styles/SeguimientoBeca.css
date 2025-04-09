@@ -109,13 +109,13 @@ li {
 }
 
 /*Titulos en general*/
-.seguimiento-beca-container h1 {
+.seguimiento-beca-container-h1 {
   color: var(--primary-text-color);
   font-weight: bold;
   text-align: center;
 }
 
-.seguimiento-beca-container h2 {
+.seguimiento-beca-container-h2 {
   color: var(--primary-text-color);
   font-weight: 500;
   text-align: center;
@@ -367,46 +367,4 @@ li {
   0% { opacity: 0; }
   50% { opacity: 1; }
   100% { opacity: 0; }
-}
-
-/*Modal Confirmacion Nuevo Estado*/
-.modal-confirmacion-nuevo-estado {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-confirmacion-nuevo-estado-contenido {
-  background-color: var(--secondary-bg-color);
-  padding: 20px;
-  border-radius: 5px;
-  width: 500px;
-  max-width: 100%;
-}
-
-.modal-confirmacion-nuevo-estado-contenido h2 {
-  font-size: 24px;
-  color: var(--primary-text-color);
-  margin-bottom: 20px;
-}
-
-.modal-confirmacion-nuevo-estado-contenido p {
-  font-size: 18px;
-  color: var(--fourth-text-color);
-  line-height: 30px;
-}
-
-.modal-confirmacion-nuevo-estado-contenido 
-.confirmacion-nuevo-estado-botones {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  gap: 20px;
 }

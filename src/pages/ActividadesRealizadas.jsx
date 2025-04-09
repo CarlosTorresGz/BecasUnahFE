@@ -14,7 +14,7 @@ const ActividadesRealizadas = () => {
     const [actividadesOtrosMeses, setActividadesOtrosMeses] = useState([]);    
 
     useEffect(() => {
-        if (dataFetchBecarios.realizadas.data.length > 0) {
+        if (!loading && dataFetchBecarios.realizadas.data.length > 0) {
             const actividadesMes = dataFetchBecarios.realizadas.data.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesActual);
             const otrasActividades = dataFetchBecarios.realizadas.data.filter(act => new Date(act.fecha_actividad).getMonth() + 1 === mesSeleccionado && new Date(act.fecha_actividad).getMonth() + 1 !== mesActual);
             setActividadesMesActual(actividadesMes);

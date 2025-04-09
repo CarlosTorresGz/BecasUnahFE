@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Accordion, Form, Button, Modal } from 'react-bootstrap';
+import { Accordion, Form, Button } from 'react-bootstrap';
 import fetchData from '../services/FAQ/faqAPI';
 import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentes';
 import crearPreguntas from '../services/FAQ/CrearPreguntas';
@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import SearchBar from '../components/SearchBar';
 import { MdSearch } from "react-icons/md";
 import { useAuth } from '../context/AuthContext';
+import Modal from '../components/Modal';
 
 const FAQComponent = () => {
     const { getUser } = useAuth();
@@ -205,29 +206,22 @@ const FAQComponent = () => {
             )}
 
             {/* Modal Confirmación Edición */}
-            <Modal show={showConfirmModal} onHide={handleCloseConfirmModal} centered size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirmar actualización</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>¿Estás seguro de que deseas guardar los cambios en la pregunta?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleCloseConfirmModal}>Cancelar</Button>
-                    <Button variant="success" onClick={handleSaveConfirmed}>Confirmar</Button>
-                </Modal.Footer>
+            <Modal
+                isOpen={showConfirmModal}
+                title="Confirmar actualización"
+                onConfirm={handleSaveConfirmed}
+                onCancel={handleCloseConfirmModal}
+            >
+                <p>¿Estás seguro de que deseas guardar los cambios en la pregunta?</p>
             </Modal>
-
-            {/* Modal Confirmación Eliminación */}
-            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>¿Eliminar Pregunta?</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    ¿Estás seguro de que deseas eliminar esta pregunta? Esta acción no se puede deshacer.
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseDeleteModal}>Cancelar</Button>
-                    <Button variant="danger" onClick={confirmDelete}>Sí, eliminar</Button>
-                </Modal.Footer>
+            {/* Modal Confirmación Eliminación*/} 
+            <Modal
+                isOpen={showDeleteModal}
+                title="¿Eliminar Pregunta?"
+                onConfirm={confirmDelete}
+                onCancel={handleCloseDeleteModal}
+            >
+                <p>¿Estás seguro de que deseas eliminar esta pregunta? Esta acción no se puede deshacer.</p>
             </Modal>
         </div>
     );
