@@ -3,130 +3,81 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  background-color: #f0f0f5; /* Fondo general */
   padding: 20px;
 }
 
-.cardActInscrita {
+.card-act-inscrita {
   width: 300px;
-  height: auto; /* Ajusta automáticamente la altura según el contenido */
-  min-height: 400px; /* Hace la tarjeta más alta */
-  border: 4px solid #28a745; /* Borde verde para indicar inscripción */
+  height: auto;
+  min-height: 400px;
+  border: 4px solid var(--success-bg-color);
   border-radius: 8px;
-  background-color: #003366; /* Azul oscuro para el fondo */
+  background-color: var(--primary-bg-color);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   position: relative;
-  padding: 20px; /* Agrega más espacio interno */
-  padding-bottom: 80px; /* Espacio reservado para el botón */
+  padding: 15px;
+  padding-bottom: 80px;
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
-.cardActInscrita:hover {
-  transform: scale(1.05); /* Aumentar tamaño ligeramente */
+.card-act-inscrita:hover {
+  transform: scale(1.05);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-  background-color: #1a73e8; /* Cambiar a azul más brillante al pasar el mouse */
+  background-color: var(--primary-color-hover);
 }
 
-.cardActInscrita-image {
+.card-act-inscrita-image {
   width: 90%;
   height: auto;
-  margin: 10px auto; /* Espaciado arriba y centrado horizontal */
-  border-radius: 8px;
+  margin: 10px auto;
 }
 
-.cardActInscrita-title {
+.card-act-inscrita-title {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #ffffff; /* Texto blanco */
+  color: var(--secondary-text-color);
   margin: 10px 0;
 }
 
-.cardActInscrita-date-activity,
-.cardActInscrita-date-inscription,
-.cardActInscrita-scholar-hours,
-.cardActInscrita-location,
-.cardActInscrita-organizer {
+.card-act-inscrita-date-activity,
+.card-act-inscrita-date-inscription,
+.card-act-inscrita-scholar-hours,
+.card-act-inscrita-location,
+.card-act-inscrita-organizer {
   font-size: 0.9rem;
-  color: #e0e0e0; /* Texto gris claro */
-  margin: 5px 0 15px; /* Espaciado adicional entre el texto y el botón */
+  color: var(--secondary-text-color);
+  margin: 5px 0 15px;
 }
 
-.cardActInscrita-cancel-button {
+.card-act-inscrita-cancel-button {
   position: absolute;
-  bottom: 10px; /* Fijado cerca de la parte inferior */
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 16px;
   font-size: 0.9rem;
-  background-color: #cc0000;
-  color: #fff;
+  background-color: var(--error-bg-color);
+  color: var(--secondary-text-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.cardActInscrita-cancel-button:hover {
-  background-color: #990000;
-}
-
-.confirmacion-global {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  visibility: visible; /* Evita problemas de ocultamiento */
-  opacity: 1; /* Asegura visibilidad */
-}
-
-.confirmacion {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.confirmacion-botones {
-  display: flex;
-  justify-content: center; /* Centra los botones */
-  gap: 10px; /* Espaciado entre los botones */
-  margin-top: 10px;
-}
-
-.confirm-button,
-.cancel-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.confirm-button {
-  background-color: #4caf50;
-  color: white;
-}
-
-.cancel-button {
-  background-color: #f44336;
-  color: white;
+.card-act-inscrita-cancel-button:hover {
+  background-color: var(--error-color-hover);
 }
 
 .mensaje-exito {
-  position: fixed; /* Fija el mensaje en pantalla */
-  bottom: 20px; /* Distancia desde la parte inferior */
-  right: 20px; /* Distancia desde la parte derecha */
-  background-color: #4caf50; /* Color de fondo */
-  color: #fff; /* Texto blanco */
-  padding: 10px 20px; /* Espaciado interno */
-  border-radius: 5px; /* Bordes redondeados */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
-  z-index: 1000; /* Asegura que esté por encima */
-  transition: opacity 0.3s ease-in-out; /* Animación de aparición */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out;
 }

@@ -101,3 +101,15 @@ export const UploadFilePropTypes = {
     imagen: PropTypes.string.isRequired,
     nombreActividad: PropTypes.string.isRequired,
 };
+
+export const CardActInscritaPropTypes = {
+    nombre: PropTypes.string.isRequired,
+    fechaActividad: PropTypes.string.isRequired,
+    fechaInscripcion: PropTypes.string.isRequired,
+    horasBecas: PropTypes.number.isRequired,
+    imagen: PropTypes.string.isRequired,
+    organizador: PropTypes.string.isRequired,
+    ubicacion: PropTypes.string.isRequired,
+    onCancelar: PropTypes.func.isRequired,
+    deshabilitarHover: PropTypes.bool.isRequired,
+};
