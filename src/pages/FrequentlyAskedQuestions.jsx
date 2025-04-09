@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Accordion, Form, Button } from 'react-bootstrap';
 import fetchData from '../services/FAQ/faqAPI';
-import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentas';
+import updatePregunta from '../services/FAQ/UpdatePreguntasFrecuentes';
 import crearPreguntas from '../services/FAQ/CrearPreguntas';
 import handleDelete from '../services/FAQ/handleDelete';
 import '../styles/FrequentlyAskedQuestions.css';
