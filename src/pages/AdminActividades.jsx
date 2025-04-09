@@ -190,17 +190,6 @@ const AdminActividades = () => {
             )}
 
             {actividadAEliminar && (
-<<<<<<< HEAD
-                <div className="modal-overlay">
-                    <div className="modal-contenes">
-                        <h3>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</h3>
-                        <div className="modal-buttons">
-                            <button className="boton-confirmar" onClick={confirmDelete}>Sí, eliminar</button>
-                            <button className="boton-cancelar" onClick={cancelDelete}>Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-=======
                 <>
                     <Modal
                         isOpen={actividadAEliminar}
@@ -211,7 +200,6 @@ const AdminActividades = () => {
                         <p>{`¿Estás seguro de que deseas eliminar la siguiente actividad: `}<strong>{actividadAEliminar.nombre_actividad}</strong>?</p>
                     </Modal>
                 </>
->>>>>>> fd19b80c4deff1f0b0b18dd8ef518408805e6b59
             )}
         </div>
     );
