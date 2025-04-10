@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt, FaTrash } from "react-icons/fa";
+import { FaDownload, FaPlusCircle, FaCalendarAlt, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
-import { useAuth } from "../context/AuthContext";
 import Modal from "../components/Modal";
+import { obtenerAniosDisponibles } from "../util/formatearfechaCreacion";
 import useCentrosEstudio from "../hooks/useCentrosEstudio";
-import crearPlanilla from "../services/Planilla/Administracion/CrearPlanilla";
 import { useDashboard } from '../context/DashboardContext';
 import { informacionplanilla_byId } from "../services/Planilla/Administracion/informacionplanilla_byId";
 import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
+import { confirmarYCrearPlanilla } from "../services/Planilla/Administracion/CreacionPlanillas/confirmacionCreacionPlanilla";
 
 const PlanillasPagoBecarios = () => {
-  const { user } = useAuth();
   const [planillas, setPlanillas] = useState([]);
-  const [becariosActivos, setBecariosActivos] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
-  const [confirmando, setConfirmando] = useState(false);
-  const [planillaSeleccionada, setPlanillaSeleccionada] = useState(null);
+
   const generarPDF = useGenerarPDF();
 
   const { refreshPlanillatadmin, dataFetch } = useDashboard();
@@ -30,13 +27,6 @@ const PlanillasPagoBecarios = () => {
   });
 
   const { centrosEstudio, loading, error } = useCentrosEstudio();
-
-  const obtenerAniosDisponibles = () => {
-    const anioActual = new Date().getFullYear();
-    const anioMinimo = anioActual - 1;
-    const anioMaximo = anioActual + 3;
-    return Array.from({ length: anioMaximo - anioMinimo + 1 }, (_, index) => anioMinimo + index);
-  };
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -77,61 +67,11 @@ const PlanillasPagoBecarios = () => {
   };
 
   const confirmarCreacionPlanilla = async () => {
-    if (confirmando) return;
-    
-    setConfirmando(true);
-    
-    toast.custom((t) => (
-      <div className="p-3 bg-white rounded shadow" style={{ width: '350px', zIndex: 10000 }}>
-        <h5 className="mb-3">Confirmar creación</h5>
-        <p>¿Estás seguro que deseas crear la planilla para {formData.mes} {formData.anio}?</p>
-        <div className="d-flex justify-content-end gap-2 mt-3">
-          <Button 
-            variant="secondary" 
-            size="sm" 
-            onClick={() => {
-              toast.dismiss(t);
-              setConfirmando(false);
-            }}
-          >
-            Cancelar
-          </Button>
-          <Button 
-            variant="primary" 
-            size="sm" 
-            onClick={() => {
-              toast.dismiss(t);
-              generarNuevaPlanilla();
-              setConfirmando(false);
-            }}
-          >
-            Confirmar
-          </Button>
-        </div>
-      </div>
-    ), {
-      duration: 10000,
-      position: 'center-center'
+    await confirmarYCrearPlanilla({
+      formData,
+      refresh: refreshPlanillatadmin,
+      cerrarModal: () => setPlanillaNueva(false)
     });
-  };
-
-  const generarNuevaPlanilla = async () => {
-    const { mes, anio, centro_estudio_id } = formData;
-
-    try {
-      const response = await crearPlanilla(mes, anio, centro_estudio_id);
-
-      if (response.success) {
-        refreshPlanillatadmin();
-        toast.success("Planilla creada exitosamente");
-        setPlanillaNueva(false);
-      } else {
-        toast.error(`Error al crear planilla: ${response.errorMessage}`);
-      }
-    } catch (error) {
-      toast.error("Error crítico al crear la planilla");
-      console.error("Error al crear la planilla:", error);
-    }
   };
 
   const formatearFecha = (fechaStr) => {
@@ -155,8 +95,7 @@ const PlanillasPagoBecarios = () => {
       toast.error("Error al generar el PDF");
       console.error("Error al generar PDF:", error);
     }
-  };
-  
+  }; 
 
 
   return (
