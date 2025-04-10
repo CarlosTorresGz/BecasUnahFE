@@ -105,7 +105,7 @@ const useGenerarPDF = () => {
       const nombreArchivo = `Planilla_${primerBecario.mes || 'Sin-Mes'}_${año || 'Sin-Año'}.pdf`;
       doc.save(nombreArchivo);
 
-      console.log("PDF generado exitosamente:", nombreArchivo);
+      //console.log("PDF generado exitosamente:", nombreArchivo);
     } catch (error) {
       console.error("Error al generar el PDF:", error);
     }
