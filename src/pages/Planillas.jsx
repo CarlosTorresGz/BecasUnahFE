@@ -9,7 +9,7 @@ import useCentrosEstudio from "../hooks/useCentrosEstudio";
 import { useDashboard } from '../context/DashboardContext';
 import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
 import { confirmarYCrearPlanilla } from "../services/Planilla/Administracion/CreacionPlanillas/confirmacionCreacionPlanilla";
-import useInputChange from "../hooks/handleInputChange"; // Importar el hook personalizado
+import useInputChange from "../hooks/handleInputChange"; 
 import { handleDescargarPDF } from "../services/Planilla/Administracion/Descargas/handleDescargarPDF";
 
 const PlanillasPagoBecarios = () => {
