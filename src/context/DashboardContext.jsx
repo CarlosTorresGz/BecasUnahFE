@@ -9,6 +9,7 @@ import { fetchReport } from '../services/reportAPI';
 import { fetchStateBecaById } from '../services/PerfilBecario/becaAPI';
 import { fetchPlanillas } from '../services/Planilla/planillaAPI';
 import fetchData from '../services/FAQ/faqAPI';
+import {fetchAllPlanilla} from "../services/Planilla/Administracion/planillaAdmin"
 
 export const DashboardContext = createContext();
 
@@ -39,7 +40,8 @@ export const DashboardProvider = ({ children, userType }) => {
     });
     const [dataFetch, setDataFetch] = useState({
         actividades: null,
-        faq: null
+        faq: null,
+        planilla:null
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -52,9 +54,12 @@ export const DashboardProvider = ({ children, userType }) => {
                     if (userType === 'admin') {
                         const data = await fetchAllData();
                         const faq = await fetchData();
+                        const planilla = await fetchAllPlanilla();
                         setDataFetch({
                             actividades: data ? { data: data.actividades, error: null } : { data: null, error: 'No hay actividades' },
-                            faq: faq ? { data: faq.preguntas, error: null } : { data: null, error: 'No hay preguntas frecuentes' }
+                            faq: faq ? { data: faq.preguntas, error: null } : { data: null, error: 'No hay preguntas frecuentes' },
+                            planilla :planilla ? { data:planilla, error: null}:   { data: null, error: 'No hay ´planillas' }
+
                         });
                     } else if (userType === 'becario') {
                         const data = await fetchParcialData({ centro_id: user.centro_estudio_id });
@@ -168,6 +173,16 @@ export const DashboardProvider = ({ children, userType }) => {
         )
     }
 
+
+    const refreshPlanillatadmin = async () => {
+        const planilla = await fetchAllPlanilla();
+        setDataFetch(
+            prev => ({
+                ...prev,
+                planilla: planilla ? { data: planilla, error: null } : { data: null, error: 'No planillas' }
+            })
+        )
+    }
     // Valores que estará disponible para todos los componentes hijos
     const value = {
         userType,
@@ -181,7 +196,8 @@ export const DashboardProvider = ({ children, userType }) => {
         refreshReport,
         refreshBecaEstado,
         refreshPlanilla,
-        refreshFAQ
+        refreshFAQ,
+        refreshPlanillatadmin
     };
 
     return (
