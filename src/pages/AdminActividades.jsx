@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import '../styles/AdminActividades.css';
 import '../styles/ActividadesDisponibles.css';
 import updateActividad from '../services/ActividadesAdministrador/updateActividad';
@@ -12,6 +12,7 @@ import { useDashboard } from '../context/DashboardContext';
 import SpinnerLoading from '../components/SpinnerLoading';
 import Modal from '../components/Modal';
 import UploadFile from '../components/UploadFile';
+import { Form } from "react-bootstrap";
 
 const AdminActividades = () => {
     const { userType, dataFetch, loading, refreshData, error } = useDashboard();
@@ -19,9 +20,32 @@ const AdminActividades = () => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [actividadAEliminar, setActividadAEliminar] = useState(null);
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
+    const [selectedValue, setSelectedValue] = useState("Disponible");
+    const [currentPage, setCurrentPage] = useState(1);
 
-    console.log('actividadSeleccionada', actividadSeleccionada);
-    console.log('dataFetch', dataFetch);
+    const dataFiltrada = useMemo(() => {
+        if (!dataFetch.actividades?.data) return [];
+
+        switch (selectedValue) {
+            case "Disponible":
+                return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Disponible");
+            case "Terminada":
+                return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Terminada");
+            case "Cancelada":
+                return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Cancelada");
+            default:
+                return dataFetch.actividades.data;
+        }
+    }, [dataFetch, selectedValue]);
+
+    const itemsPerPage = 8;
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentData = dataFiltrada.slice(indexOfFirstItem, indexOfLastItem);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const totalPages = Math.ceil(dataFiltrada.length / itemsPerPage);
+    const pageNumbers = [...Array(totalPages).keys()].map(num => num + 1);
+
     let user = getUser();
     const today = new Date();
     today.setDate(today.getDate() - 1);
@@ -91,6 +115,12 @@ const AdminActividades = () => {
                 toast.error('Error al subir la imagen.');
             }
         };
+    };
+
+    const handleInputChange = (e) => {
+        const { value } = e.target;
+        console.log(value);
+        setSelectedValue(value);
     };
 
     if (loading) return <SpinnerLoading />;
@@ -184,12 +214,41 @@ const AdminActividades = () => {
                     </div>
                 </div>
             ) : (
-                <CardActivity
-                    data={dataFetch.actividades.data}
-                    userType={userType ? userType : 'admin'}
-                    handleEdit={handleEdit}
-                    handleDeleteActivity={handleDeleteActivity}
-                />
+                <>
+                    <Form.Group controlId="formFiltroActividades">
+                        <div className='filtro-actividades'>
+                            <Form.Label>Filtrar por estado de la actividad: </Form.Label>
+                            <Form.Control
+                                as="select"
+                                name="estado"
+                                value={selectedValue}
+                                onChange={handleInputChange}
+                            >
+                                <option value="Disponible">Disponible</option>
+                                <option value="Terminada">Terminada</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </Form.Control>
+                        </div>
+                        <CardActivity
+                            data={currentData}
+                            userType={userType ? userType : 'admin'}
+                            handleEdit={handleEdit}
+                            handleDeleteActivity={handleDeleteActivity}
+                        />
+                    </Form.Group>
+                    {/* Botones de Paginación */}
+                    <div className="pagination">
+                        {pageNumbers.map(page => (
+                            <button
+                                className={`pagination-button ${page === currentPage ? 'pagination-button-active' : ''}`}
+                                key={page}
+                                onClick={() => paginate(page)}
+                            >
+                                {page}
+                            </button>
+                        ))}
+                    </div>
+                </>
             )}
 
             {actividadAEliminar && (

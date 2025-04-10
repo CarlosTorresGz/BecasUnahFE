@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import '../styles/ActividadesDisponibles.css';
 import FormularioInscripcion from '../pages/InscripcionActividad';
 import CardActivity from '../components/CardActivity';
@@ -10,6 +10,19 @@ const ActividadesDisponibles = () => {
     const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const userRole = userType;
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+    const actividades = useMemo(() => {
+        return dataFetchBecarios?.actividades?.data || [];
+    }, [dataFetchBecarios]);
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentData = actividades.slice(indexOfFirstItem, indexOfLastItem);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const totalPages = Math.ceil(actividades.length / itemsPerPage);
+    const pageNumbers = [...Array(totalPages).keys()].map(num => num + 1);
 
     const handleCardClick = (actividad) => {
         setActividadSeleccionada(actividad);
@@ -34,7 +47,8 @@ const ActividadesDisponibles = () => {
         );
     }
 
-    if ( loading) return <SpinnerLoading />;
+    if (loading) return <SpinnerLoading />;
+    if (actividades.length === 0) return <div className="no-activities">No hay actividades disponibles actualmente</div>;
 
     return (
         <div className="actividades-container">
@@ -56,12 +70,25 @@ const ActividadesDisponibles = () => {
                     </div>
                 </div>
             ) : (
-                // Vista normal
-                <CardActivity
-                    data={dataFetchBecarios.actividades.data}
-                    userType={userRole? userRole : 'becario'}
-                    onClick={handleCardClick}
-                />
+                <>
+                    <CardActivity
+                        data={currentData}
+                        userType={userRole ? userRole : 'becario'}
+                        onClick={handleCardClick}
+                    />
+                    {/* Botones de Paginación */}
+                    <div className="pagination">
+                        {pageNumbers.map(page => (
+                            <button
+                                className={`pagination-button ${page === currentPage ? 'pagination-button-active' : ''}`}
+                                key={page}
+                                onClick={() => paginate(page)}
+                            >
+                                {page}
+                            </button>
+                        ))}
+                    </div>
+                </>
             )}
 
             {actividadSeleccionada && (
