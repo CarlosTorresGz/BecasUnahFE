@@ -67,7 +67,7 @@ export const DashboardProvider = ({ children, userType }) => {
                         const dataActRealizadas = await ActividadesRealizadas({ no_cuenta: user.no_cuenta });
                         const dataReport = await fetchReport({ no_cuenta: user.no_cuenta });
                         const dataEstadoBeca = await fetchStateBecaById({ estado_beca_id: user.estado_beca_id });
-                        const dataPlanilla = await fetchPlanillas({ becario_id: user.becario_id });
+                        const dataPlanilla = await fetchPlanillas({ becario_id: user.becario_id, beca_id: user.beca_id });
                         setDataFetchBecarios({
                             actividades: data ? { data: data.actividades, error: null } : { data: null, error: 'No hay actividades' },
                             inscritas: dataActInscritas ? { data: dataActInscritas.actividades, error: null } : { data: null, error: 'No hay actividades inscritas' },

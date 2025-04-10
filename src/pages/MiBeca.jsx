@@ -69,8 +69,9 @@ export const MiBeca = () => {
                     <table className="table">
                         <thead className='table-calendar-head'>
                             <tr>
-                                <th scope="col" style={{ width: '30%' }}>Mes</th>
-                                <th scope="col" style={{ width: '30%' }}>Monto</th>
+                                <th scope="col" style={{ width: '20%' }}>Mes</th>
+                                <th scope="col" style={{ width: '20%' }}>Año</th>
+                                <th scope="col" style={{ width: '20%' }}>Monto</th>
                                 <th scope="col" style={{ width: '40%' }}>Cobrado</th>
                             </tr>
                         </thead>
@@ -78,8 +79,9 @@ export const MiBeca = () => {
                             {dataFetchBecarios.planilla.length > 0 ? (
                                 dataFetchBecarios.planilla.map(pago => (
                                     <tr key={pago.planilla_id}>
-                                        <td>{new Date(pago.fecha_planilla).toLocaleString('es-ES', { month: 'long' })}</td>
-                                        <td>{formatCurrency(beca?.monto)}</td>
+                                        <td>{pago.mes}</td>
+                                        <td>{pago.anio}</td>
+                                        <td>{formatCurrency(pago.monto)}</td>
                                         <td className={assignColorToCobroStatus(pago)}>{pago.estado_entrega}</td>
                                     </tr>
                                 ))
