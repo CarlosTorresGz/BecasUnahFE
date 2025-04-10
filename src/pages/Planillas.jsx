@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt } from "react-icons/fa";
+import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt,FaTrash} from "react-icons/fa";
 import { toast } from "sonner";
 import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
@@ -10,8 +10,8 @@ import useCentrosEstudio from "../hooks/useCentrosEstudio";
 import { fetchAllPlanilla } from "../services/Planilla/Administracion/planillaAdmin";
 import { adaptarPlanillas } from "../services/Planilla/Administracion/planillaAdapter";
 import crearPlanilla from "../services/Planilla/Administracion/CrearPlanilla";
-import { FaTrash } from "react-icons/fa";
 import { eliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilla";
+import { useDashboard } from '../context/DashboardContext';
 
 const PlanillasPagoBecarios = () => {
   const { user } = useAuth();
@@ -21,6 +21,8 @@ const PlanillasPagoBecarios = () => {
   const [confirmando, setConfirmando] = useState(false);
   const generarPDF = useGenerarPDF();
 
+const {refreshPlanillatadmin,dataFetch} = useDashboard();
+  
   const [formData, setFormData] = useState({
     mes: "Junio",
     anio: new Date().getFullYear(),
@@ -32,16 +34,17 @@ const PlanillasPagoBecarios = () => {
   const obtenerAniosDisponibles = () => {
     const anioActual = new Date().getFullYear();
     const anioMinimo = anioActual - 1;
-    const anioMaximo = anioActual + 6;
+    const anioMaximo = anioActual + 3;
     return Array.from({ length: anioMaximo - anioMinimo + 1 }, (_, index) => anioMinimo + index);
   };
 
+  
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
-        const data = await fetchAllPlanilla();
-        const planillasAdaptadas = adaptarPlanillas(data);
-        setPlanillas(planillasAdaptadas);
+        //const data = await fetchAllPlanilla();
+        //const planillasAdaptadas = adaptarPlanillas(data);
+        setPlanillas(dataFetch.planilla.data);
 
         const becariosDummy = [
           {
@@ -142,15 +145,9 @@ const PlanillasPagoBecarios = () => {
       const response = await crearPlanilla(mes, anio, centro_estudio_id);
 
       if (response.success) {
-        const nuevaPlanilla = {
-          id: `PLN-${anio}${String(new Date().getMonth() + 1).padStart(2, '0')}-${planillas.length + 1}`,
-          titulo: `Planilla ${mes} ${anio}`,
-          fecha: new Date().toISOString(),
-          vistas: 0,
-          administrador: user ? user.noEmpleado : "Desconocido"
-        };
+        refreshPlanillatadmin();
         
-        setPlanillas(prev => [nuevaPlanilla, ...prev]);
+        //setPlanillas(prev => [nuevaPlanilla, ...prev]);
         toast.success("Planilla creada exitosamente");
         setPlanillaNueva(false);
       } else {
@@ -177,7 +174,7 @@ const PlanillasPagoBecarios = () => {
     }
   };
 
-  const handleEliminarPlanilla = async (planilla_Id) => {
+  const handleEliminarPlanilla = async (planilla_id) => {
     toast.custom((t) => (
       <div className="p-3 bg-white rounded shadow" style={{ width: '350px', zIndex: 10000 }}>
         <h5 className="mb-3">Confirmar eliminación</h5>
@@ -196,10 +193,14 @@ const PlanillasPagoBecarios = () => {
             onClick={async () => {
               toast.dismiss(t);
               try {
-                const response = await eliminarPlanilla(planilla_Id);
-                if (response.success) {
-                  setPlanillas(prev => prev.filter(p => p.id !== planilla_Id));
+                console.log(planilla_id)
+                const response = await eliminarPlanilla({planilla_id});
+                console.log(response);
+                
+                if (response.state) {
+                  refreshPlanillatadmin();
                   toast.success("Planilla eliminada correctamente");
+
                 } else {
                   toast.error(`Error al eliminar: ${response.errorMessage}`);
                 }
@@ -234,7 +235,7 @@ const PlanillasPagoBecarios = () => {
           {planillas.map((planilla, index) => {
             const backgroundColor = index % 2 === 0 ? '#F4F4F9' : '#E6EBE0';
             return (
-              <Col md={6} lg={4} key={planilla.id} className="mb-4">
+              <Col md={6} lg={4} key={planilla.planilla_id} className="mb-4">
                 <Card style={{ border: 'none', backgroundColor }}>
                   <Card.Body>
                     <Card.Text className="titulo">{planilla.descripcionPlanilla}</Card.Text>
@@ -245,7 +246,7 @@ const PlanillasPagoBecarios = () => {
                       Centro de Estudio: {planilla.nombre_centro_estudio}
                     </Card.Text>
                     <Card.Text className="generada-por">
-                      Generada por {planilla.administrador}
+                      Generada por  {planilla.NombreCompleto}
                     </Card.Text>
 
                     <div className="d-flex align-items-center gap-2">
@@ -259,13 +260,13 @@ const PlanillasPagoBecarios = () => {
                       <Button 
                         variant="outline-danger" 
                         size="sm" 
-                        onClick={() => handleEliminarPlanilla(planilla.id)}
+                        onClick={() => handleEliminarPlanilla(planilla.planilla_id)}
                       >
                         <FaTrash className="me-2" /> Eliminar
                       </Button>
                       <div className="d-flex align-items-center text-muted planilla-info">
                         
-                        <div className="icon-left"><FaCalendarAlt /> {formatearFecha(planilla.fecha)}</div>
+                        <div className="icon-left"><FaCalendarAlt /> {formatearFecha(planilla.fecha_planilla_creacion)}</div>
                       </div>
                     </div>
                   </Card.Body>

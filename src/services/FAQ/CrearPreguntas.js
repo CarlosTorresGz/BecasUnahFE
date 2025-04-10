@@ -1,7 +1,7 @@
 import apiUrl from "../../config";
 import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
-const crearPreguntas = async (pregunta,respuesta) => {
+const crearPreguntas = async (pregunta, respuesta) => {
     try {
         const token = localStorage.getItem('jwtToken');
         if (!token) {
@@ -16,19 +16,17 @@ const crearPreguntas = async (pregunta,respuesta) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({pregunta,respuesta}),
+            body: JSON.stringify({ pregunta, respuesta }),
         });
 
         if (response.status === 401) {
-            if (response.status === 401) {
-                return await handleTokenRefresh(crearPreguntas, {pregunta, respuesta});
-            }
+            return await handleTokenRefresh(crearPreguntas, { pregunta, respuesta });
         }
 
         const data = await response.json();
 
         if (response.ok) {
-            return { success: true, message: data.message};
+            return { success: true, message: data.message };
         } else {
             return { success: false, errorMessage: data.message ? data.message : data.error };
         }

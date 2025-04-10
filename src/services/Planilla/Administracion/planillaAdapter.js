@@ -1,6 +1,6 @@
 export const adaptarPlanillas = (dataAPI) => {
     return dataAPI.map((p, index) => ({
-      id: `PLN-${p.anio}${String(index + 1).padStart(3, '0')}`,
+      planilla_id: p.planilla_id,
       titulo: p.descripcionPlanilla,
       fecha: p.fecha_planilla_creacion,
       vistas: Math.floor(Math.random() * 10) + 1,      
