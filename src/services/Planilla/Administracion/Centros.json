@@ -1,0 +1,40 @@
+{
+    "Centros": [
+        {
+            "centro_estudio_id": 0,
+            "nombre_centro_estudio": "Ciudad Universitaria (CU)"
+        },
+        {
+            "centro_estudio_id": 1,
+            "nombre_centro_estudio": "UNAH Cortés"
+        },
+        {
+            "centro_estudio_id": 2,
+            "nombre_centro_estudio": "UNAH Comayagua"
+        },
+        {
+            "centro_estudio_id": 3,
+            "nombre_centro_estudio": "UNAH Atlántida"
+        },
+        {
+            "centro_estudio_id": 4,
+            "nombre_centro_estudio": "UNAH Choluteca"
+        },
+        {
+            "centro_estudio_id": 5,
+            "nombre_centro_estudio": "UNAH Copán"
+        },
+        {
+            "centro_estudio_id": 6,
+            "nombre_centro_estudio": "UNAH Olancho"
+        },
+        {
+            "centro_estudio_id": 7,
+            "nombre_centro_estudio": "UNAH El Paraíso"
+        },
+        {
+            "centro_estudio_id": 8,
+            "nombre_centro_estudio": "UNAH Yoro"
+        }
+    ]
+}
