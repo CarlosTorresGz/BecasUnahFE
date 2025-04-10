@@ -1,7 +1,7 @@
 import apiUrl from "../../../config";
 import {getEmpleadoIdFromToken} from "./CrearPlanilla"
 
-export const eliminarPlanilla = async ({ planilla_id }) => {
+export const eliminarPlanilla = async (planilla_id ) => {
   try {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
@@ -17,9 +17,6 @@ export const eliminarPlanilla = async ({ planilla_id }) => {
       console.warn('No se encontró planilla_id');
       return { state: false, body: 'Error: planilla_id no disponible' };
   }
-
-
-
     const response = await fetch(`${apiUrl}/api/Deleteplanilla_Id?`, {
       method: 'DELETE',
       headers: {

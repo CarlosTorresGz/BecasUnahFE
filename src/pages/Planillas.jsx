@@ -12,6 +12,7 @@ import { adaptarPlanillas } from "../services/Planilla/Administracion/planillaAd
 import crearPlanilla from "../services/Planilla/Administracion/CrearPlanilla";
 import { eliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilla";
 import { useDashboard } from '../context/DashboardContext';
+import { informacionplanilla_byId } from "../services/Planilla/Administracion/informacionplanilla_byId";
 
 const PlanillasPagoBecarios = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const PlanillasPagoBecarios = () => {
   const [becariosActivos, setBecariosActivos] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
+  const [planillaSeleccionada, setPlanillaSeleccionada] = useState(null);
   const generarPDF = useGenerarPDF();
 
   const { refreshPlanillatadmin, dataFetch } = useDashboard();
@@ -42,26 +44,6 @@ const PlanillasPagoBecarios = () => {
     const obtenerDatos = async () => {
       try {
         setPlanillas(dataFetch?.planilla?.data || []);
-
-        const becariosDummy = [
-          {
-            id: 101,
-            nombre: "Juan Galindo",
-            carrera: "Ingeniería en Sistemas",
-            centro: "CU Tegucigalpa",
-            monto: "L. 3,500.00",
-            estado: "Aprobado"
-          },
-          {
-            id: 102,
-            nombre: "Ana Cáceres",
-            carrera: "Administración de Empresas",
-            centro: "CU Valle de Sula",
-            monto: "L. 3,500.00",
-            estado: "Aprobado"
-          }
-        ];
-        setBecariosActivos(becariosDummy);
       } catch (error) {
         console.error("Error al obtener planillas:", error);
         toast.error("Error al cargar las planillas");
@@ -70,6 +52,23 @@ const PlanillasPagoBecarios = () => {
 
     obtenerDatos();
   }, [dataFetch]);
+
+  const cargarBecariosPlanilla = async (planillaId) => {
+    try {
+      console.log(planillaId);
+      const response = await informacionplanilla_byId({ planilla_id: planillaId });
+      
+      if (response.state) {
+        setBecariosActivos(response.body.planillas || []);
+        setPlanillaSeleccionada(planillaId);
+      } else {
+        toast.error("Error al cargar los becarios de la planilla");
+      }
+    } catch (error) {
+      toast.error("Error al cargar los becarios");
+      console.error("Error:", error);
+    }
+  };
 
   const cancelGenerate = () => {
     setPlanillaNueva(false);
@@ -159,15 +158,29 @@ const PlanillasPagoBecarios = () => {
     return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
-  const handleDescargarPDF = (planilla) => {
+  const formatearMoneda = (monto) => {
+    return new Intl.NumberFormat('es-HN', {
+      style: 'currency',
+      currency: 'HNL'
+    }).format(monto);
+  };
+
+  const handleDescargarPDF = async (planilla) => {
     try {
-      generarPDF(planilla, becariosActivos);
-      toast.success("Generando PDF...");
+      const response = await informacionplanilla_byId({ planilla_id: planilla.planilla_id });
+      
+      if (response.state) {
+        generarPDF(response.body); // Pasamos solo el cuerpo de la respuesta
+        toast.success("Generando PDF...");
+      } else {
+        toast.error("Error al cargar los becarios de la planilla");
+      }
     } catch (error) {
       toast.error("Error al generar el PDF");
       console.error("Error al generar PDF:", error);
     }
   };
+  
 
   const handleEliminarPlanilla = async (planilla_id) => {
     toast.custom((t) => (
@@ -188,8 +201,8 @@ const PlanillasPagoBecarios = () => {
             onClick={async () => {
               toast.dismiss(t);
               try {
-                const response = await eliminarPlanilla({planilla_id}); // Cambiado para enviar solo el ID
-                console.log('Respuesta eliminación:', response);
+                const response = await eliminarPlanilla(planilla_id);
+                console.log('Respuesta planilla_id:', planilla_id);
                 
                 if (response.state) {
                   refreshPlanillatadmin();
@@ -217,7 +230,10 @@ const PlanillasPagoBecarios = () => {
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 planillas-container">
         <h1>Planillas de pago corrientes</h1>
-        <Button variant="primary" onClick={() => setPlanillaNueva(true)} disabled={becariosActivos.length === 0}>
+        <Button 
+          variant="primary" 
+          onClick={() => setPlanillaNueva(true)}           
+        >
           <FaPlusCircle className="me-2" /> Nueva Planilla
         </Button>
       </div>
