@@ -7,12 +7,10 @@ import '../styles/Planillas.css';
 import { useAuth } from "../context/AuthContext";
 import Modal from "../components/Modal";
 import useCentrosEstudio from "../hooks/useCentrosEstudio";
-import { fetchAllPlanilla } from "../services/Planilla/Administracion/planillaAdmin";
-import { adaptarPlanillas } from "../services/Planilla/Administracion/planillaAdapter";
 import crearPlanilla from "../services/Planilla/Administracion/CrearPlanilla";
-import { eliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilla";
 import { useDashboard } from '../context/DashboardContext';
 import { informacionplanilla_byId } from "../services/Planilla/Administracion/informacionplanilla_byId";
+import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
 
 const PlanillasPagoBecarios = () => {
   const { user } = useAuth();
@@ -52,22 +50,6 @@ const PlanillasPagoBecarios = () => {
 
     obtenerDatos();
   }, [dataFetch]);
-
-  const cargarBecariosPlanilla = async (planillaId) => {
-    try {
-      const response = await informacionplanilla_byId({ planilla_id: planillaId });
-      
-      if (response.state) {
-        setBecariosActivos(response.body.planillas || []);
-        setPlanillaSeleccionada(planillaId);
-      } else {
-        toast.error("Error al cargar los becarios de la planilla");
-      }
-    } catch (error) {
-      toast.error("Error al cargar los becarios");
-      console.error("Error:", error);
-    }
-  };
 
   const cancelGenerate = () => {
     setPlanillaNueva(false);
@@ -157,12 +139,7 @@ const PlanillasPagoBecarios = () => {
     return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
-  const formatearMoneda = (monto) => {
-    return new Intl.NumberFormat('es-HN', {
-      style: 'currency',
-      currency: 'HNL'
-    }).format(monto);
-  };
+ 
 
   const handleDescargarPDF = async (planilla) => {
     try {
@@ -181,48 +158,6 @@ const PlanillasPagoBecarios = () => {
   };
   
 
-  const handleEliminarPlanilla = async (planilla_id) => {
-    toast.custom((t) => (
-      <div className="p-3 bg-white rounded shadow" style={{ width: '350px', zIndex: 10000 }}>
-        <h5 className="mb-3">Confirmar eliminación</h5>
-        <p>¿Estás seguro que deseas eliminar esta planilla? Esta acción no se puede deshacer.</p>
-        <div className="d-flex justify-content-end gap-2 mt-3">
-          <Button 
-            variant="secondary" 
-            size="sm" 
-            onClick={() => toast.dismiss(t)}
-          >
-            Cancelar
-          </Button>
-          <Button 
-            variant="danger" 
-            size="sm" 
-            onClick={async () => {
-              toast.dismiss(t);
-              try {
-                const response = await eliminarPlanilla(planilla_id);
-                
-                if (response.state) {
-                  refreshPlanillatadmin();
-                  toast.success("Planilla eliminada correctamente");
-                } else {
-                  toast.error(response.errorMessage || "Error al eliminar la planilla");
-                }
-              } catch (error) {
-                toast.error("Error al eliminar la planilla");
-                console.error("Error completo:", error);
-              }
-            }}
-          >
-            Eliminar
-          </Button>
-        </div>
-      </div>
-    ), {
-      duration: 10000,
-      position: 'center-center'
-    });
-  };
 
   return (
     <Container className="py-4">
@@ -268,7 +203,7 @@ const PlanillasPagoBecarios = () => {
                       <Button 
                         variant="outline-danger" 
                         size="sm" 
-                        onClick={() => handleEliminarPlanilla(planilla.planilla_id)}
+                        onClick={() => handleEliminarPlanilla(planilla.planilla_id,refreshPlanillatadmin)}
                       >
                         <FaTrash className="me-2" /> Eliminar
                       </Button>
