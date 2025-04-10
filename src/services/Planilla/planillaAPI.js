@@ -1,12 +1,13 @@
 import apiUrl from "../../config";
 
-export const fetchPlanillas = async ({ becario_id }) => {
+export const fetchPlanillas = async ({ becario_id, beca_id }) => {
     try {
-        const response = await fetch(`${apiUrl}/api/planilla/${becario_id}`, {
-            method: "GET",
+        const response = await fetch(`${apiUrl}/api/planilla`, {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({ becario_id, beca_id })
         });
 
         const data = await response.json();
