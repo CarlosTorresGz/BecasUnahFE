@@ -154,7 +154,7 @@ export const DashboardProvider = ({ children, userType }) => {
     }
 
     const refreshPlanilla = async () => {
-        const dataPlanilla = await fetchPlanillas({ becario_id: user.becario_id });
+        const dataPlanilla = await fetchPlanillas({ becario_id: user.becario_id, beca_id: user.beca_id });
         setDataFetchBecarios(
             prev => ({
                 ...prev,

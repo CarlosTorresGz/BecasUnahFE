@@ -26,8 +26,15 @@ const useGenerarPDF = () => {
     }
 
     try {
+      const options = {
+        orientation: 'l',
+        unit: 'mm',
+        format: 'letter',
+        margin: { top: 15, right: 15, bottom: 15, left: 15 }
+      }
+
       // Crear el documento PDF
-      const doc = new jsPDF();
+      const doc = new jsPDF(options);
 
       // Establecer márgenes y encabezados
       const año = new Date(primerBecario.fecha_planilla_creacion).getFullYear();
@@ -56,7 +63,7 @@ const useGenerarPDF = () => {
         return [
           b.NombreCompleto || 'N/A',
           b.nombre_carrera || 'N/A',
-          ` L. ${b.MontoBeca || 0} `,
+          ` L. ${b.MontoBeca.toFixed(2) || 0} `,
           typeof b.entregado === 'boolean' ? (b.entregado ? 'Sí' : 'No') : 'N/A',
           b.dias_restantes?.toString() || 'N/A'
         ];
@@ -70,21 +77,23 @@ const useGenerarPDF = () => {
         head: headers,
         body: rows,
         startY: 45,
-        styles: { 
-          fontSize: 10, 
-          halign: 'center', 
-          valign: 'middle', 
-          lineColor: [41, 128, 185], 
-          lineWidth: 0.2, 
+        styles: {
+          fontSize: 10,
+          halign: 'center',
+          valign: 'middle',
+          lineColor: [41, 128, 185],
+          lineWidth: 0.2,
           cellPadding: 3
         },
-        headStyles: { 
-          fillColor: [41, 128, 185], 
+        headStyles: {
+          fillColor: [41, 128, 185],
           textColor: [255, 255, 255], // Color blanco para el texto del encabezado
-          fontSize: 12, 
+          fontSize: 12,
           fontStyle: 'bold'
         },
         columnStyles: {
+          0: { cellWidth: 70, halign: 'left' },
+          1: { halign: 'left' },
           2: { cellWidth: 40 }, // Ajusta el ancho de la columna "Monto Beca"
         },
         margin: { top: 45, left: 14, right: 14 },
@@ -104,6 +113,11 @@ const useGenerarPDF = () => {
       // Guardar el archivo PDF con nombre seguro
       const nombreArchivo = `Planilla_${primerBecario.mes || 'Sin-Mes'}_${año || 'Sin-Año'}.pdf`;
       doc.save(nombreArchivo);
+
+      // Solo Mostrar el PDF en una nueva pestaña
+      //const pdfDataUri = doc.output('datauristring');
+      //const newTab = window.open();
+      //newTab?.document.write(`<iframe width='100%' height='100%' src='${pdfDataUri}'></iframe>`);
 
       console.log("PDF generado exitosamente:", nombreArchivo);
     } catch (error) {
