@@ -264,8 +264,7 @@ const PlanillasPagoBecarios = () => {
                         <FaTrash className="me-2" /> Eliminar
                       </Button>
                       <div className="d-flex align-items-center text-muted planilla-info">
-                        <FaEye />{planilla.vistas}
-                        <div className="icon-left"><FaCloudDownloadAlt /> {(Math.random() * (9.9 - 1.2) + 1.2).toFixed(1)} MB</div>
+                        
                         <div className="icon-left"><FaCalendarAlt /> {formatearFecha(planilla.fecha)}</div>
                       </div>
                     </div>
