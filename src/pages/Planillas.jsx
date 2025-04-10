@@ -55,7 +55,6 @@ const PlanillasPagoBecarios = () => {
 
   const cargarBecariosPlanilla = async (planillaId) => {
     try {
-      console.log(planillaId);
       const response = await informacionplanilla_byId({ planilla_id: planillaId });
       
       if (response.state) {
@@ -202,7 +201,6 @@ const PlanillasPagoBecarios = () => {
               toast.dismiss(t);
               try {
                 const response = await eliminarPlanilla(planilla_id);
-                console.log('Respuesta planilla_id:', planilla_id);
                 
                 if (response.state) {
                   refreshPlanillatadmin();
