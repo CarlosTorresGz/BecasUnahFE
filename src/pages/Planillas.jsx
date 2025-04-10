@@ -2,28 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
 import { FaDownload, FaPlusCircle, FaCalendarAlt, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
-import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
 import Modal from "../components/Modal";
 import { obtenerAniosDisponibles } from "../util/formatearfechaCreacion";
 import useCentrosEstudio from "../hooks/useCentrosEstudio";
 import { useDashboard } from '../context/DashboardContext';
-import { informacionplanilla_byId } from "../services/Planilla/Administracion/informacionplanilla_byId";
 import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
 import { confirmarYCrearPlanilla } from "../services/Planilla/Administracion/CreacionPlanillas/confirmacionCreacionPlanilla";
 import useInputChange from "../hooks/handleInputChange"; // Importar el hook personalizado
+import { handleDescargarPDF } from "../services/Planilla/Administracion/Descargas/handleDescargarPDF";
 
+handleDescargarPDF
 const PlanillasPagoBecarios = () => {
   const [planillas, setPlanillas] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
 
-  const generarPDF = useGenerarPDF();
   const { refreshPlanillatadmin, dataFetch } = useDashboard();
   
   const { formData, handleInputChange } = useInputChange({
-    mes: "Junio",
+    mes: "",
     anio: new Date().getFullYear(),
-    centro_estudio_id: 1
+    centro_estudio_id: 0
   });
 
   const { centrosEstudio, loading, error } = useCentrosEstudio();
@@ -58,21 +57,6 @@ const PlanillasPagoBecarios = () => {
     return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
-  const handleDescargarPDF = async (planilla) => {
-    try {
-      const response = await informacionplanilla_byId({ planilla_id: planilla.planilla_id });
-      
-      if (response.state) {
-        generarPDF(response.body); 
-        toast.success("Generando PDF...");
-      } else {
-        toast.error("Error al cargar los becarios de la planilla");
-      }
-    } catch (error) {
-      toast.error("Error al generar el PDF");
-      console.error("Error al generar PDF:", error);
-    }
-  };
 
   return (
     <Container className="py-4">
