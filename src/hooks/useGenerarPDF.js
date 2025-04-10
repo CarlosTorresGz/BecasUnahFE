@@ -62,6 +62,9 @@ const useGenerarPDF = () => {
         ];
       });
 
+      // Calcular el total de los montos
+      const totalMonto = becarios.reduce((acc, b) => acc + (b.MontoBeca || 0), 0);
+
       // Configuración de la tabla con bordes, colores y estilos
       autoTable(doc, {
         head: headers,
@@ -91,6 +94,12 @@ const useGenerarPDF = () => {
           doc.text('Generado por: Sistema de Control de Becas', 14, doc.internal.pageSize.height - 10);
         }
       });
+
+      // Agregar total al final
+      const totalY = doc.lastAutoTable.finalY + 10; // Determinar la posición debajo de la tabla
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0); // Color negro para el texto
+      doc.text(`El monto total de la Planilla de Becas es de: L. ${totalMonto.toFixed(2)}`, 14, totalY);
 
       // Guardar el archivo PDF con nombre seguro
       const nombreArchivo = `Planilla_${primerBecario.mes || 'Sin-Mes'}_${año || 'Sin-Año'}.pdf`;
