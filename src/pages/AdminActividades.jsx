@@ -119,7 +119,6 @@ const AdminActividades = () => {
 
     const handleInputChange = (e) => {
         const { value } = e.target;
-        console.log(value);
         setSelectedValue(value);
     };
 

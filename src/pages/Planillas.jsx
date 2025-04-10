@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt, FaTrash } from "react-icons/fa";
+import { FaDownload, FaPlusCircle, FaCalendarAlt, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
-import { useAuth } from "../context/AuthContext";
 import Modal from "../components/Modal";
 import useCentrosEstudio from "../hooks/useCentrosEstudio";
 import crearPlanilla from "../services/Planilla/Administracion/CrearPlanilla";
@@ -13,16 +12,13 @@ import { informacionplanilla_byId } from "../services/Planilla/Administracion/in
 import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
 
 const PlanillasPagoBecarios = () => {
-  const { user } = useAuth();
   const [planillas, setPlanillas] = useState([]);
-  const [becariosActivos, setBecariosActivos] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
-  const [planillaSeleccionada, setPlanillaSeleccionada] = useState(null);
   const generarPDF = useGenerarPDF();
 
-  const { refreshPlanillatadmin, dataFetch } = useDashboard();
-  
+  const { refreshPlanillatadmin, refreshPlanilla, dataFetch } = useDashboard();
+
   const [formData, setFormData] = useState({
     mes: "Junio",
     anio: new Date().getFullYear(),
@@ -57,7 +53,7 @@ const PlanillasPagoBecarios = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "anio") {
       setFormData({
         ...formData,
@@ -78,17 +74,17 @@ const PlanillasPagoBecarios = () => {
 
   const confirmarCreacionPlanilla = async () => {
     if (confirmando) return;
-    
+
     setConfirmando(true);
-    
+
     toast.custom((t) => (
       <div className="p-3 bg-white rounded shadow" style={{ width: '350px', zIndex: 10000 }}>
         <h5 className="mb-3">Confirmar creación</h5>
         <p>¿Estás seguro que deseas crear la planilla para {formData.mes} {formData.anio}?</p>
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => {
               toast.dismiss(t);
               setConfirmando(false);
@@ -96,9 +92,9 @@ const PlanillasPagoBecarios = () => {
           >
             Cancelar
           </Button>
-          <Button 
-            variant="primary" 
-            size="sm" 
+          <Button
+            variant="primary"
+            size="sm"
             onClick={() => {
               toast.dismiss(t);
               generarNuevaPlanilla();
@@ -123,6 +119,7 @@ const PlanillasPagoBecarios = () => {
 
       if (response.success) {
         refreshPlanillatadmin();
+        refreshPlanilla();
         toast.success("Planilla creada exitosamente");
         setPlanillaNueva(false);
       } else {
@@ -139,12 +136,10 @@ const PlanillasPagoBecarios = () => {
     return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
- 
-
   const handleDescargarPDF = async (planilla) => {
     try {
       const response = await informacionplanilla_byId({ planilla_id: planilla.planilla_id });
-      
+
       if (response.state) {
         generarPDF(response.body); // Pasamos solo el cuerpo de la respuesta
         toast.success("Generando PDF...");
@@ -156,16 +151,14 @@ const PlanillasPagoBecarios = () => {
       console.error("Error al generar PDF:", error);
     }
   };
-  
-
 
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 planillas-container">
         <h1>Planillas de pago corrientes</h1>
-        <Button 
-          variant="primary" 
-          onClick={() => setPlanillaNueva(true)}           
+        <Button
+          variant="primary"
+          onClick={() => setPlanillaNueva(true)}
         >
           <FaPlusCircle className="me-2" /> Nueva Planilla
         </Button>
@@ -193,17 +186,17 @@ const PlanillasPagoBecarios = () => {
                     </Card.Text>
 
                     <div className="d-flex align-items-center gap-2">
-                      <Button 
-                        variant="outline-secondary" 
-                        size="sm" 
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
                         onClick={() => handleDescargarPDF(planilla)}
                       >
                         <FaDownload className="me-2" /> Descargar
                       </Button>
-                      <Button 
-                        variant="outline-danger" 
-                        size="sm" 
-                        onClick={() => handleEliminarPlanilla(planilla.planilla_id,refreshPlanillatadmin)}
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => handleEliminarPlanilla(planilla.planilla_id, refreshPlanillatadmin, refreshPlanilla)}
                       >
                         <FaTrash className="me-2" /> Eliminar
                       </Button>

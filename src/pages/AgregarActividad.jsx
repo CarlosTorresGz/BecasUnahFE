@@ -9,7 +9,7 @@ import Modal from '../components/Modal';
 
 const AgregarActividad = () => {
   const { getUser } = useAuth();
-  const { dataFetch, refreshData } = useDashboard();
+  const { dataFetch, refreshData, loading } = useDashboard();
   const [error, setError] = useState('');
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -19,7 +19,7 @@ const AgregarActividad = () => {
   const [organizador, setOrganizador] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
-  const [fecha, setFecha] = useState();
+  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
 
   let user = getUser();
 
@@ -28,7 +28,7 @@ const AgregarActividad = () => {
   const previousDay = today.toISOString().split("T")[0];
 
   useEffect(() => {
-    if (Array.isArray(dataFetch.actividades.data)) {
+    if (!loading && Array.isArray(dataFetch.actividades.data)) {
       const existeActividad = dataFetch.actividades.data.some(
         (actividad) => actividad.nombre_actividad.trim().toLowerCase() === nombre.trim().toLowerCase()
       );
