@@ -12,7 +12,7 @@ import { confirmarYCrearPlanilla } from "../services/Planilla/Administracion/Cre
 import useInputChange from "../hooks/handleInputChange"; // Importar el hook personalizado
 import { handleDescargarPDF } from "../services/Planilla/Administracion/Descargas/handleDescargarPDF";
 
-handleDescargarPDF
+
 const PlanillasPagoBecarios = () => {
   const [planillas, setPlanillas] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
