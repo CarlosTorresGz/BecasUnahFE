@@ -20,7 +20,6 @@ const PlanillasPagoBecarios = () => {
   const generarPDF = useGenerarPDF();
   const { refreshPlanillatadmin, dataFetch } = useDashboard();
   
-  // Usar el hook personalizado para manejar el formulario
   const { formData, handleInputChange } = useInputChange({
     mes: "Junio",
     anio: new Date().getFullYear(),
@@ -64,7 +63,7 @@ const PlanillasPagoBecarios = () => {
       const response = await informacionplanilla_byId({ planilla_id: planilla.planilla_id });
       
       if (response.state) {
-        generarPDF(response.body); // Pasamos solo el cuerpo de la respuesta
+        generarPDF(response.body); 
         toast.success("Generando PDF...");
       } else {
         toast.error("Error al cargar los becarios de la planilla");
