@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt,FaTrash} from "react-icons/fa";
+import { FaDownload, FaPlusCircle, FaEye, FaCloudDownloadAlt, FaCalendarAlt, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import useGenerarPDF from "../hooks/useGenerarPDF";
 import '../styles/Planillas.css';
@@ -21,7 +21,7 @@ const PlanillasPagoBecarios = () => {
   const [confirmando, setConfirmando] = useState(false);
   const generarPDF = useGenerarPDF();
 
-const {refreshPlanillatadmin,dataFetch} = useDashboard();
+  const { refreshPlanillatadmin, dataFetch } = useDashboard();
   
   const [formData, setFormData] = useState({
     mes: "Junio",
@@ -38,13 +38,10 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
     return Array.from({ length: anioMaximo - anioMinimo + 1 }, (_, index) => anioMinimo + index);
   };
 
-  
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
-        //const data = await fetchAllPlanilla();
-        //const planillasAdaptadas = adaptarPlanillas(data);
-        setPlanillas(dataFetch.planilla.data);
+        setPlanillas(dataFetch?.planilla?.data || []);
 
         const becariosDummy = [
           {
@@ -72,7 +69,7 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
     };
 
     obtenerDatos();
-  }, []);
+  }, [dataFetch]);
 
   const cancelGenerate = () => {
     setPlanillaNueva(false);
@@ -146,8 +143,6 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
 
       if (response.success) {
         refreshPlanillatadmin();
-        
-        //setPlanillas(prev => [nuevaPlanilla, ...prev]);
         toast.success("Planilla creada exitosamente");
         setPlanillaNueva(false);
       } else {
@@ -193,20 +188,18 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
             onClick={async () => {
               toast.dismiss(t);
               try {
-                console.log(planilla_id)
-                const response = await eliminarPlanilla({planilla_id});
-                console.log(response);
+                const response = await eliminarPlanilla({planilla_id}); // Cambiado para enviar solo el ID
+                console.log('Respuesta eliminación:', response);
                 
                 if (response.state) {
                   refreshPlanillatadmin();
                   toast.success("Planilla eliminada correctamente");
-
                 } else {
-                  toast.error(`Error al eliminar: ${response.errorMessage}`);
+                  toast.error(response.errorMessage || "Error al eliminar la planilla");
                 }
               } catch (error) {
                 toast.error("Error al eliminar la planilla");
-                console.error("Error:", error);
+                console.error("Error completo:", error);
               }
             }}
           >
@@ -219,6 +212,7 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
       position: 'center-center'
     });
   };
+
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 planillas-container">
@@ -228,7 +222,7 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
         </Button>
       </div>
 
-      {planillas.length === 0 ? (
+      {!planillas || planillas.length === 0 ? (
         <p className="text-muted">No hay planillas registradas en el año actual.</p>
       ) : (
         <Row>
@@ -246,7 +240,7 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
                       Centro de Estudio: {planilla.nombre_centro_estudio}
                     </Card.Text>
                     <Card.Text className="generada-por">
-                      Generada por  {planilla.NombreCompleto}
+                      Generada por {planilla.NombreCompleto}
                     </Card.Text>
 
                     <div className="d-flex align-items-center gap-2">
@@ -265,7 +259,6 @@ const {refreshPlanillatadmin,dataFetch} = useDashboard();
                         <FaTrash className="me-2" /> Eliminar
                       </Button>
                       <div className="d-flex align-items-center text-muted planilla-info">
-                        
                         <div className="icon-left"><FaCalendarAlt /> {formatearFecha(planilla.fecha_planilla_creacion)}</div>
                       </div>
                     </div>
