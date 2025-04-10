@@ -1,7 +1,7 @@
 import apiUrl from "../../../config";
 import {getEmpleadoIdFromToken} from "./CrearPlanilla"
 
-export const eliminarPlanilla = async ({ empleado_id, pregunta_id }) => {
+export const eliminarPlanilla = async ({ planilla_Id }) => {
   try {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
@@ -14,7 +14,7 @@ export const eliminarPlanilla = async ({ empleado_id, pregunta_id }) => {
         return { state: false, body: 'Error: empleado_id no disponible' };
     }
     //voy a cambiarlo aun no esta la api XD
-    const response = await fetch(`${apiUrl}/api/DeleteFAQ?`, {
+    const response = await fetch(`${apiUrl}/api/Deleteplanilla_Id?`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
