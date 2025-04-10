@@ -11,16 +11,17 @@ import { useDashboard } from '../context/DashboardContext';
 import { informacionplanilla_byId } from "../services/Planilla/Administracion/informacionplanilla_byId";
 import { handleEliminarPlanilla } from "../services/Planilla/Administracion/EliminarPlanilllas/handleEliminarPlanila";
 import { confirmarYCrearPlanilla } from "../services/Planilla/Administracion/CreacionPlanillas/confirmacionCreacionPlanilla";
+import useInputChange from "../hooks/handleInputChange"; // Importar el hook personalizado
 
 const PlanillasPagoBecarios = () => {
   const [planillas, setPlanillas] = useState([]);
   const [planillaNueva, setPlanillaNueva] = useState(false);
 
   const generarPDF = useGenerarPDF();
-
   const { refreshPlanillatadmin, dataFetch } = useDashboard();
   
-  const [formData, setFormData] = useState({
+  // Usar el hook personalizado para manejar el formulario
+  const { formData, handleInputChange } = useInputChange({
     mes: "Junio",
     anio: new Date().getFullYear(),
     centro_estudio_id: 1
@@ -45,27 +46,6 @@ const PlanillasPagoBecarios = () => {
     setPlanillaNueva(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-  
-    if (name === "anio") {
-      setFormData({
-        ...formData,
-        [name]: parseInt(value, 10)
-      });
-    } else if (name === "centro_estudio_id") {
-      setFormData({
-        ...formData,
-        [name]: parseInt(value, 10)
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-    }
-  };
-
   const confirmarCreacionPlanilla = async () => {
     await confirmarYCrearPlanilla({
       formData,
@@ -78,8 +58,6 @@ const PlanillasPagoBecarios = () => {
     const fecha = new Date(fechaStr);
     return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
-
- 
 
   const handleDescargarPDF = async (planilla) => {
     try {
@@ -95,17 +73,13 @@ const PlanillasPagoBecarios = () => {
       toast.error("Error al generar el PDF");
       console.error("Error al generar PDF:", error);
     }
-  }; 
-
+  };
 
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 planillas-container">
         <h1>Planillas de pago corrientes</h1>
-        <Button 
-          variant="primary" 
-          onClick={() => setPlanillaNueva(true)}           
-        >
+        <Button variant="primary" onClick={() => setPlanillaNueva(true)}>
           <FaPlusCircle className="me-2" /> Nueva Planilla
         </Button>
       </div>
@@ -132,18 +106,10 @@ const PlanillasPagoBecarios = () => {
                     </Card.Text>
 
                     <div className="d-flex align-items-center gap-2">
-                      <Button 
-                        variant="outline-secondary" 
-                        size="sm" 
-                        onClick={() => handleDescargarPDF(planilla)}
-                      >
+                      <Button variant="outline-secondary" size="sm" onClick={() => handleDescargarPDF(planilla)}>
                         <FaDownload className="me-2" /> Descargar
                       </Button>
-                      <Button 
-                        variant="outline-danger" 
-                        size="sm" 
-                        onClick={() => handleEliminarPlanilla(planilla.planilla_id,refreshPlanillatadmin)}
-                      >
+                      <Button variant="outline-danger" size="sm" onClick={() => handleEliminarPlanilla(planilla.planilla_id, refreshPlanillatadmin)}>
                         <FaTrash className="me-2" /> Eliminar
                       </Button>
                       <div className="d-flex align-items-center text-muted planilla-info">
@@ -159,21 +125,11 @@ const PlanillasPagoBecarios = () => {
       )}
 
       {planillaNueva && (
-        <Modal
-          isOpen={planillaNueva}
-          title="Generar Nueva Planilla"
-          onConfirm={confirmarCreacionPlanilla}
-          onCancel={cancelGenerate}
-        >
+        <Modal isOpen={planillaNueva} title="Generar Nueva Planilla" onConfirm={confirmarCreacionPlanilla} onCancel={cancelGenerate}>
           <Form>
             <Form.Group controlId="formMes">
               <Form.Label>Mes</Form.Label>
-              <Form.Control
-                as="select"
-                name="mes"
-                value={formData.mes}
-                onChange={handleInputChange}
-              >
+              <Form.Control as="select" name="mes" value={formData.mes} onChange={handleInputChange}>
                 <option value="Enero">Enero</option>
                 <option value="Febrero">Febrero</option>
                 <option value="Marzo">Marzo</option>
@@ -191,12 +147,7 @@ const PlanillasPagoBecarios = () => {
 
             <Form.Group controlId="formAnio">
               <Form.Label>Año</Form.Label>
-              <Form.Control
-                as="select"
-                name="anio"
-                value={formData.anio}
-                onChange={handleInputChange}
-              >
+              <Form.Control as="select" name="anio" value={formData.anio} onChange={handleInputChange}>
                 {obtenerAniosDisponibles().map((anio) => (
                   <option key={anio} value={anio}>
                     {anio}
@@ -207,12 +158,7 @@ const PlanillasPagoBecarios = () => {
 
             <Form.Group controlId="formCentroEstudio">
               <Form.Label>Centro de Estudio</Form.Label>
-              <Form.Control
-                as="select"
-                name="centro_estudio_id"
-                value={formData.centro_estudio_id}
-                onChange={handleInputChange}
-              >
+              <Form.Control as="select" name="centro_estudio_id" value={formData.centro_estudio_id} onChange={handleInputChange}>
                 {loading && <option>Cargando...</option>}
                 {error && <option>Error al cargar centros de estudio</option>}
                 {!loading && !error && centrosEstudio.map(centro => (
