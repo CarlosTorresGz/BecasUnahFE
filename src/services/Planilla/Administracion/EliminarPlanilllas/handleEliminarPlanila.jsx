@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { eliminarPlanilla } from "../EliminarPlanilla";
 //import { useDashboard } from "../../../../context/DashboardContext";
 
-export const handleEliminarPlanilla = async (planilla_id, refreshFn, refreshPlanilla) => {
+export const handleEliminarPlanilla = async (planilla_id, refreshFn) => {
     toast.custom((t) => (
       <div className="p-3 bg-white rounded shadow" style={{ width: '350px', zIndex: 10000 }}>
         <h5 className="mb-3">Confirmar eliminación</h5>
@@ -26,7 +26,7 @@ export const handleEliminarPlanilla = async (planilla_id, refreshFn, refreshPlan
                 
                 if (response.state) {
                   refreshFn?.();
-                  refreshPlanilla();
+                  //refreshPlanilla();
                   toast.success("Planilla eliminada correctamente");
                 } else {
                   toast.error(response.errorMessage || "Error al eliminar la planilla");
