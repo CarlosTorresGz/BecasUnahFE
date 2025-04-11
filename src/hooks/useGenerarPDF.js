@@ -119,7 +119,7 @@ const useGenerarPDF = () => {
       //const newTab = window.open();
       //newTab?.document.write(`<iframe width='100%' height='100%' src='${pdfDataUri}'></iframe>`);
 
-      console.log("PDF generado exitosamente:", nombreArchivo);
+      //console.log("PDF generado exitosamente:", nombreArchivo);
     } catch (error) {
       console.error("Error al generar el PDF:", error);
     }
