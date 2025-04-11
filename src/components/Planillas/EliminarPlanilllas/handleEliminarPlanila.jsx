@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { Button } from "react-bootstrap";
-import { eliminarPlanilla } from "../EliminarPlanilla";
+import { eliminarPlanilla } from "../../../services/Planilla/Administracion/EliminarPlanilla";
 //import { useDashboard } from "../../../../context/DashboardContext";
 
 export const handleEliminarPlanilla = async (planilla_id, refreshFn) => {

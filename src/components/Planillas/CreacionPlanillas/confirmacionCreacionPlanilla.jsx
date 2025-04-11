@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { Button } from "react-bootstrap";
-import crearPlanilla from "../CrearPlanilla";
+import crearPlanilla from "../../../services/Planilla/Administracion/CrearPlanilla";
 
 export const confirmarYCrearPlanilla = async ({ formData, refresh, cerrarModal }) => {
   return new Promise((resolve) => {
