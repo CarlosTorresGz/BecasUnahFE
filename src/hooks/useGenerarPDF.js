@@ -114,12 +114,6 @@ const useGenerarPDF = () => {
       const nombreArchivo = `Planilla_${primerBecario.mes || 'Sin-Mes'}_${año || 'Sin-Año'}.pdf`;
       doc.save(nombreArchivo);
 
-      // Solo Mostrar el PDF en una nueva pestaña
-      //const pdfDataUri = doc.output('datauristring');
-      //const newTab = window.open();
-      //newTab?.document.write(`<iframe width='100%' height='100%' src='${pdfDataUri}'></iframe>`);
-
-      //console.log("PDF generado exitosamente:", nombreArchivo);
     } catch (error) {
       console.error("Error al generar el PDF:", error);
     }
