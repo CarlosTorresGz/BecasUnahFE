@@ -221,7 +221,7 @@ const PlanillasPagoBecarios = () => {
         >
           <Form>
             <Form.Group controlId="formMes">
-              <Form.Label>Mes</Form.Label>
+              <Form.Label style={{ color: 'var(--fourth-text-color)', fontWeight: 'bold' }}>Mes</Form.Label>
               <Form.Control
                 as="select"
                 name="mes"
@@ -244,7 +244,7 @@ const PlanillasPagoBecarios = () => {
             </Form.Group>
 
             <Form.Group controlId="formAnio">
-              <Form.Label>Año</Form.Label>
+              <Form.Label style={{ color: 'var(--fourth-text-color)', fontWeight: 'bold' }}>Año</Form.Label>
               <Form.Control
                 as="select"
                 name="anio"
@@ -260,7 +260,7 @@ const PlanillasPagoBecarios = () => {
             </Form.Group>
 
             <Form.Group controlId="formCentroEstudio">
-              <Form.Label>Centro de Estudio</Form.Label>
+              <Form.Label style={{ color: 'var(--fourth-text-color)', fontWeight: 'bold' }}>Centro de Estudio</Form.Label>
               <Form.Control
                 as="select"
                 name="centro_estudio_id"

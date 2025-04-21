@@ -49,9 +49,8 @@ const AgregarActividad = () => {
 
       try {
         const imageUrl = await uploadImageToAzure(file, nombreActividad);
-        console.log(imageUrl);
         toast.success('Imagen subida con éxito.');
-        setFoto(imageUrl);
+        setFoto(imageUrl.split('?')[0]);
       } catch (error) {
         console.log('Error al subir la imagen. ', error);
         toast.error('Error al subir la imagen.');
@@ -82,7 +81,7 @@ const AgregarActividad = () => {
       refreshData();
       setNombre('');
       setDescripcion('');
-      setFecha('');
+      setFecha(new Date().toISOString().split("T")[0]);
       setHorasBeca('');
       setUbicacion('');
       setFoto(null);
@@ -177,6 +176,7 @@ const AgregarActividad = () => {
           <label htmlFor="foto">Foto</label>
           <input
             type="file"
+            accept="image/*"
             id="foto"
             onChange={handleChangeImage}
             required

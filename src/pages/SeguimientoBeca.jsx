@@ -202,7 +202,7 @@ export const SeguimientoBeca = () => {
             const pdfBlob = generatePDF(dataSeguimiento, actividadesFiltradas, oldStateBeca, observacionCambioEstado, observacion, selectedPeriodo, anioPeriodo);
             //Guardamos el PDF en Azure Storage
             const pdfURL = await uploadPDFAzure(pdfBlob, searchNoCuenta, selectedPeriodo, anioPeriodo);
-            console.log('pdfURL: ', pdfURL);
+            console.log('pdfURL: ', pdfURL.split('?')[0]);
             //Guardar el reporte en la base de datos...
             const nuevoReporte = {
                 no_cuenta: dataSeguimiento.no_cuenta,
@@ -214,7 +214,7 @@ export const SeguimientoBeca = () => {
                 motivo_cambio_estado_beca: observacionCambioEstado,
                 total_horas: totalHoras,
                 observaciones: observacion,
-                enlace: pdfURL
+                enlace: pdfURL.split('?')[0]
             };
 
             const resultSaveReport = await saveReport(nuevoReporte);
