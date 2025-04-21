@@ -1,5 +1,5 @@
 import apiUrl from "../../config";
-import {handleTokenRefresh} from "../Auth/handleTokenRefresh";
+import { handleTokenRefresh } from "../Auth/handleTokenRefresh";
 
 export const informacionSeguimientoBecaAPI = async ({ no_cuenta }) => {
     try {
@@ -10,7 +10,6 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta }) => {
         }
 
         const response = await fetch(`${apiUrl}/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
-        //const response = await fetch(`http://localhost:7071/api/getInfoSeguimientobyNoCuenta/${no_cuenta}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -20,9 +19,7 @@ export const informacionSeguimientoBecaAPI = async ({ no_cuenta }) => {
         });
 
         if (response.status === 401) {
-            if (response.status === 401) {
-                return await handleTokenRefresh(informacionSeguimientoBecaAPI, { no_cuenta });
-            }
+            return await handleTokenRefresh(informacionSeguimientoBecaAPI, { no_cuenta });
         }
 
         const result = await response.json();
@@ -58,10 +55,8 @@ export const setStateBeca = async ({ no_cuenta, estado_beca_id }) => {
             }),
         });
 
-        if (response.status === 401) { // Token expirado
-            if (response.status === 401) { // Si el token está expirado
-                return await handleTokenRefresh(setStateBeca, { no_cuenta, estado_beca_id });
-            }
+        if (response.status === 401) {
+            return await handleTokenRefresh(setStateBeca, { no_cuenta, estado_beca_id });
         }
 
         const result = await response.json();
@@ -104,10 +99,8 @@ export const saveReport = async ({ no_cuenta, nombre_estado_anterior, empleado_i
             }),
         });
 
-        if (response.status === 401) { // Token expirado
-            if (response.status === 401) { // Si el token está expirado
-                return await handleTokenRefresh(saveReport, { no_cuenta, nombre_estado_anterior, empleado_id, nombre_reporte, fecha_reporte, estado_nuevo_beca_id, motivo_cambio_estado_beca, total_horas, observaciones, enlace });
-            }
+        if (response.status === 401) {
+            return await handleTokenRefresh(saveReport, { no_cuenta, nombre_estado_anterior, empleado_id, nombre_reporte, fecha_reporte, estado_nuevo_beca_id, motivo_cambio_estado_beca, total_horas, observaciones, enlace });
         }
 
         const result = await response.json();

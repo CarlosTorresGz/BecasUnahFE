@@ -22,7 +22,8 @@ const AdminActividades = () => {
     const [mensajeConfirmacion, setMensajeConfirmacion] = useState(null);
     const [selectedValue, setSelectedValue] = useState("Disponible");
     const [currentPage, setCurrentPage] = useState(1);
-
+    let user = getUser();
+    
     const dataFiltrada = useMemo(() => {
         if (!dataFetch.actividades?.data) return [];
 
@@ -30,9 +31,9 @@ const AdminActividades = () => {
             case "Disponible":
                 return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Disponible");
             case "Terminada":
-                return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Terminada");
+                return dataFetch.actividades.data.filter(actividad => actividad.centro_id === user.centro_id && actividad.estado_actividad === "Terminada");
             case "Cancelada":
-                return dataFetch.actividades.data.filter(actividad => actividad.estado_actividad === "Cancelada");
+                return dataFetch.actividades.data.filter(actividad => actividad.centro_id === user.centro_id && actividad.estado_actividad === "Cancelada");
             default:
                 return dataFetch.actividades.data;
         }
@@ -46,7 +47,6 @@ const AdminActividades = () => {
     const totalPages = Math.ceil(dataFiltrada.length / itemsPerPage);
     const pageNumbers = [...Array(totalPages).keys()].map(num => num + 1);
 
-    let user = getUser();
     const today = new Date();
     today.setDate(today.getDate() - 1);
     const previousDay = today.toISOString().split("T")[0];

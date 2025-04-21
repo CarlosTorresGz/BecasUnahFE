@@ -1,5 +1,6 @@
 import apiUrl from "../../config";
 import obtenerUsuario from "../../util/jwtDecoded";
+import { toast } from "sonner";
 
 export const handleTokenRefresh = async (originalRequest, args) => {
     console.log('Access token expirado. Intentando renovar...');
@@ -18,6 +19,7 @@ export const handleTokenRefresh = async (originalRequest, args) => {
         console.log('Access token renovado. Reintentando la solicitud original...');
         return await originalRequest(args);
     } else {
+        toast.warning("Sesion expirada. Por favor, inicia sesión nuevamente.");
         const user = obtenerUsuario();
         if (user) {
             if (user.rol === 'becario') {

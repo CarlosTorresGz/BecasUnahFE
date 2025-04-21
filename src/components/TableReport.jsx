@@ -1,8 +1,14 @@
 import '../styles/TableReport.css'
 import { FaFilePdf } from "react-icons/fa6";
 import { tableReportPropTypes } from "../util/propTypes";
+import { getSasToken } from "../util/getSasToken";
 
 export const TableReport = ({ data }) => {
+    const handleDescargar = async (enlace) => {
+        const sasToken = await getSasToken({ containerName: 'contenedorreportes', permissions: 'r', expiresInMinutes: 5 });
+        window.open(`${enlace}?${sasToken.sasToken}`, '_blank', 'noopener', 'noreferrer');
+    };
+
     return (
         <div className='table-report'>
             <h1>Reportes de Seguimiento de Beca</h1>
@@ -23,9 +29,13 @@ export const TableReport = ({ data }) => {
                                 <td style={{ textAlign: 'left' }}><FaFilePdf /> {report.nombre_reporte}</td>
                                 <td >{new Date(report.fecha_reporte).toLocaleDateString('es-Es', { month: 'long', day: 'numeric', year: 'numeric' })}</td>
                                 <td>
-                                    <a href={report.enlace} download target="_blank" rel="noopener noreferrer">
-                                        <button className="table-button">Descargar</button>
-                                    </a>
+                                    <button
+                                        className="table-button"
+                                        title={`Descargar ${report.nombre_reporte}`}
+                                        onClick={() => handleDescargar(report.enlace)}
+                                    >
+                                        Descargar
+                                    </button>
                                 </td>
                             </tr>
                         ))
