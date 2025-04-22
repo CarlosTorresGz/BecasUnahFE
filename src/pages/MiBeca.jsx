@@ -33,7 +33,7 @@ export const MiBeca = () => {
         setError(null);
 
         try {
-            const becaResult = await fetchBecaById({ beca_id: user.beca_id });
+            const becaResult = await fetchBecaById({ beca_id: user.beca_id, becario_id: user.becario_id });
             if (becaResult.state) {
                 setBeca(becaResult.body);
             }
@@ -60,8 +60,8 @@ export const MiBeca = () => {
                 <div className='mi-beca-informacion'>
                     <h1>Información General</h1>
                     <InfoItem label='Tipo de Beca:' value={beca?.nombre_beca || 'No disponible'} />
-                    <InfoItem label='Monto:' value={formatCurrency(beca?.monto) || 'ND'} />
-                    <InfoItem label='Fecha de Inicio:' value={new Date(user.fecha_inicio_beca).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })} />
+                    <InfoItem label='Monto:' value={formatCurrency(beca?.MontoBeca) || 'ND'} />
+                    <InfoItem label='Fecha de Inicio:' value={new Date(beca.fecha_inicio_beca).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })} />
                     <InfoItem label='Estado:' value={dataFetchBecarios.becaEstado} />
                 </div>
                 <div className='mi-beca-calendario'>
