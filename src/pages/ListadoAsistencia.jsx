@@ -23,7 +23,6 @@ const ListadoAsistencia = () => {
     let user = getUser();
 
     const estadoDeActivididad = (actividad_id) => {
-        console.log(actividad_id);
         return dataFetch.actividades.data.find(
             estado => estado.actividad_id === actividad_id).estado_actividad;
     }
@@ -47,18 +46,17 @@ const ListadoAsistencia = () => {
 
     useEffect(() => {
         if (dataFetch?.actividades?.data?.length > 0) {
-            //setActividadSeleccionada(dataFetch.actividades.data[0].actividad_id);
-            //setNombreActividad(dataFetch.actividades.data[0].nombre_actividad);
-            const primeraActividad = dataFetch.actividades.data.find(actividad => actividad.centro_id === user.centro_id && actividad.estado_actividad !== 'Cancelada');
-            if (primeraActividad) {
-                setActividadSeleccionada(primeraActividad.actividad_id);
-                setNombreActividad(primeraActividad.nombre_actividad);
-            }
-
+            setActividadSeleccionada(dataFetch.actividades.data[0].actividad_id);
+            setNombreActividad(dataFetch.actividades.data[0].nombre_actividad);          
         }
-        obtenerParticipantesActividad(actividadSeleccionada, nombreActividad);
             
-    }, [dataFetch, actividadSeleccionada, nombreActividad]);
+    }, [dataFetch]);
+
+    useEffect(() => {
+        if (actividadSeleccionada && nombreActividad) {
+            obtenerParticipantesActividad(actividadSeleccionada, nombreActividad);
+        }
+    }, [actividadSeleccionada, nombreActividad]);
 
     const toggleAsistencia = async (actividad_id, no_cuenta) => {
         try {

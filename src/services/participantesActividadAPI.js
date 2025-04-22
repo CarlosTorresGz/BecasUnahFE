@@ -19,9 +19,7 @@ export const fetchParticipantesActividadById = async ({ actividad_id }) => {
         });
 
         if (response.status === 401) {
-            if (response.status === 401) {
-                return await handleTokenRefresh(fetchParticipantesActividadById, { actividad_id });
-            }
+            return await handleTokenRefresh(fetchParticipantesActividadById, { actividad_id });
         }
 
         const data = await response.json();
