@@ -1,12 +1,16 @@
 import apiUrl from "../../config";
 
-export const fetchBecaById = async ({ beca_id }) => {
+export const fetchBecaById = async ({ beca_id, becario_id }) => {
     try {
-        const response = await fetch(`${apiUrl}/api/becas/${beca_id}`, {
-            method: "GET",
+        const response = await fetch(`${apiUrl}/api/becas/byId`, {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({
+                beca_id: beca_id,
+                becario_id: becario_id
+            })
         });
 
         const data = await response.json();
