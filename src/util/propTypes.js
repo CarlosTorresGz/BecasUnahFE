@@ -113,3 +113,8 @@ export const CardActInscritaPropTypes = {
     onCancelar: PropTypes.func.isRequired,
     deshabilitarHover: PropTypes.bool.isRequired,
 };
+
+export const ProtectedRoutePropTypes = {
+    children: PropTypes.node.isRequired,
+    allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

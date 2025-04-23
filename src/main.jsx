@@ -26,13 +26,11 @@ import ActividadesRealizadas from './pages/ActividadesRealizadas';
 import { MiBeca } from './pages/MiBeca';
 import { ProfileBecario } from './pages/ProfileBecario';
 import { DashboardProvider } from './context/DashboardContext';
-
-
+import ProtectedRoute from './components/ProtectedRoute';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
       <Toaster richColors />
       <Router>
         <Routes>
@@ -49,9 +47,11 @@ createRoot(document.getElementById('root')).render(
 
           {/* Rutas protegidas para becario */}
           <Route path="dashboard/becario" element={
+            <ProtectedRoute allowedRoles={['becario']}>
             <DashboardProvider userType='becario'>
               <Dashboard userType='becario' />
             </DashboardProvider>
+            </ProtectedRoute>
           }>
             <Route index element={<ActividadesDisponibles />} />
             <Route path="actividades-disponibles" element={<ActividadesDisponibles />} />
@@ -63,9 +63,11 @@ createRoot(document.getElementById('root')).render(
           </Route>
           {/* Rutas protegidaspara administradores */}
           <Route path="dashboard/administrador" element={
+            <ProtectedRoute allowedRoles={['admin']}>
             <DashboardProvider userType={'admin'}>
               <Dashboard userType='admin' />
             </DashboardProvider>
+            </ProtectedRoute>
           }>
             <Route index element={<AdminActividades />} />
             <Route path="actividades" element={<AdminActividades />} />
