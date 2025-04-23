@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Footer.css';
 import VOAE from '../../img/VOAE2.jpg';
-import UNAH from '../../img/unah2.svg';
-import FACEBOOK from '../../img/facebook.svg';
-import YOUTUBE from '../../img/youtube.svg';
-import IG from '../../img/ig.svg';
+import UNAH from '../../img/UNAH2.svg';
+import FACEBOOK from '../../img/FACEBOOK.svg';
+import YOUTUBE from '../../img/YOUTUBE.svg';
+import IG from '../../img/IG.svg';
 
 const Footer = () => {
   const navigate = useNavigate();
