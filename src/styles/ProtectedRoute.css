@@ -1,0 +1,114 @@
+.access-denied-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--secondary-bg-color);
+    padding: 20px; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.access-denied-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.access-denied-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--error-bg-color);
+    border-radius: 10px 10px 0 0;
+    padding: 20px;
+    gap: 10px;
+}
+
+.access-denied-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--secondary-text-color);
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.access-denied-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 30px;
+    
+}
+
+.access-denied-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    color: var(--fourth-text-color);
+    font-weight: bold;
+}
+
+.access-denied-message {
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    color: #6c757d;
+}
+
+.denegado-seconds {
+    font-weight: bold;
+    color: var(--error-bg-color);
+  }
+
+.access-denied-button {
+    width: 200px;
+    height: 50px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;    
+    font-weight: 500;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    transition: background-color 0.3s;
+}
+
+.access-denied-button:first-child {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+}
+
+.access-denied-button:first-child:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.access-denied-button:last-child {
+    background-color: var(--success-bg-color);
+    color: var(--secondary-text-color);
+}
+
+.access-denied-button:last-child:hover {
+    background-color: var(--success-color-hover);
+    
+}
+
+.access-denied-footer {
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    color: #6c757d;
+    padding: 0 30px;
+}
+
+.access-denied-footer p {
+    font-size: clamp(0.5rem, 1.1vw, 1rem);
+    color: #6c757d;
+}
+
+.access-denied-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
