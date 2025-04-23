@@ -27,10 +27,10 @@
 }
 
 .mi-beca-calendario {
-   width: 800px; 
+    width: 800px;
 }
 
-.mi-beca-calendario h1{
+.mi-beca-calendario h1 {
     display: flex;
     justify-content: center;
 }
@@ -43,11 +43,12 @@
 }
 
 .table-calendar-head th {
-    color: var(--therciary-text-color)!important;
+    color: var(--therciary-text-color) !important;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .table-calendar-head td {
-    color: var(--fourth-text-color)!important;
+    color: var(--fourth-text-color) !important;
 }
 
 .table-description {
@@ -60,4 +61,22 @@
 
 .table-description span {
     margin-left: 10px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) {
+    .mi-beca-calendario {
+        width: 90%; 
+     }
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {}
+
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {}

@@ -5,7 +5,7 @@
 
 .titulo-centrado, .titulo-mes {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
     margin-bottom: 15px;
     color: var(--primary-text-color);
     margin-top: 1%;
@@ -14,7 +14,7 @@
 }
 
 .tabla-mes-actual {
-    width: 60%;
+    width: 80%;
     max-height: 50%;
     overflow-y: auto;
     display: block;
@@ -66,8 +66,9 @@
 .total-horas-1{
     text-align: center;
     font-weight: bold;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
     margin-top: 3%;
-    margin-right: 20%;
+    margin-right: 11%;
     flex: 1;
     text-align: right;
 }
@@ -75,6 +76,7 @@
 .total-horas-2{
     text-align: center;
     font-weight: bold;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
     margin-right: 11%;
     flex: 1;
     text-align: right;
@@ -153,3 +155,46 @@
     margin-bottom: 0; 
 }
 
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) {
+    .tabla-mes-actual {
+        width: 100%;
+        max-height: 100%;
+    }
+
+    .tabla-otros-meses {
+        width: 100%;
+        max-height: 100%;
+    }
+
+    .total-horas-1{
+        text-align: center;
+        font-weight: bold;
+        font-size: clamp(0.8rem, 1.5vw, 1rem);
+        margin-top: 3%;
+        margin-right: 20%;
+        flex: 1;
+        text-align: right;
+    }
+    
+    .total-horas-2{
+        margin-right: 0;
+    }
+  
+  }
+  
+  /* Tablet Devices */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+      
+  }
+  
+  /* Laptop Devices */
+  @media only screen and (min-width: 1024px) and (max-width: 1439px) {
+      
+   }
+  
+   /* Desktop Devices */
+   @media only screen and (min-width: 1440px) {
+      
+   }
