@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Footer.css';
-import VOAE from '../../img/voae2.jpg';
+import VOAE from '../../img/VOAE2.jpg';
 import UNAH from '../../img/unah2.svg';
 import FACEBOOK from '../../img/facebook.svg';
 import YOUTUBE from '../../img/youtube.svg';
