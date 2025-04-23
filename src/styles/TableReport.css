@@ -25,6 +25,7 @@ th {
 .table td {
     color: var(--fourth-text-color)!important;
     text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .table-head {
@@ -32,6 +33,7 @@ th {
     color: var(--var(--therciary-text-color));
     padding: 10px;
     text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .table-button {
@@ -39,6 +41,7 @@ th {
     color: var(--var(--therciary-text-color));
     border: 0;
     padding: 5px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .table-button {
