@@ -5,17 +5,26 @@ import { AlertMessage } from "./AlertMessage";
 import { Button } from "./Button";
 import { InputField } from "./InputField";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
+=======
 import { toast } from 'sonner'
 import { loginPropTypes } from "../../util/propTypes";
 import '../../styles/LoginForm.css';
+>>>>>>> develop
 
 export const LoginForm = ({ userType }) => {
     const { login, checkAuth, getPermissions } = useAuth();
     const [noCuenta, setNoCuenta] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+<<<<<<< HEAD
+    const navigate = useNavigate();  // Hook para la navegación
+
+    
+=======
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
+>>>>>>> develop
 
     // Usa el hook useLoginAttempts
     const { attempts, locked, timeLeft, incrementAttempts } = useLoginAttempts();
@@ -67,12 +76,28 @@ export const LoginForm = ({ userType }) => {
                 incrementAttempts(); // Aumenta intentos si hay error
                 toast.error('Los datos ingresados no son correctos.');
             }
+<<<<<<< HEAD
+    
+            login({ name: data.nombre, noCuenta });
+            console.log("Autenticación exitosa:", data);
+    
+            // Si el usuario inicia sesión correctamente, restablecemos los intentos fallidos
+            localStorage.removeItem("login_attempts");
+            localStorage.removeItem("locked_until");
+    
+            navigate("/");
+
+        } catch (err) {
+            setError(err.message);
+            incrementAttempts(); // Aumenta intentos si hay error
+=======
         } catch (error) {
             console.error("Error during login:", error);
             toast.error('Error al iniciar sesión');
             setError('Ocurrió un error al iniciar sesión');
         } finally {
             setLoading(false);
+>>>>>>> develop
         }
 
 
