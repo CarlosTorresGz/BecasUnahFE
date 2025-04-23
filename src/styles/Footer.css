@@ -1,77 +1,196 @@
 .footer {
-    padding: 20px;
-    background-color: #20527E;
-    color: #fff;
-    width: 100%; /* Asegurar que el fondo cubra todo el ancho de la pantalla */
-    margin: 0; /* Eliminar cualquier margen */
-    box-sizing: border-box; /* Incluir el padding y el border dentro del tamaño total */
+  position: static;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  background-color: var(--primary-bg-color);
+  color: var(--secondary-text-color);
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.footer-content {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.center-text {
+  text-align: center;
+  flex-basis: 50%;
+  font-size: 20px;
+}
+
+.center-text p {
+  margin: 0;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+}
+
+.footer-column {
+  flex: 1;
+}
+
+.footer-column p, .footer-column span {
+  margin: 5px 0;
+}
+
+.footer-logo {
+  height: 80px;
+  width: auto;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.social-icon {
+  width: 30px;
+  height: 30px;
+  margin: 0 10px;
+}
+
+.social-icon:hover {
+  cursor: pointer;
+  animation:vibrate 1.5s linear both;
+}
+
+@keyframes vibrate{
+  0%{transform:translate(0)}
+  20%{transform:translate(-2px,2px)}
+  40%{transform:translate(-2px,-2px)}
+  60%{transform:translate(2px,2px)}
+  80%{transform:translate(2px,-2px)}
+  100%{transform:translate(0)}
+}
+
+.contact-button {
+  background-color: var(--therciary-bg-color);
+  color: var(--primary-text-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.contact-button:hover {
+  background-color: var(--therciary-color-hover);
+}
+
+.highlight {
+  color: var(--therciary-text-color);
+}
+
+.highlight:hover {
+  cursor: pointer;
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+  .footer-top{
+    gap: 0;
+  }  
+
+  .footer-top img {
+    height: 50px;
+  } 
+
+  .footer {
+    padding: 10px;
+    font-size: 0.9rem;
   }
   
-  .footer-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  .center-text{
+    font-size: 8px;
   }
-  
+
   .footer-bottom {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    gap: 5px;
+    padding: 0;
   }
-  
+
   .footer-column {
-    flex: 1;
-    min-width: 200px; /* Asegurar un ancho mínimo */
-    margin: 10px;
-    text-align: center;
+    min-width: 100px;
+    font-size: 8px;
+  }
+
+  .highlight {
+    font-size: 8px;
   }
   
   .footer-column p, .footer-column span {
-    margin: 5px 0;
+    font-size: 10px;
   }
   
   .footer-logo {
-    height: 100px; /* Tamaño más grande para los logos */
-    margin: 30px;
+    height: 50px;
   }
-  
-  .center-text {
-    text-align: center;
-    flex-basis: 100%; /* Asegurar que ocupe toda la línea */
-  }
-  
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
+
   .social-icon {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
   }
-  
+
   .contact-button {
-    background-color: #FFB500;
-    color: #20527E;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+    height: 30px;
+    width: auto;
+    font-size: 10px;
   }
+}
+
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .footer-top img {
+    height: 50px;
+  }  
+
+  .footer {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .center-text{
+    font-size: 12px;
+  }
+
+  .footer-column{
+    font-size: 12px;
+  }
+
+  .social-icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
   
-  .contact-button:hover {
-    background-color: #E0A600;
-  }
+}
+
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {
   
-  .highlight {
-    color: #FFB500; /* Color dorado */
-  }
-  
-  .highlight:hover {
-    cursor: pointer;
-  }
+}

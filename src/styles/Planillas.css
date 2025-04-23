@@ -1,0 +1,23 @@
+.planillas-container h1 {
+  text-align: center;
+  font-weight: bold;
+  color: #ffb500;
+}
+
+.generada-por {
+  color: black;
+  font-size: 0.875rem;
+}
+
+.icon-left {
+  margin-left: 5px;
+}
+
+.titulou {
+  color: var(--primary-text-color);
+  font-weight: bold;
+}
+
+.planilla-info {
+  font-size: 0.875rem;
+}

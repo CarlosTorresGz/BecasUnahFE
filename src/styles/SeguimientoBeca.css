@@ -1,0 +1,370 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --clr-primary: hsl(263, 81%, 45%);
+  --clr-text-dark: hsl(250, 15%, 8%);
+  --clr-text-light: hsl(240, 4%, 57%);
+  --clr-bg: hsl(225, 62%, 95%);
+  --clr-neutral: hsl(222, 23%, 91%);
+  --clr-white: hsl(0, 0%, 100%);
+}
+
+/*Tab Panel*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*
+body {
+  font-family: Poppins, system-ui;
+  height: 100vh;
+  color: var(--clr-text-light);
+  background-color: var(--clr-bg);
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+*/
+ul,
+li {
+  all: unset;
+}
+
+.seguimiento-beca-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-title {
+  display: flex;
+  width: 100%;
+}
+
+.tab-title>.tab {
+  flex: 1;
+  background-color: var(--clr-neutral);
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tab-title>.tab:not(:last-child) {
+  border-right: 2px solid var(--clr-white);
+}
+
+.tab-title>.tab.active {
+  background-color: var(--primary-bg-color);
+}
+
+.tab>a {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-text-color);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+.tab-title>.tab.active>a {
+  color: var(--secondary-text-color);
+}
+
+.tab-panels {
+  padding: 48px;
+  border: 1px solid var(--primary-bg-color);
+}
+
+.panel>h3 {
+  font-size: 28px;
+  color: var(--fourth-text-color);
+  margin-bottom: 20px;
+}
+
+.panel>p {
+  font-size: 18px;
+  line-height: 30px;
+  margin-bottom: 28px;
+  text-align: justify;
+}
+
+.panel>button {
+  padding: 10px 15px;
+  letter-spacing: 1px;
+  width: 200px;
+  text-transform: uppercase;
+
+}
+
+.panel>button:hover {
+  opacity: 0.9;
+}
+
+/*Titulos en general*/
+.seguimiento-beca-container-h1 {
+  color: var(--primary-text-color);
+  font-weight: bold;
+  text-align: center;
+}
+
+.seguimiento-beca-container-h2 {
+  color: var(--primary-text-color);
+  font-weight: 500;
+  text-align: center;
+}
+
+.seguimiento-fecha,
+.periodo-seguimiento {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.seguimiento-fecha strong,
+.periodo-seguimiento label {
+  color: var(--primary-text-color);
+  font-size: 18px;
+
+}
+
+.seguimiento-fecha p,
+.periodo-seguimiento select {
+  font-weight: 500;
+  color: var(--fourth-text-color);
+  font-size: 18px;
+
+}
+
+.periodo-seguimiento select {
+  border: 0;
+  border-bottom: 1px solid var(--primary-bg-color);
+  background-color: transparent;
+  width: min(100%,200px);
+  font-size: 18px;
+  cursor: pointer;
+  outline: none;
+}
+
+.periodo-seguimiento select>option {
+  border: 0;
+  background-color: var(--secondary-bg-color);
+  color: var(--fourth-text-color);
+  border: 1px solid var(--primary-bg-color);
+  font-size: 16px;
+  padding: 12px;
+  text-indent: 0;
+}
+
+/*Informacion General Becario*/
+.general-information {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.general-information-table {
+  width: 500px;
+}
+
+.general-information-table tbody tr{
+  background-color: var(--primary-bg-color);
+}
+
+.info-general-becario {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+/*Desempeño Academico, Actividades Realizadas*/
+.desempeno-academico,
+.actividades-realizadas-seguimiento {
+  width: 100%;
+  border-bottom: 1px solid var(--primary-bg-color);
+  column-rule-color: var(--primary-bg-color);
+  column-rule-style: solid;
+  column-rule: 1px solid var(--primary-bg-color);
+}
+
+.desempeno-academico thead,
+.actividades-realizadas-seguimiento thead {
+  background-color: var(--primary-bg-color);
+  padding: 10px;
+  color: var(--secondary-text-color);
+  text-align: center;
+  font-size: 20px;
+
+}
+
+.desempeno-academico tbody,
+.actividades-realizadas-seguimiento tbody {
+  background-color: var(--secondary-bg-color);
+  text-align: center;
+  font-size: 18px;
+}
+
+.periodo-academico-detalles {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 10px 0;
+  justify-content: center;
+}
+
+/*Estado Beca*/
+.beca-estado {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.beca-estado-nuevo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  background-color: #20527e2a;
+  width: 500px;
+  height: 55px;
+  padding: 10px;
+  border-radius: 0.5rem;
+}
+
+.beca-estado-cambio {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.beca-estado-nuevo label {
+  color: var(--primary-text-color);
+  font-size: 18px;
+}
+
+.beca-estado-nuevo select {
+  font-weight: 500;
+  color: var(--fourth-text-color);
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--primary-bg-color);
+  background-color: transparent;
+  width: min(100%,200px);
+  cursor: pointer;
+  outline: none;
+  width: auto;
+}
+
+.beca-estado-nuevo select>option {
+  border: 0;
+  background-color: var(--secondary-bg-color);
+  color: var(--fourth-text-color);
+  border: 1px solid var(--primary-bg-color);
+  font-size: 16px;
+  padding: 12px;
+  text-indent: 0;
+}
+
+.beca-estado-cambio {
+  margin-top: 10px;
+  background-color: #20527e2a;
+  padding: 10px;
+  border-radius: 0.5rem;
+}
+
+.beca-estado-cambio strong {
+  font-size: 18px;
+  color: var(--primary-text-color);
+  line-height: 30px;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+
+.tab-panels textarea{
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid var(--primary-bg-color);
+  padding: 10px;
+  font-size: 18px;
+  text-align: justify;
+}
+
+/*Actividades*/
+.search-activities-periodo {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.search-activities-periodo label{
+  font-weight: 500;
+  color: var(--primary-text-color);
+  font-size: 18px;
+}
+
+.search-actividades-periodo-input {
+  font-weight: 500;
+  color: var(--fourth-text-color);
+  font-size: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--primary-bg-color);
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  width: auto;
+
+}
+
+.search-actividades-periodo-button {
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--primary-text-color);
+}
+
+/*Animacion Boton*/
+.dotsSending {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: none;
+}
+
+.dotSending {
+  animation: blink 1.5s infinite;
+  font-size: 1.5rem;
+}
+
+.dotSending:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dotSending:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dotSending:nth-child(3) {
+  animation-delay: 0.4s;  
+}
+
+@keyframes blink {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}

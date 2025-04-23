@@ -1,0 +1,78 @@
+.table {
+    --bs-table-striped-bg: #FFF!important;
+}
+
+.card {
+    border-color: var(--primary-bg-color);
+}
+
+.scrollable-card {
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.scrollable-card::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scrollable-card::-webkit-scrollbar-thumb {
+    background-color: transparent
+}
+
+.table-thead {
+    background-color: var(--primary-bg-color);
+    text-align: center;
+}
+
+.table-tbody {
+    background-color: var(--secondary-bg-color);
+}
+
+.button-asistencia {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 40px;
+}
+
+.button-asistencia:hover {
+    background-color: var(--secondary-bg-color) ;
+    color: var(--primary-text-color);
+    border: 1px solid var(--primary-bg-color);
+}
+
+.list-group-item.active {
+    background-color: var(--primary-bg-color);
+    border-color: var(--primary-bg-color);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-bg-color);
+    border-color: var(--primary-bg-color);
+}
+
+.colorful {
+    margin: auto;
+    width: 44.8px;
+    height: 44.8px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side, var(--therciary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--primary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--therciary-bg-color) 94%,#0000),
+           radial-gradient(farthest-side, var(--primary-bg-color) 94%,#0000),
+           #ffb500;
+    background-size: 105% 105%;
+    background-repeat: no-repeat;
+    animation: colorful-7utelwmd 2s infinite;
+ }
+ 
+ @keyframes colorful-7utelwmd {
+    0% {background-position: 50% -56px,-44.8px 50%, 50% calc(100% + 56px),calc(100% + 56px) 50%;}
+    20%, 25% {background-position: 50% -56px,-56px 50%, 50% calc(100% + 56px),50% 50%;}
+    45%, 50% {background-position: 50% -56px,-56px 50%, 50% 50% ,50% 50%;}
+    75%, 75% {background-position: 50% -56px, 50%  50%, 50% 50%,50% 50%;}
+    95%, 100% {background-position: 50%  50% , 50%  50%, 50% 50%,50% 50%;}
+ }

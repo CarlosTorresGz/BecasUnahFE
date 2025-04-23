@@ -1,0 +1,65 @@
+.dropdown-menu-dashboard {
+    background-color: transparent!important;
+    width: 50px!important;
+    height: 40px!important;
+    color: var(--secondary-text-color)!important;
+    font-weight: bold!important;
+    font-size: 20px!important;
+    border: none!important;
+}
+
+.dropdown-menu-dashboard:hover {
+    background-color: var(--secondary-bg-color)!important;
+    color: var(--primary-text-color)!important;
+    border: 5px!important;
+    border-style: none none solid!important;
+    border-color: var(--primary-bg-color)!important;    
+    transition: background-color 0.3s ease!important;
+}
+
+.dropdown-menu {
+    position: fixed!important;
+    top: 30px!important;
+  background: linear-gradient(180deg, var(--primary-bg-color) 70%, #20527E 100%);
+    
+}
+
+.dropdown-item {
+    color: var(--secondary-text-color)!important;
+    font-weight: 300!important;
+    font-size: 1rem; /*verificar*/
+}
+
+.dropdown-item:hover {
+    background-color: var(--secondary-bg-color);
+    color: var(--primary-text-color)!important;
+    font-weight: 300!important;
+    font-size: 1rem; /*verificar*/
+    font-weight: bold!important;
+}
+
+.dropdown-toggle::after {
+    content: none!important;
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    
+
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+ }
+
+ /* Desktop Devices */
+ @media only screen and (min-width: 1440px) {
+    
+ }

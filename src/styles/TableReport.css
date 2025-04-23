@@ -1,0 +1,66 @@
+.table-report {
+    margin: 10px;
+}
+
+.table-report h1 {
+    color: var(--primary-text-color);
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.table {
+    --bs-table-bg: 'none';
+    --bs-table-striped-color: var(--fourth-text-color);
+}
+
+.table>:not(caption)>*>* {
+    color: var(--therciary-text-color);
+}
+
+th {
+    color: var(--therciary-text-color)!important;
+}
+
+.table td {
+    color: var(--fourth-text-color)!important;
+    text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.table-head {
+    background-color: var(--primary-bg-color);
+    color: var(--var(--therciary-text-color));
+    padding: 10px;
+    text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.table-button {
+    background-color: var(--primary-bg-color);
+    color: var(--var(--therciary-text-color));
+    border: 0;
+    padding: 5px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.table-button {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+    border: 0;
+    padding: 5px;
+    width: 150px;
+    border-radius: 5px;
+}
+
+.table-button:hover {
+    color: var(--primary-text-color);
+    font-weight: bold;
+    background-color: var(--secondary-bg-color);
+    border: 2px solid var(--primary-bg-color);
+    transition: width 0.5s ease-in-out;
+}
+
+.alter-tr {
+    background-color: #c7ddf1;
+}
