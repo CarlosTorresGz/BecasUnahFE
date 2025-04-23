@@ -1,91 +1,81 @@
 .main-content {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0; /* Eliminar margen */
+  padding: 0;
   background-color: #f0f0f0;
   position: relative;
-  margin-top: 120px; /* Margen superior para separar del encabezado */
 }
 
+/* Estilos generales del texto en las secciones */
 .section-container {
-  position: relative;
-  width: 100%; /* Ancho completo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0; /* Eliminar padding */
-  border-radius: 0; /* Eliminar borde redondeado */
-  transition: background-color 0.3s ease-in-out;
-  box-sizing: border-box; /* Asegurar que el padding se incluya en el tamaño total */
-  background-size: cover; /* Asegurar que la imagen cubra toda la sección */
-  background-position: center; /* Centrar la imagen */
-  background-repeat: no-repeat; /* Evitar que la imagen se repita */
-}
-
-.section-blue .section-content,
-.section-red .section-content {
-  font-size: 2.5rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
-  opacity: 0; /* Inicialmente invisible */
-  transition: opacity 0.3s ease-in-out;
-  z-index: 1; /* Asegurar que el texto esté encima de la imagen */
+  font-size: 2.5rem;
+  color: var(--secondary-text-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 80%; /* Ancho del cuadro imaginario */
-  margin: 0 auto; /* Centrar horizontalmente */
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para mayor legibilidad */
-  padding: 20px; /* Espacio interno */
-  border-radius: 10px; /* Bordes redondeados */
+  width: 80%;
+  margin: 0 auto;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transition: all 0.3s ease-in-out;
 }
 
-.section-blue:hover .section-content,
-.section-red:hover .section-content {
-  opacity: 1; /* Aparecer al pasar el mouse */
+/* Animación para mostrar el contenido con fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.section-green .section-content {
-  font-size: 2.5rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
-  opacity: 0; /* Inicialmente invisible */
+.section-content {
+  opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  z-index: 1; /* Asegurar que el texto esté encima de la imagen */
   position: absolute;
-  bottom: 10px; /* Ajustar la posición al fondo */
-  left: 50%; /* Centrar horizontalmente */
-  transform: translateX(-50%); /* Ajuste para centrar */
-  padding: 20px; /* Espacio interno */
-  border-radius: 10px; /* Bordes redondeados */
+  width: 80%;
+  height: calc(100vh - 300px );
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--secondary-text-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
 }
 
-.section-green:hover .section-content {
-  opacity: 1; /* Aparecer al pasar el mouse */
+/* Mostrar el texto solo al pasar el mouse */
+.section-content:hover {
+  opacity: 1;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.animated-content {
-  font-size: 2rem; /* Hacer el texto más grande */
-  color: #ffffff; /* Cambiar el color del texto a blanco para mejor contraste */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Añadir sombra al texto para mejor legibilidad */
-  opacity: 0; /* Inicialmente invisible */
-  transition: opacity 0.3s ease-in-out;
-  z-index: 1; /* Asegurar que el texto esté encima de la imagen */
+/* Estilos específicos de cada imagen */
+.section-picture1,
+.section-picture2,
+.section-picture3 {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.section-container:hover .animated-content {
-  opacity: 1; /* Aparecer al pasar el mouse */
-}
-
+/* Botones de navegación */
 .nav-button {
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
+  color: var(--secondary-text-color);
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -98,16 +88,74 @@
 }
 
 .prev-button {
-  left: 0; /* Todo a la izquierda */
+  left: 0;
 }
 
 .next-button {
-  right: 0; /* Todo a la derecha */
+  right: 0;
 }
 
-.section-blue, .section-red, .section-green {
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/*Barra de Scroll*/
+/**Ancho de la barra */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/*Color y radio de la barra*/
+::-webkit-scrollbar-track {
+  background: #FBFCF8;
+  border-radius: 50px;
+}
+
+/*Color y radio de la barra interna*/
+::-webkit-scrollbar-thumb {
+  background: #20527E;
+  border-radius: 50px;
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+  .main-content {  
+      display: block;
+      height: 500px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+  }
+  .section-container {
+    height: 500px;
+  }
+
+  .section-content {
+    font-size: 0.9rem;
+    padding: 15px;
+    height: 200px;    
+  }  
+
+  .nav-button {
+    padding: 0;
+    width: 40px;
+    height: 50px;
+  }
+
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .section-content {
+    font-size: 1.5rem;
+    padding: 15px;
+    height: 200px;    
+  }
+
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  
+}
+
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {
+  
 }

@@ -1,0 +1,35 @@
+.becas-section {
+    width: 80%;
+    margin: 60px auto!important;
+}
+
+.becas-section h1{
+    color: var(--primary-text-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    .becas-section h1{
+        font-size: 20px;
+    }
+  
+  }
+  
+  /* Tablet Devices */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+  }
+  
+  /* Laptop Devices */
+  @media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+  }
+  
+  /* Desktop Devices */
+  @media only screen and (min-width: 1440px) {
+    
+  }

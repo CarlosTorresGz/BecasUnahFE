@@ -1,0 +1,212 @@
+.actividad-expandida {
+    display: block;
+}
+
+.boton-cancelar {
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: var(--therciary-bg-color);
+    color: var(--secondary-text-color);
+    border: none;
+    cursor: pointer;
+}
+
+.boton-cancelar:hover {
+    background-color: var(--secondary-bg-color);
+    color: var(--therciary-text-color);
+    font-weight: bold;
+    border: 1px solid var(--therciary-bg-color);
+}
+
+.boton-guardar {
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    padding: 10px;
+    background-color: var(--success-bg-color);
+    color: var(--secondary-text-color);
+    border: none;
+    cursor: pointer;
+}
+
+.boton-guardar:hover {
+    background-color: var(--secondary-bg-color);
+    color: var(--success-text-color);
+    font-weight: bold;
+    border: 1px solid var(--success-bg-color);
+}
+
+.form-label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    color: var(--secondary-text-color);
+}
+
+.form-label input{    
+    color: var(--fourth-text-color);
+    border: 0 none;
+}
+
+.form-input, .form-textarea {
+    padding: 10px;
+    border-radius: 0.5rem;
+    background-color: var(--secondary-bg-color);
+}
+
+.form-textarea {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+.estado {
+    display: flex;
+    gap: 25px
+}
+
+.estado-actividad {
+    color: var(--secondary-text-color);
+    gap: 10px;
+}
+
+.mensaje-confirmacion {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
+    color: var(--secondary-text-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.informacion-actividad {
+    display: flex;        
+}
+
+strong {
+    margin-bottom: 10px;
+}
+
+/*Radio Button */
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: var(--secondary-bg-color);
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 300px;
+    font-size: 14px;
+}
+
+.radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.radio-inputs .radio input {
+    display: none;
+}
+
+.radio-inputs .radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .5rem 0;
+    color: rgb(51, 65, 84);
+    transition: all .15s ease-in-out;
+}
+
+.radio-inputs .radio input:checked + .name {
+    background-color: var(--primary-bg-color);
+    font-weight: 600;
+    color: var(--secondary-text-color);
+}
+
+.notificacion-exito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #d4edda;
+    color: #28a745;
+    padding: 15px 30px;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+.notificacion-exito .icono {
+    font-size: 20px;
+    color: #28a745; /* Color del icono verde */
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.filtro-actividades {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 60px;
+    margin-bottom: 15px;
+}
+
+.filtro-actividades .form-label {
+    color: var(--fourth-text-color);
+    padding-top: 5px;
+    height: fit-content;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.filtro-actividades .form-control {
+    color: var(--fourth-text-color);
+    width: 200px;
+    height: fit-content;
+}
+
+.pagination-button {
+    margin: 15px 10px;
+    padding: 5px 10px;
+    background: var(--secondary-bg-color);
+    border: solid 1px var(--primary-bg-color);
+    color: var(--primary-text-color);
+    border-radius: 5px;
+}
+
+.pagination-button:hover {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+    border: solid 1px var(--primary-bg-color);
+}
+
+.pagination-button-active {
+    background-color: var(--primary-bg-color);
+    color: var(--secondary-text-color);
+    border: solid 1px var(--primary-bg-color);
+}

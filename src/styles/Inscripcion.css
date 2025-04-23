@@ -1,0 +1,57 @@
+.formulario-inscripcion {
+  max-width: 100%;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 1%;
+  padding: 0;
+  padding-right: 20px;
+  color: var(--secondary-text-color);
+  background-color: #3AB795;
+}
+
+.form-main {
+  padding: 20px; 
+}
+
+.form-main button{
+  margin: 10px;
+  margin-bottom: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.boton-inscribirse {
+  margin-top: 20px;
+}
+
+.formulario-inscripcion .form-label {
+  color: var(--primary-text-color);
+  display: inline-block;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.formulario-inscripcion .form-text {
+  display: block; 
+  margin-top: -1%;
+}
+
+.form-control {
+  color: var(--fourth-text-color);
+  font-weight: 450;
+}
+
+.formulario-inscripcion .form-check{
+  color: gray;
+}

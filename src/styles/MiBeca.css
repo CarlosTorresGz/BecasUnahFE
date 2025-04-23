@@ -1,0 +1,82 @@
+.table {
+    --bs-table-bg: 'none';
+    --bs-table-striped-color: var(--fourth-bg-color);
+}
+
+.table>:not(caption)>*>* {
+    color: var(--therciary-text-color);
+}
+
+.mi-beca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.mi-beca h1 {
+    color: var(--primary-text-color);
+    font-weight: bold;
+}
+
+.mi-beca-informacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.mi-beca-calendario {
+    width: 800px;
+}
+
+.mi-beca-calendario h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.table-calendar-head {
+    background-color: var(--primary-bg-color);
+    color: var(--therciary-text-color);
+    padding: 10px;
+    text-align: center;
+}
+
+.table-calendar-head th {
+    color: var(--therciary-text-color) !important;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.table-calendar-head td {
+    color: var(--fourth-text-color) !important;
+}
+
+.table-description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.table-description span {
+    margin-left: 10px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) {
+    .mi-beca-calendario {
+        width: 90%; 
+     }
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {}
+
+/* Desktop Devices */
+@media only screen and (min-width: 1440px) {}

@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.principal{
+    display: flex;
+    flex: 1;
+    column-gap: 10px;
+}
+
+.panel-superior {
+    display: flex;
+    align-items: center;
+    /*background: var(--primary-bg-color);*/
+    background: linear-gradient(90deg, var(--primary-bg-color), #002E5B);
+    padding: 10px;
+    color: var(--secondary-text-color);
+    text-align: center;
+    height: 100px;
+    gap: 10px;
+}
+
+.panel-superior h1{
+    margin-bottom: 3px;
+    text-align: center;
+    margin: auto;
+    font-weight: bold;
+}
+
+.panel-superior div.dropdown {
+    display: none;
+}
+
+.panel-izq {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /*background: var(--primary-bg-color);*/
+    background: linear-gradient(90deg, var(--primary-bg-color), #002E5B);
+    width: 75px;
+    padding: 20px 10px;
+    gap: 10px;
+    transition: width 0.5s ease-in-out;
+    height: calc(100vh - 100px);
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.panel-der {
+    flex: 1;
+    background-color: var(--secondary-bg-color);    
+    padding: 20px;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+/*Responsive*/
+/*Mobile Devices*/
+@media only screen and (max-width: 767px) { 
+    .panel-superior div.dropdown {
+        display: flex;
+    }
+
+    .panel-superior {
+        position: fixed;
+        top: 0;
+        padding: 5px;
+        height: 100px;
+        width: 100%;
+        gap: 5px;  
+        z-index: 1;      
+    }
+
+    .panel-superior h1{
+        font-size: 1rem;
+    }
+
+    .panel-izq {
+        display: none;
+    }
+
+    .panel-der {
+        margin-top: 100px;
+        height: 100%;
+        width: 40%;
+    }
+}
+
+/* Tablet Devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
+/* Laptop Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1439px) {
+    
+ }
+
+ /* Desktop Devices */
+ @media only screen and (min-width: 1440px) {
+    
+ }
