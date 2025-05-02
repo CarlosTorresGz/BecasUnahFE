@@ -47,6 +47,11 @@ export const optionBecario = [
                 path: 'mi-perfil',
                 icon: <MdPerson className="panel-izq-button-icono" />
             },
+            {
+                label: 'Chat',
+                path: 'chat',
+                icon: <MdPerson className="panel-izq-button-icono" />
+            }
         ],
     },
 ];

@@ -118,3 +118,8 @@ export const ProtectedRoutePropTypes = {
     children: PropTypes.node.isRequired,
     allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export const ChatPropTypes = {
+    userId: PropTypes.string.isRequired,
+    targetUserId: PropTypes.string.isRequired,
+};

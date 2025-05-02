@@ -31,6 +31,7 @@ export const Dashboard = ({ userType }) => {
       'planilla': 'Planilla',
       'faq': 'Preguntas Frecuentes',
       'enviados': 'Reportes Enviados',
+      'chat': 'Chat',
     };
     return map[path] || "Plataforma Avanzada de Control de Horas PASEE";
   };

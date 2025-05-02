@@ -27,6 +27,7 @@ import { MiBeca } from './pages/MiBeca';
 import { ProfileBecario } from './pages/ProfileBecario';
 import { DashboardProvider } from './context/DashboardContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import PantallaDeChat from './pages/PantallaDeChat';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -60,6 +61,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='mi-beca' element={<MiBeca />} />
             <Route path='mi-perfil' element={<ProfileBecario />} />
             <Route path="reportes/recibidos" element={<Report />} />
+            <Route path="chat" element={<PantallaDeChat userId={'20171001103'} />} />
           </Route>
           {/* Rutas protegidaspara administradores */}
           <Route path="dashboard/administrador" element={
